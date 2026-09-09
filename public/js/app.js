@@ -165,12 +165,12 @@ function renderMoviesGrid() {
         <div class="native-ad-card">
           <div>
             <span class="ad-badge">SPONSORED</span>
-            <div class="native-ad-icon">🛡️</div>
-            <h4>NordVPN 74% Deal</h4>
-            <p>Stream buffer-free with zero ISP logs & 6000+ servers worldwide.</p>
+            <div class="native-ad-icon">🎬</div>
+            <h4>🔥 Free Ultra HD Stream Pass</h4>
+            <p>Unlock instant high-speed 4K streaming with zero buffering. Limited free passes remaining.</p>
           </div>
-          <a href="https://nordvpn.com" target="_blank" rel="noopener noreferrer" class="btn-sponsor-alt" onclick="if(window.AdsManager) AdsManager.trackClick();">
-            Unlock Deal &rarr;
+          <a href="https://www.profitableratecpmnetwork.com/xwh0p4b11?key=28302daec5dfcaa4dd7345a78366434a" target="_blank" rel="noopener noreferrer" class="btn-sponsor-alt" onclick="if(window.AdsManager) AdsManager.trackClick();">
+            Claim Free Access &rarr;
           </a>
         </div>
       `;

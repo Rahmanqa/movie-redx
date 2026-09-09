@@ -5,29 +5,30 @@
     "preRoll": {
       "enabled": true,
       "duration": 6,
-      "sponsorTitle": "🛡️ ExpressVPN — Stream Anonymously with 70% Off + 3 Months Free!",
-      "sponsorDescription": "Protect your digital privacy, eliminate ISP throttling, and stream freely anywhere.",
-      "sponsorUrl": "https://www.expressvpn.com",
-      "ctaText": "Claim 70% Discount Now →"
+      "sponsorTitle": "🔥 Exclusive Free Cinema Pass — Stream in Ultra HD",
+      "sponsorDescription": "Enjoy unrestricted high-speed streaming, zero buffering, and premium access. Click below to claim.",
+      "sponsorUrl": "https://www.profitableratecpmnetwork.com/xwh0p4b11?key=28302daec5dfcaa4dd7345a78366434a",
+      "ctaText": "Claim Free Access Now →",
+      "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
     },
     "bannerTop": {
       "enabled": true,
-      "html": "<div class=\"custom-ad-banner\"><div class=\"ad-meta\"><span class=\"ad-badge\">SPONSORED</span><span class=\"ad-partner\">Amazon Prime Partner</span></div><div class=\"ad-content\"><h4>🔥 Start Your 30-Day Amazon Prime Video FREE Trial</h4><p>Stream 25,000+ Blockbuster Movies & Emmy-Winning Series in 4K HDR. Cancel anytime.</p></div><a href=\"https://www.amazon.com/amazonprime\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"btn-sponsor\">Start Free Trial &rarr;</a></div>"
+      "html": "<div style=\"display:flex; justify-content:center; align-items:center; width:100%; overflow:hidden;\"><script type=\"text/javascript\">atOptions = {'key' : '0fe9d2d751d0409f84370999aa570e04','format' : 'iframe','height' : 90,'width' : 728,'params' : {}};</script><script type=\"text/javascript\" src=\"https://www.highrevenueformat.com/0fe9d2d751d0409f84370999aa570e04/invoke.js\"></script></div>"
     },
     "bannerSidebar": {
       "enabled": true,
-      "html": "<div class=\"custom-ad-box\"><span class=\"ad-badge\">ADVERTISEMENT</span><div class=\"ad-icon\">🔒</div><h4>Stream Privately with Ultra Fast VPN</h4><p>Stop ISP snooping & throttling. 6,400+ servers with zero activity logs.</p><a href=\"https://nordvpn.com\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"btn-sponsor-alt\">Get 74% Off Deal &rarr;</a></div>"
+      "html": "<div style=\"display:flex; justify-content:center; align-items:center; margin:10px auto;\"><script type=\"text/javascript\">atOptions = {'key' : '3a24000e5ba5656ace9e4cfd19440f86','format' : 'iframe','height' : 250,'width' : 300,'params' : {}};</script><script type=\"text/javascript\" src=\"https://www.highrevenueformat.com/3a24000e5ba5656ace9e4cfd19440f86/invoke.js\"></script></div>"
     },
     "bannerPlayerBottom": {
       "enabled": true,
-      "html": "<div class=\"custom-ad-footer\"><span class=\"ad-badge\">PARTNER DEAL</span><span><strong>Special Promo:</strong> Stream without interruptions! Get 3 months free cloud storage + password manager with bundle.</span><a href=\"https://proton.me\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"ad-link\">Redeem Limited Offer &raquo;</a></div>"
+      "html": "<div style=\"width:100%; margin:15px 0;\"><script async=\"async\" data-cfasync=\"false\" src=\"https://pl31261619.profitableratecpmnetwork.com/433b30239567a78825a7370f76f8c49f/invoke.js\"></script><div id=\"container-433b30239567a78825a7370f76f8c49f\"></div></div>"
     },
-    "customScript": ""
+    "customScript": "<script type=\"text/javascript\" src=\"https://pl31261610.profitableratecpmnetwork.com/3c/8c/4a/3c8c4a792e12eedee991c42f2b25a050.js\"></script>\n<script type=\"text/javascript\" src=\"https://pl31261611.profitableratecpmnetwork.com/4e/6e/ca/4e6eca3551518a455992044cc74f4c41.js\"></script>"
   },
   "analytics": {
-    "totalImpressions": 2857,
-    "totalClicks": 196,
+    "totalImpressions": 2854,
+    "totalClicks": 195,
     "estimatedRpm": 3.65,
-    "estimatedEarnings": 39.83
+    "estimatedEarnings": 10.57
   }
 }
