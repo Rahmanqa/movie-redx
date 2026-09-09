@@ -37,6 +37,23 @@ const AdsManager = {
     }
   },
 
+  // Helper to insert HTML and ensure all <script> tags execute properly
+  renderHtmlWithScripts(container, htmlContent) {
+    if (!container || !htmlContent) return;
+    container.innerHTML = htmlContent;
+    const scripts = container.querySelectorAll('script');
+    scripts.forEach(oldScript => {
+      const newScript = document.createElement('script');
+      Array.from(oldScript.attributes).forEach(attr => {
+        newScript.setAttribute(attr.name, attr.value);
+      });
+      if (oldScript.innerHTML) {
+        newScript.text = oldScript.innerHTML;
+      }
+      oldScript.parentNode.replaceChild(newScript, oldScript);
+    });
+  },
+
   renderBanners() {
     if (!this.settings || !this.settings.monetization) return;
     const { bannerTop, bannerSidebar, bannerPlayerBottom } = this.settings.monetization;
@@ -45,7 +62,7 @@ const AdsManager = {
     const topContainer = document.getElementById('top-ad-slot');
     if (topContainer) {
       if (bannerTop && bannerTop.enabled && bannerTop.html) {
-        topContainer.innerHTML = bannerTop.html;
+        this.renderHtmlWithScripts(topContainer, bannerTop.html);
         topContainer.style.display = 'flex';
         this.trackImpression();
         this.bindClickTracking(topContainer);
@@ -58,7 +75,7 @@ const AdsManager = {
     const sidebarContainer = document.getElementById('sidebar-ad-slot');
     if (sidebarContainer) {
       if (bannerSidebar && bannerSidebar.enabled && bannerSidebar.html) {
-        sidebarContainer.innerHTML = bannerSidebar.html;
+        this.renderHtmlWithScripts(sidebarContainer, bannerSidebar.html);
         sidebarContainer.style.display = 'block';
         this.bindClickTracking(sidebarContainer);
       } else {
@@ -70,7 +87,7 @@ const AdsManager = {
     const playerBottomContainer = document.getElementById('player-bottom-ad-slot');
     if (playerBottomContainer) {
       if (bannerPlayerBottom && bannerPlayerBottom.enabled && bannerPlayerBottom.html) {
-        playerBottomContainer.innerHTML = bannerPlayerBottom.html;
+        this.renderHtmlWithScripts(playerBottomContainer, bannerPlayerBottom.html);
         playerBottomContainer.style.display = 'flex';
         this.bindClickTracking(playerBottomContainer);
       } else {
@@ -81,15 +98,38 @@ const AdsManager = {
 
   injectCustomScript() {
     if (this.settings && this.settings.monetization && this.settings.monetization.customScript) {
-      const scriptCode = this.settings.monetization.customScript.trim();
-      if (scriptCode) {
-        try {
-          const div = document.createElement('div');
-          div.innerHTML = scriptCode;
-          document.body.appendChild(div);
-        } catch (e) {
-          console.error('Error injecting custom ad script:', e);
+      const rawCode = this.settings.monetization.customScript.trim();
+      if (!rawCode) return;
+
+      try {
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = rawCode;
+
+        // Re-create all script elements so the browser actually executes them
+        const scripts = tempDiv.querySelectorAll('script');
+        if (scripts.length > 0) {
+          scripts.forEach(oldScript => {
+            const newScript = document.createElement('script');
+            Array.from(oldScript.attributes).forEach(attr => {
+              newScript.setAttribute(attr.name, attr.value);
+            });
+            if (oldScript.innerHTML) {
+              newScript.text = oldScript.innerHTML;
+            }
+            document.head.appendChild(newScript);
+            oldScript.remove();
+          });
         }
+
+        // If there is HTML remaining (e.g. ad container div/banner), append to body
+        if (tempDiv.innerHTML.trim()) {
+          const container = document.createElement('div');
+          container.className = 'custom-network-ad-container';
+          container.innerHTML = tempDiv.innerHTML;
+          document.body.appendChild(container);
+        }
+      } catch (e) {
+        console.error('Error executing custom ad script:', e);
       }
     }
   },
