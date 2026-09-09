@@ -33,19 +33,34 @@ function isMovieInWatchlist(movieId) {
   return getWatchlist().includes(movieId);
 }
 
-// Fetch Movies from API
+// Fetch Movies from API (with static fallback)
 async function loadMovies() {
   try {
     const res = await fetch('/api/movies');
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     if (data.success && data.movies) {
       allMovies = data.movies;
       setupHeroCarousel();
       renderMoviesGrid();
       updateWatchlistUI();
+      return;
     }
   } catch (err) {
-    console.error('Failed to load movies:', err);
+    console.warn('API endpoint failed, attempting static fallback to /data/movies.json...', err);
+    try {
+      const fallbackRes = await fetch('data/movies.json');
+      const fallbackMovies = await fallbackRes.json();
+      if (Array.isArray(fallbackMovies)) {
+        allMovies = fallbackMovies;
+        setupHeroCarousel();
+        renderMoviesGrid();
+        updateWatchlistUI();
+        return;
+      }
+    } catch (e2) {
+      console.error('Failed both API and static fallback:', e2);
+    }
     document.getElementById('movies-grid').innerHTML = `
       <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-muted);">
         Failed to load movies. Please make sure the server is running.

@@ -10,6 +10,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/data', express.static(path.join(__dirname, 'data')));
 
 const DATA_DIR = path.join(__dirname, 'data');
 const MOVIES_FILE = path.join(DATA_DIR, 'movies.json');

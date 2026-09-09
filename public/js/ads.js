@@ -6,14 +6,27 @@ const AdsManager = {
   async init() {
     try {
       const res = await fetch('/api/settings');
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       if (data.success && data.settings) {
         this.settings = data.settings;
         this.renderBanners();
         this.injectCustomScript();
+        return;
       }
     } catch (err) {
-      console.warn('Ad manager initialized in offline mode:', err);
+      console.warn('API settings failed, falling back to static data/settings.json...', err);
+      try {
+        const fallbackRes = await fetch('data/settings.json');
+        const fallbackSettings = await fallbackRes.json();
+        if (fallbackSettings && fallbackSettings.monetization) {
+          this.settings = fallbackSettings;
+          this.renderBanners();
+          this.injectCustomScript();
+        }
+      } catch (e2) {
+        console.error('Failed static settings fallback:', e2);
+      }
     }
   },
 

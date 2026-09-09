@@ -12,11 +12,12 @@ function getMovieIdFromUrl() {
   return params.get('id') || 'tears-of-steel';
 }
 
-// Fetch Movie Details
+// Fetch Movie Details (with static fallback)
 async function loadWatchRoom() {
   const movieId = getMovieIdFromUrl();
   try {
     const res = await fetch(`/api/movies/${encodeURIComponent(movieId)}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     if (data.success && data.movie) {
       currentMovie = data.movie;
@@ -25,17 +26,34 @@ async function loadWatchRoom() {
       renderRelatedMovies(data.related || []);
       setupServers(currentMovie.servers || []);
       initPrerollAd();
-    } else {
-      document.getElementById('video-stage').innerHTML = `
-        <div style="padding: 60px; text-align: center; color: #fff;">
-          <h2>Movie Not Found</h2>
-          <p style="color: var(--text-muted); margin: 12px 0 20px;">The requested movie does not exist or has been removed.</p>
-          <a href="index.html" class="btn-primary" style="display: inline-flex;">Back to Home</a>
-        </div>
-      `;
+      return;
     }
   } catch (err) {
-    console.error('Failed to load movie:', err);
+    console.warn('API single movie failed, falling back to static data/movies.json...', err);
+    try {
+      const fallbackRes = await fetch('data/movies.json');
+      const fallbackMovies = await fallbackRes.json();
+      const movie = fallbackMovies.find(m => m.id === movieId);
+      if (movie) {
+        currentMovie = movie;
+        document.title = `${currentMovie.title} - Watch Free on CineStream`;
+        renderMovieDetails(currentMovie);
+        const related = fallbackMovies.filter(m => m.id !== movie.id).slice(0, 5);
+        renderRelatedMovies(related);
+        setupServers(currentMovie.servers || []);
+        initPrerollAd();
+        return;
+      }
+    } catch (e2) {
+      console.error('Failed static fallback in watch room:', e2);
+    }
+    document.getElementById('video-stage').innerHTML = `
+      <div style="padding: 60px; text-align: center; color: #fff;">
+        <h2>Movie Not Found</h2>
+        <p style="color: var(--text-muted); margin: 12px 0 20px;">The requested movie does not exist or has been removed.</p>
+        <a href="index.html" class="btn-primary" style="display: inline-flex;">Back to Home</a>
+      </div>
+    `;
   }
 }
 
