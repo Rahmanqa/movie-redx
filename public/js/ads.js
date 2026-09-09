@@ -17,6 +17,13 @@ const AdsManager = {
     } catch (err) {
       console.warn('API settings failed, falling back to static data/settings.json...', err);
       try {
+        const localSettings = localStorage.getItem('cinestream_settings');
+        if (localSettings) {
+          this.settings = JSON.parse(localSettings);
+          this.renderBanners();
+          this.injectCustomScript();
+          return;
+        }
         const fallbackRes = await fetch('data/settings.json');
         const fallbackSettings = await fallbackRes.json();
         if (fallbackSettings && fallbackSettings.monetization) {

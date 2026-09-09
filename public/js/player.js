@@ -31,8 +31,14 @@ async function loadWatchRoom() {
   } catch (err) {
     console.warn('API single movie failed, falling back to static data/movies.json...', err);
     try {
-      const fallbackRes = await fetch('data/movies.json');
-      const fallbackMovies = await fallbackRes.json();
+      let fallbackMovies = null;
+      const localMovies = localStorage.getItem('cinestream_movies');
+      if (localMovies) {
+        fallbackMovies = JSON.parse(localMovies);
+      } else {
+        const fallbackRes = await fetch('data/movies.json');
+        fallbackMovies = await fallbackRes.json();
+      }
       const movie = fallbackMovies.find(m => m.id === movieId);
       if (movie) {
         currentMovie = movie;

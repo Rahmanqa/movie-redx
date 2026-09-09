@@ -49,6 +49,14 @@ async function loadMovies() {
   } catch (err) {
     console.warn('API endpoint failed, attempting static fallback to /data/movies.json...', err);
     try {
+      const localMovies = localStorage.getItem('cinestream_movies');
+      if (localMovies) {
+        allMovies = JSON.parse(localMovies);
+        setupHeroCarousel();
+        renderMoviesGrid();
+        updateWatchlistUI();
+        return;
+      }
       const fallbackRes = await fetch('data/movies.json');
       const fallbackMovies = await fallbackRes.json();
       if (Array.isArray(fallbackMovies)) {
