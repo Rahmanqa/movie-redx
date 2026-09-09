@@ -1,0 +1,33 @@
+{
+  "siteName": "CineStream",
+  "adminPin": "1234",
+  "monetization": {
+    "preRoll": {
+      "enabled": true,
+      "duration": 6,
+      "sponsorTitle": "🛡️ ExpressVPN — Stream Anonymously with 70% Off + 3 Months Free!",
+      "sponsorDescription": "Protect your digital privacy, eliminate ISP throttling, and stream freely anywhere.",
+      "sponsorUrl": "https://www.expressvpn.com",
+      "ctaText": "Claim 70% Discount Now →"
+    },
+    "bannerTop": {
+      "enabled": true,
+      "html": "<div class=\"custom-ad-banner\"><div class=\"ad-meta\"><span class=\"ad-badge\">SPONSORED</span><span class=\"ad-partner\">Amazon Prime Partner</span></div><div class=\"ad-content\"><h4>🔥 Start Your 30-Day Amazon Prime Video FREE Trial</h4><p>Stream 25,000+ Blockbuster Movies & Emmy-Winning Series in 4K HDR. Cancel anytime.</p></div><a href=\"https://www.amazon.com/amazonprime\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"btn-sponsor\">Start Free Trial &rarr;</a></div>"
+    },
+    "bannerSidebar": {
+      "enabled": true,
+      "html": "<div class=\"custom-ad-box\"><span class=\"ad-badge\">ADVERTISEMENT</span><div class=\"ad-icon\">🔒</div><h4>Stream Privately with Ultra Fast VPN</h4><p>Stop ISP snooping & throttling. 6,400+ servers with zero activity logs.</p><a href=\"https://nordvpn.com\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"btn-sponsor-alt\">Get 74% Off Deal &rarr;</a></div>"
+    },
+    "bannerPlayerBottom": {
+      "enabled": true,
+      "html": "<div class=\"custom-ad-footer\"><span class=\"ad-badge\">PARTNER DEAL</span><span><strong>Special Promo:</strong> Stream without interruptions! Get 3 months free cloud storage + password manager with bundle.</span><a href=\"https://proton.me\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"ad-link\">Redeem Limited Offer &raquo;</a></div>"
+    },
+    "customScript": ""
+  },
+  "analytics": {
+    "totalImpressions": 2857,
+    "totalClicks": 196,
+    "estimatedRpm": 3.65,
+    "estimatedEarnings": 39.83
+  }
+}

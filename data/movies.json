@@ -1,0 +1,263 @@
+[
+  {
+    "id": "tears-of-steel",
+    "title": "Tears of Steel",
+    "year": 2024,
+    "rating": 8.4,
+    "duration": "12m",
+    "quality": "4K ULTRA HD",
+    "genres": [
+      "Sci-Fi",
+      "Action"
+    ],
+    "description": "In a dystopian future set in Amsterdam, a desperate group of scientists and warriors attempt to save the world by staging a critical memory transfer to halt destructive robotic cyborgs.",
+    "poster": "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=800&auto=format&fit=crop&q=80",
+    "backdrop": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=1600&auto=format&fit=crop&q=80",
+    "featured": true,
+    "trending": true,
+    "servers": [
+      {
+        "name": "Server 1 (Fast HD)",
+        "type": "video",
+        "url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4"
+      },
+      {
+        "name": "Server 2 (Backup)",
+        "type": "video",
+        "url": "https://archive.org/download/Tears-of-Steel/tears_of_steel_720p.mp4"
+      }
+    ]
+  },
+  {
+    "id": "sintel",
+    "title": "Sintel: The Dragon Quest",
+    "year": 2023,
+    "rating": 8.7,
+    "duration": "15m",
+    "quality": "1080p FULL HD",
+    "genres": [
+      "Animation",
+      "Fantasy",
+      "Action"
+    ],
+    "description": "A lonely young woman named Sintel forms an unbreakable bond with a wounded baby dragon. When the beast is captured by an adult dragon, she embarks on a treacherous odyssey across icy peaks and barren deserts to save it.",
+    "poster": "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=800&auto=format&fit=crop&q=80",
+    "backdrop": "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=1600&auto=format&fit=crop&q=80",
+    "featured": true,
+    "trending": true,
+    "servers": [
+      {
+        "name": "Server 1 (Fast HD)",
+        "type": "video",
+        "url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4"
+      },
+      {
+        "name": "Server 2 (Archive)",
+        "type": "video",
+        "url": "https://archive.org/download/Sintel/sintel-2048-surround.mp4"
+      }
+    ]
+  },
+  {
+    "id": "big-buck-bunny",
+    "title": "Big Buck Bunny",
+    "year": 2024,
+    "rating": 8.1,
+    "duration": "10m",
+    "quality": "4K ULTRA HD",
+    "genres": [
+      "Animation",
+      "Comedy"
+    ],
+    "description": "A gentle, gigantic forest rabbit reaches his breaking point when a trio of bullying woodland creatures begin terrorizing helpless forest critters. A hilariously creative revenge plan unfolds.",
+    "poster": "https://images.unsplash.com/photo-1535905557558-afc4877a26fc?w=800&auto=format&fit=crop&q=80",
+    "backdrop": "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=1600&auto=format&fit=crop&q=80",
+    "featured": true,
+    "trending": false,
+    "servers": [
+      {
+        "name": "Server 1 (Fast HD)",
+        "type": "video",
+        "url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+      },
+      {
+        "name": "Server 2 (Mirror)",
+        "type": "video",
+        "url": "https://archive.org/download/BigBuckBunny_124/BigBuckBunny_512kb.mp4"
+      }
+    ]
+  },
+  {
+    "id": "night-of-the-living-dead",
+    "title": "Night of the Living Dead",
+    "year": 1968,
+    "rating": 9,
+    "duration": "1h 36m",
+    "quality": "HD REMASTER",
+    "genres": [
+      "Horror",
+      "Classic",
+      "Thriller"
+    ],
+    "description": "George A. Romero's iconic cinematic horror masterpiece. A disparate group of strangers seek refuge in an abandoned farmhouse surrounded by a rising horde of flesh-eating undead corpses.",
+    "poster": "https://images.unsplash.com/photo-1509248961158-e54f6934749c?w=800&auto=format&fit=crop&q=80",
+    "backdrop": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=1600&auto=format&fit=crop&q=80",
+    "featured": false,
+    "trending": true,
+    "servers": [
+      {
+        "name": "Server 1 (Stream HD)",
+        "type": "video",
+        "url": "https://archive.org/download/night_of_the_living_dead_720p/night_of_the_living_dead_720p.mp4"
+      }
+    ]
+  },
+  {
+    "id": "charade",
+    "title": "Charade",
+    "year": 1963,
+    "rating": 8.9,
+    "duration": "1h 53m",
+    "quality": "HD REMASTER",
+    "genres": [
+      "Classic",
+      "Thriller",
+      "Comedy"
+    ],
+    "description": "Starring Audrey Hepburn and Cary Grant. A grieving widow is pursued through Paris by several dangerous men who want the fortune stolen by her murdered husband.",
+    "poster": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=800&auto=format&fit=crop&q=80",
+    "backdrop": "https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=1600&auto=format&fit=crop&q=80",
+    "featured": false,
+    "trending": true,
+    "servers": [
+      {
+        "name": "Server 1 (Archive HD)",
+        "type": "video",
+        "url": "https://archive.org/download/Charade_1963/Charade_1963.mp4"
+      }
+    ]
+  },
+  {
+    "id": "carnival-of-souls",
+    "title": "Carnival of Souls",
+    "year": 1962,
+    "rating": 8.2,
+    "duration": "1h 18m",
+    "quality": "HD RESTORED",
+    "genres": [
+      "Horror",
+      "Mystery",
+      "Classic"
+    ],
+    "description": "After a traumatic drag-race crash into a river, a lone surviving woman takes a job as a church organist in Utah, only to be haunted by a shadowy apparitional figure that draws her to an abandoned pavilion.",
+    "poster": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&auto=format&fit=crop&q=80",
+    "backdrop": "https://images.unsplash.com/photo-1509248961158-e54f6934749c?w=1600&auto=format&fit=crop&q=80",
+    "featured": false,
+    "trending": false,
+    "servers": [
+      {
+        "name": "Server 1 (Direct)",
+        "type": "video",
+        "url": "https://archive.org/download/CarnivalOfSouls_524/CarnivalOfSouls.mp4"
+      }
+    ]
+  },
+  {
+    "id": "the-general",
+    "title": "The General",
+    "year": 1926,
+    "rating": 9.1,
+    "duration": "1h 15m",
+    "quality": "1080p RESTORED",
+    "genres": [
+      "Action",
+      "Comedy",
+      "Classic"
+    ],
+    "description": "Buster Keaton's legendary silent comedy masterpiece. An engineer must single-handedly pursue and recapture his beloved locomotive train behind enemy lines to rescue the woman he loves.",
+    "poster": "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800&auto=format&fit=crop&q=80",
+    "backdrop": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=1600&auto=format&fit=crop&q=80",
+    "featured": false,
+    "trending": true,
+    "servers": [
+      {
+        "name": "Server 1 (Classic HD)",
+        "type": "video",
+        "url": "https://archive.org/download/TheGeneral_201602/The_General.mp4"
+      }
+    ]
+  },
+  {
+    "id": "his-girl-friday",
+    "title": "His Girl Friday",
+    "year": 1940,
+    "rating": 8.8,
+    "duration": "1h 32m",
+    "quality": "HD RESTORED",
+    "genres": [
+      "Comedy",
+      "Classic",
+      "Drama"
+    ],
+    "description": "Howard Hawks' rapid-fire screwball comedy starring Cary Grant as an eccentric newspaper editor determined to keep his ace reporter ex-wife from remarrying and leaving the newsroom.",
+    "poster": "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=800&auto=format&fit=crop&q=80",
+    "backdrop": "https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=1600&auto=format&fit=crop&q=80",
+    "featured": false,
+    "trending": false,
+    "servers": [
+      {
+        "name": "Server 1 (Stream HD)",
+        "type": "video",
+        "url": "https://archive.org/download/HisGirlFriday_366/HisGirlFriday.mp4"
+      }
+    ]
+  },
+  {
+    "id": "nosferatu",
+    "title": "Nosferatu: Symphony of Horror",
+    "year": 1922,
+    "rating": 8.7,
+    "duration": "1h 34m",
+    "quality": "HD REMASTER",
+    "genres": [
+      "Horror",
+      "Classic"
+    ],
+    "description": "F.W. Murnau's chilling expressionist horror foundation. Vampire Count Orlok expresses interest in a new residence and real estate agent's wife, bringing darkness and plague with him.",
+    "poster": "https://images.unsplash.com/photo-1509248961158-e54f6934749c?w=800&auto=format&fit=crop&q=80",
+    "backdrop": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=1600&auto=format&fit=crop&q=80",
+    "featured": false,
+    "trending": false,
+    "servers": [
+      {
+        "name": "Server 1 (Original)",
+        "type": "video",
+        "url": "https://archive.org/download/Nosferatu_1922_Silent_Film/Nosferatu_1922.mp4"
+      }
+    ]
+  },
+  {
+    "id": "elephants-dream",
+    "title": "Elephants Dream",
+    "year": 2023,
+    "rating": 7.9,
+    "duration": "11m",
+    "quality": "1080p FULL HD",
+    "genres": [
+      "Sci-Fi",
+      "Animation"
+    ],
+    "description": "Two individuals navigate through the labyrinthine, mechanical guts of an enigmatic and ever-evolving gigantic machine that tests their perceptions of reality.",
+    "poster": "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=800&auto=format&fit=crop&q=80",
+    "backdrop": "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=1600&auto=format&fit=crop&q=80",
+    "featured": false,
+    "trending": false,
+    "servers": [
+      {
+        "name": "Server 1 (High Speed)",
+        "type": "video",
+        "url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
+      }
+    ]
+  }
+]

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Watch Free Movie - CineStream</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/player.css">
+</head>
+<body>
+
+  <!-- TOP PROMO BANNER AD SLOT -->
+  <aside class="top-ad-banner-wrapper" id="top-ad-slot" aria-label="Sponsor Advertisement">
+    <!-- Populated dynamically by ads.js -->
+  </aside>
+
+  <!-- NAVBAR -->
+  <header>
+    <nav class="navbar">
+      <a href="index.html" class="nav-brand">
+        <span class="brand-logo">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18 3v2h-2V3H8v2H6V3H4v18h2v-2h2v2h8v-2h2v2h2V3h-2zM8 17H6v-2h2v2zm0-4H6v-2h2v2zm0-4H6V7h2v2zm10 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2z"/>
+          </svg>
+        </span>
+        <span class="brand-text">CineStream</span>
+      </a>
+
+      <div class="nav-links">
+        <a href="index.html" class="nav-link">
+          <span>🏠 Browse Catalog</span>
+        </a>
+        <a href="admin.html" class="nav-link">
+          <span>⚙️ Admin Panel</span>
+        </a>
+        <a href="https://nordvpn.com" target="_blank" rel="noopener noreferrer" class="nav-link btn-vip">
+          <span>🛡️ Stream Anonymously</span>
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- WATCH ROOM CONTAINER -->
+  <main class="watch-page-container">
+    <div class="watch-layout">
+
+      <!-- LEFT: VIDEO STAGE & MOVIE DETAILS -->
+      <section class="video-stage-container" id="video-stage">
+        
+        <!-- VIDEO PLAYER WRAPPER -->
+        <div class="video-player-wrapper">
+
+          <!-- PRE-ROLL MONETIZATION AD OVERLAY -->
+          <div class="preroll-overlay" id="preroll-overlay">
+            <div class="preroll-top-bar">
+              <div class="preroll-indicator">
+                <span>⚡ ADVERTISEMENT</span>
+              </div>
+              <span style="font-size: 0.8rem; color: #aaa;">Your movie will start shortly</span>
+            </div>
+
+            <div class="preroll-center-card">
+              <h3 id="preroll-sponsor-title">Stream Fast & Privately with ExpressVPN</h3>
+              <p id="preroll-sponsor-desc">Protect your device from ISP throttling and stream high-speed cinema without buffering. Special 70% Discount.</p>
+              <a href="https://www.expressvpn.com" target="_blank" rel="noopener noreferrer" id="preroll-cta-btn" class="btn-preroll-cta">
+                Claim 70% Discount Now →
+              </a>
+            </div>
+
+            <div class="preroll-bottom-bar">
+              <div class="preroll-timer" id="preroll-timer-text">
+                Video begins in 6s
+              </div>
+              <button class="btn-skip-ad" id="preroll-skip-btn">
+                Skip Ad in 6s
+              </button>
+            </div>
+          </div>
+
+          <!-- HTML5 VIDEO PLAYER -->
+          <video 
+            id="main-video-player" 
+            class="video-player-element" 
+            controls 
+            preload="metadata" 
+            playsinline>
+            Your browser does not support the video tag.
+          </video>
+
+          <!-- EMBED IFRAME STREAM (For 3rd-party video servers) -->
+          <iframe 
+            id="main-iframe-player" 
+            class="embed-iframe-element" 
+            allowfullscreen 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
+          </iframe>
+        </div>
+
+        <!-- CONTROLS & STREAM SERVERS BAR -->
+        <div class="player-controls-bar">
+          <div class="servers-container">
+            <span class="server-label">Streaming Server:</span>
+            <div id="servers-list" style="display: flex; gap: 8px;">
+              <!-- Populated by player.js -->
+            </div>
+          </div>
+
+          <div class="action-buttons">
+            <button class="player-action-btn" id="cinema-toggle-btn" onclick="toggleCinemaMode()">
+              <span>🌙 Cinema Mode</span>
+            </button>
+            <button class="player-action-btn" onclick="toggleFullscreen()">
+              <span>⛶ Fullscreen</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- PLAYER BOTTOM AD SLOT -->
+        <div class="player-ad-slot" id="player-bottom-ad-slot">
+          <!-- Populated dynamically by ads.js -->
+        </div>
+
+        <!-- MOVIE DETAILS -->
+        <div class="movie-meta-panel">
+          <div class="meta-title-row">
+            <h1 class="watch-movie-title" id="watch-title">Loading movie details...</h1>
+          </div>
+
+          <div class="watch-badges">
+            <span class="card-badge-rating" id="watch-rating">★ 8.5</span>
+            <span class="card-badge-quality" id="watch-quality">1080p FULL HD</span>
+            <span style="color: var(--text-secondary); font-size: 0.85rem;" id="watch-year">2024</span>
+            <span style="color: var(--text-muted); font-size: 0.85rem;">•</span>
+            <span style="color: var(--text-secondary); font-size: 0.85rem;" id="watch-duration">1h 30m</span>
+            <span style="color: var(--text-muted); font-size: 0.85rem;">•</span>
+            <span style="color: var(--accent-cyan); font-size: 0.85rem; font-weight: 600;" id="watch-genres">Sci-Fi, Action</span>
+          </div>
+
+          <p class="watch-synopsis" id="watch-desc">
+            Full movie description will be displayed here.
+          </p>
+
+          <div style="display: flex; gap: 12px; align-items: center; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.06);">
+            <span style="font-size: 0.85rem; color: var(--text-muted);">Share this film:</span>
+            <button class="player-action-btn" onclick="navigator.clipboard.writeText(window.location.href); alert('Movie link copied to clipboard!');">
+              🔗 Copy Share Link
+            </button>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- RIGHT: SIDEBAR, AFFILIATE SPONSOR & RELATED TITLES -->
+      <aside class="watch-sidebar">
+
+        <!-- AFFILIATE RECOMMENDATION WIDGET -->
+        <div class="affiliate-promo-box">
+          <span class="ad-badge">RECOMMENDED SPONSOR</span>
+          <h4>Stream Safely in 4K Ultra HD</h4>
+          <p>Protect your IP address, stop ISP buffering, and unlock regional libraries.</p>
+          <ul class="affiliate-features">
+            <li>Zero activity logs & AES-256 encryption</li>
+            <li>Ultra high-speed 10Gbps streaming servers</li>
+            <li>30-day risk-free money-back guarantee</li>
+          </ul>
+          <a href="https://nordvpn.com" target="_blank" rel="noopener noreferrer" class="btn-sponsor-alt" onclick="if(window.AdsManager) AdsManager.trackClick();">
+            Get 74% Off + 3 Extra Months →
+          </a>
+        </div>
+
+        <!-- SIDEBAR AD SLOT -->
+        <div id="sidebar-ad-slot">
+          <!-- Populated dynamically by ads.js -->
+        </div>
+
+        <!-- RELATED MOVIES -->
+        <div class="sidebar-movies-list">
+          <h4 class="sidebar-title">
+            <span>🔥 You May Also Like</span>
+          </h4>
+          <div id="sidebar-movies-list">
+            <!-- Populated dynamically by player.js -->
+          </div>
+        </div>
+
+      </aside>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <h3>🎬 CineStream</h3>
+        <p>Watch full free movies in high definition with lightning-fast streaming servers. All streams are hosted externally or curated from open public domain archives.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="dmca.html">DMCA Takedown Notice</a></li>
+          <li><a href="dmca.html#privacy">Privacy Policy</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Monetization</h4>
+        <ul>
+          <li><a href="admin.html">Ad Revenue Center</a></li>
+          <li><a href="https://www.expressvpn.com" target="_blank" rel="noopener noreferrer">VPN Affiliate Partner</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Owner</h4>
+        <ul>
+          <li><a href="admin.html">Admin Dashboard</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>&copy; 2026 CineStream. All rights reserved.</div>
+      <div>Safe • Free • High Definition</div>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script src="js/ads.js"></script>
+  <script src="js/player.js"></script>
+</body>
+</html>
