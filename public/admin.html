@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin & Monetization Center - CineStream</title>
+  <title>MOVIE REDX - Secret Webmaster Control Center</title>
+  <meta name="robots" content="noindex, nofollow">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -12,124 +13,153 @@
 </head>
 <body>
 
-  <!-- NAVBAR -->
+  <!-- ADMIN NAVBAR -->
   <header>
     <nav class="navbar">
       <a href="index.html" class="nav-brand">
-        <span class="brand-logo">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+        <span class="brand-icon-box">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
             <path d="M18 3v2h-2V3H8v2H6V3H4v18h2v-2h2v2h8v-2h2v2h2V3h-2zM8 17H6v-2h2v2zm0-4H6v-2h2v2zm0-4H6V7h2v2zm10 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2z"/>
           </svg>
         </span>
-        <span class="brand-text">CineStream <small style="font-size: 0.75rem; color: var(--accent-gold); font-weight: 700;">ADMIN</small></span>
+        <div class="brand-title">
+          <span>MOVIE</span>
+          <span class="redx-tag">REDX</span>
+          <span style="font-size: 0.75rem; color: var(--accent-gold); font-weight:800; margin-left:6px; letter-spacing:1px;">ADMIN</span>
+        </div>
       </a>
 
       <div class="nav-links">
-        <a href="index.html" class="nav-link">
+        <a href="index.html" class="nav-link-item" target="_blank">
           <span>🌐 View Live Site</span>
         </a>
-        <button id="admin-logout-btn" class="nav-link" style="color: #ff4b55;">
-          <span>🚪 Lock / Logout</span>
+        <button id="btn-admin-logout" class="nav-link-item" style="color: #ff4b55;">
+          <span>🔒 Lock Dashboard</span>
         </button>
       </div>
     </nav>
   </header>
 
-  <!-- PIN LOGIN LOCK SCREEN -->
-  <div class="admin-login-lock" id="admin-lock-screen">
-    <div class="admin-lock-icon">🔒</div>
-    <h3>Owner Dashboard</h3>
-    <p>Please enter your Admin PIN to manage movies, configure ad networks, and view monetization stats.</p>
+  <!-- MASTER PIN LOCK SCREEN -->
+  <div class="admin-login-screen" id="admin-lock-screen">
+    <div class="admin-lock-badge">🔒</div>
+    <h3>Owner Access Only</h3>
+    <p>Enter your master security password to unlock the MOVIE REDX control center, TMDB manager, and settings.</p>
     <form id="admin-login-form">
-      <div class="form-group">
-        <input type="password" id="admin-pin-input" placeholder="Default PIN: 1234" required autofocus style="text-align: center; font-size: 1.2rem; letter-spacing: 4px;">
-      </div>
-      <p id="admin-login-error" style="color: #ff4b55; font-size: 0.85rem; margin-bottom: 12px; display: none;"></p>
-      <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
+      <input type="password" id="admin-pin-input" class="admin-pin-input" placeholder="••••" required autofocus autocomplete="off">
+      <p id="admin-login-error" style="color: #ff4b55; font-size: 0.82rem; margin-bottom: 12px; display: none;"></p>
+      <button type="submit" class="btn-play-hero" style="width: 100%; justify-content: center; font-size: 1rem; border-radius: var(--radius-sm);">
         Unlock Control Center
       </button>
     </form>
-    <div style="margin-top: 18px; font-size: 0.75rem; color: var(--text-muted);">
-      Default Master PIN is: <strong style="color: var(--accent-gold);">1234</strong>
+    <div style="margin-top: 20px; font-size: 0.78rem; color: var(--text-muted);">
+      Master Admin Password: <strong style="color: var(--accent-gold);">8084</strong>
     </div>
   </div>
 
-  <!-- MAIN AUTHENTICATED ADMIN CONTENT -->
-  <main class="admin-container" id="admin-main-content" style="display: none;">
+  <!-- AUTHENTICATED ADMIN DASHBOARD -->
+  <main class="admin-wrapper" id="admin-main-content" style="display: none;">
 
-    <div class="admin-header">
-      <div class="admin-title-group">
-        <h2><span>⚡ Webmaster & Monetization Engine</span></h2>
-        <p>Control your movie catalog, customize ad placements, and track estimated earnings.</p>
+    <div class="admin-top-bar">
+      <div>
+        <h2>🎬 MOVIE <span class="redx-tag">REDX</span> Webmaster Suite</h2>
+        <p>Manage TMDB integrations, add custom direct streams, configure ad network payouts, and customize servers.</p>
       </div>
-      <button class="btn-primary" onclick="openAddMovieModal()">
-        <span>+ Add New Movie</span>
-      </button>
+      <div style="display:flex; gap:10px;">
+        <button class="btn-play-hero" onclick="openAddMovieModal()" style="padding: 10px 20px; font-size: 0.9rem;">
+          <span>+ Add Custom Stream</span>
+        </button>
+      </div>
     </div>
 
-    <!-- STATS OVERVIEW CARDS -->
-    <div class="admin-stats-grid">
-      <div class="stat-card">
-        <div class="stat-icon">🎬</div>
-        <div class="stat-info">
-          <h5>Total Movies</h5>
-          <div class="stat-value" id="metric-total-movies">0</div>
+    <!-- METRICS OVERVIEW -->
+    <div class="admin-metrics-grid">
+      <div class="admin-metric-card">
+        <div class="metric-icon-wrap">🎬</div>
+        <div class="metric-data">
+          <h6>Curated Movies</h6>
+          <div class="value" id="metric-total-movies">0</div>
         </div>
       </div>
 
-      <div class="stat-card">
-        <div class="stat-icon">👁️</div>
-        <div class="stat-info">
-          <h5>Ad Impressions</h5>
-          <div class="stat-value" id="metric-impressions">0</div>
+      <div class="admin-metric-card tmdb">
+        <div class="metric-icon-wrap">⚡</div>
+        <div class="metric-data">
+          <h6>TMDB Catalog</h6>
+          <div class="value">50,000+</div>
         </div>
       </div>
 
-      <div class="stat-card clicks">
-        <div class="stat-icon">🖱️</div>
-        <div class="stat-info">
-          <h5>Ad Clicks</h5>
-          <div class="stat-value" id="metric-clicks">0</div>
+      <div class="admin-metric-card">
+        <div class="metric-icon-wrap">👁️</div>
+        <div class="metric-data">
+          <h6>Site Impressions</h6>
+          <div class="value" id="metric-impressions">0</div>
         </div>
       </div>
 
-      <div class="stat-card earnings">
-        <div class="stat-icon">💰</div>
-        <div class="stat-info">
-          <h5>Est. Revenue ($)</h5>
-          <div class="stat-value" id="metric-earnings">$0.00</div>
+      <div class="admin-metric-card revenue">
+        <div class="metric-icon-wrap">💰</div>
+        <div class="metric-data">
+          <h6>Est. Ad Revenue</h6>
+          <div class="value" id="metric-earnings">$0.00</div>
         </div>
       </div>
     </div>
 
     <!-- TABS -->
-    <div class="admin-tabs">
-      <button class="tab-btn active" data-tab="tab-movies">🎬 Movie Catalog</button>
-      <button class="tab-btn" data-tab="tab-monetization">💵 Monetization & Ad Slots</button>
-      <button class="tab-btn" data-tab="tab-guide">📖 How to Earn Money</button>
+    <div class="admin-nav-tabs">
+      <button class="admin-nav-tab active" data-tab="tab-tmdb-importer">⚡ TMDB 1-Click Importer</button>
+      <button class="admin-nav-tab" data-tab="tab-catalog">🎬 Curated Catalog</button>
+      <button class="admin-nav-tab" data-tab="tab-servers">🌐 Streaming Servers</button>
+      <button class="admin-nav-tab" data-tab="tab-monetization">💵 Monetization & Ads</button>
+      <button class="admin-nav-tab" data-tab="tab-settings">⚙️ Settings & Security</button>
     </div>
 
-    <!-- TAB 1: MOVIES CATALOG -->
-    <div class="tab-pane active" id="tab-movies">
+    <!-- TAB 1: TMDB 1-CLICK IMPORTER -->
+    <div class="admin-tab-pane active" id="tab-tmdb-importer">
       <div class="admin-panel-card">
-        <div class="panel-header">
-          <h3>Manage Movies</h3>
-          <button class="btn-primary" onclick="openAddMovieModal()">+ Add Movie</button>
+        <div class="panel-title-row">
+          <div>
+            <h3>Search Any Movie / TV Show on TMDB</h3>
+            <p style="font-size: 0.85rem; color: var(--text-secondary);">Search TMDB's global database and import any title into your featured or curated list with 1 click.</p>
+          </div>
         </div>
 
-        <div class="movies-table-wrapper">
-          <table class="movies-table">
+        <div style="display: flex; gap: 12px; margin-bottom: 20px;">
+          <input type="text" id="tmdb-import-search-input" class="form-input" placeholder="Enter movie or TV title (e.g. Avatar, Stranger Things, Oppenheimer)..." style="flex:1;">
+          <button class="btn-play-hero" onclick="searchTmdbToImport()" style="padding: 10px 24px; font-size: 0.9rem;">
+            <span>Search TMDB</span>
+          </button>
+        </div>
+
+        <div id="tmdb-search-results" class="tmdb-search-grid">
+          <!-- Populated by admin.js -->
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: CURATED CATALOG -->
+    <div class="admin-tab-pane" id="tab-catalog" style="display: none;">
+      <div class="admin-panel-card">
+        <div class="panel-title-row">
+          <h3>Manage Curated & Custom Movies</h3>
+          <button class="btn-play-hero" onclick="openAddMovieModal()" style="padding: 8px 16px; font-size: 0.85rem;">+ Add Movie</button>
+        </div>
+
+        <div class="admin-table-container">
+          <table class="admin-table">
             <thead>
               <tr>
                 <th style="width: 60px;">Poster</th>
                 <th>Title & Genres</th>
                 <th>Year</th>
                 <th>Rating</th>
-                <th>Quality</th>
+                <th>Featured</th>
                 <th>Actions</th>
               </tr>
             </thead>
-            <tbody id="movies-table-body">
+            <tbody id="admin-movies-tbody">
               <!-- Populated by admin.js -->
             </tbody>
           </table>
@@ -137,24 +167,45 @@
       </div>
     </div>
 
-    <!-- TAB 2: MONETIZATION SETTINGS -->
-    <div class="tab-pane" id="tab-monetization">
-      <form id="monetization-form">
-        <div id="settings-status-alert" style="display: none; padding: 12px 18px; margin-bottom: 20px; border-radius: var(--radius-sm); font-weight: 700; background: rgba(0, 230, 118, 0.15); border: 1px solid #00e676;"></div>
+    <!-- TAB 3: STREAMING SERVERS -->
+    <div class="admin-tab-pane" id="tab-servers" style="display: none;">
+      <div class="admin-panel-card">
+        <div class="panel-title-row">
+          <div>
+            <h3>Streaming Embed Server Providers</h3>
+            <p style="font-size: 0.85rem; color: var(--text-secondary);">These multi-server embed providers deliver free movie and TV show playback automatically matching TMDB IDs.</p>
+          </div>
+        </div>
 
-        <!-- PRE-ROLL AD CONFIG -->
+        <form id="servers-config-form">
+          <div id="servers-list-inputs">
+            <!-- Populated by admin.js -->
+          </div>
+          <button type="submit" class="btn-play-hero" style="margin-top: 16px; padding: 10px 24px;">
+            💾 Save Streaming Servers
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- TAB 4: MONETIZATION & ADS -->
+    <div class="admin-tab-pane" id="tab-monetization" style="display: none;">
+      <form id="admin-monetization-form">
+        <div id="monetization-alert" style="display:none; padding: 12px 18px; margin-bottom: 20px; border-radius: var(--radius-sm); font-weight: 700; background: rgba(0, 230, 118, 0.15); border: 1px solid #00e676; color: #00e676;"></div>
+
+        <!-- Pre-roll Video Ad -->
         <div class="admin-panel-card">
-          <div class="panel-header">
+          <div class="panel-title-row">
             <h3>1. Pre-Roll Video Ad Overlay</h3>
           </div>
-          <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 16px;">
-            Plays a sponsor card or video overlay right before the movie starts, just like YouTube and Tubi. Includes countdown and click-through CTA.
+          <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 16px;">
+            Plays a sponsor card or video overlay right before the movie starts, with countdown timer and click-through CTA.
           </p>
 
-          <div class="form-toggle-row">
-            <div class="toggle-info">
-              <h4>Enable Pre-Roll Video Ad</h4>
-              <p>Display overlay before movie streams begin</p>
+          <div class="toggle-row">
+            <div>
+              <strong style="color:#fff;">Enable Pre-Roll Ad</strong>
+              <p style="font-size: 0.8rem; color: var(--text-muted);">Display overlay before video streams start</p>
             </div>
             <label class="switch">
               <input type="checkbox" id="set-preroll-enabled">
@@ -162,48 +213,41 @@
             </label>
           </div>
 
-          <div class="form-grid" style="margin-top: 16px;">
+          <div class="form-grid-2" style="margin-top: 16px;">
             <div class="form-group">
-              <label for="set-preroll-duration">Ad Duration (Seconds before skip / auto-play)</label>
-              <input type="number" id="set-preroll-duration" min="3" max="30" value="6">
+              <label>Ad Duration (Seconds before skip / auto-play)</label>
+              <input type="number" id="set-preroll-duration" class="form-input" min="3" max="30" value="5">
             </div>
-
             <div class="form-group">
-              <label for="set-preroll-cta">Button CTA Text</label>
-              <input type="text" id="set-preroll-cta" placeholder="Claim 70% Discount Now →">
+              <label>Button CTA Text</label>
+              <input type="text" id="set-preroll-cta" class="form-input" placeholder="Claim Free Access Now →">
             </div>
-
-            <div class="form-group full-width">
-              <label for="set-preroll-title">Sponsor Headline</label>
-              <input type="text" id="set-preroll-title" placeholder="ExpressVPN — Stream Anonymously with 70% Off">
+            <div class="form-group full">
+              <label>Sponsor Headline</label>
+              <input type="text" id="set-preroll-title" class="form-input" placeholder="MOVIE REDX Ultra Pass — 4K Zero Buffering">
             </div>
-
-            <div class="form-group full-width">
-              <label for="set-preroll-desc">Sponsor Description</label>
-              <textarea id="set-preroll-desc" rows="2" placeholder="Protect your digital privacy, eliminate ISP throttling, and stream freely anywhere."></textarea>
+            <div class="form-group full">
+              <label>Sponsor Description</label>
+              <textarea id="set-preroll-desc" class="form-textarea" rows="2"></textarea>
             </div>
-
-            <div class="form-group full-width">
-              <label for="set-preroll-url">Target Sponsor / Affiliate URL (Where users go when clicking)</label>
-              <input type="url" id="set-preroll-url" placeholder="https://www.expressvpn.com">
+            <div class="form-group full">
+              <label>Target Affiliate / Sponsor URL</label>
+              <input type="url" id="set-preroll-url" class="form-input" placeholder="https://...">
             </div>
           </div>
         </div>
 
-        <!-- BANNER ADS CONFIG -->
+        <!-- Banner Slots -->
         <div class="admin-panel-card">
-          <div class="panel-header">
-            <h3>2. Banner Ad Placements & Affiliate Slots</h3>
+          <div class="panel-title-row">
+            <h3>2. Banner Ad Placements</h3>
           </div>
-          <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 16px;">
-            Customize the HTML, image banners, or ad network code for top leaderboards and player sidebars.
-          </p>
 
           <!-- Top Banner -->
-          <div class="form-toggle-row">
-            <div class="toggle-info">
-              <h4>Top Leaderboard Banner</h4>
-              <p>Prominently placed at the very top of all pages</p>
+          <div class="toggle-row">
+            <div>
+              <strong style="color:#fff;">Top Leaderboard Banner</strong>
+              <p style="font-size: 0.8rem; color: var(--text-muted);">Shown at the very top of all pages</p>
             </div>
             <label class="switch">
               <input type="checkbox" id="set-bannertop-enabled">
@@ -211,15 +255,15 @@
             </label>
           </div>
           <div class="form-group" style="margin-top: 10px;">
-            <label for="set-bannertop-html">Top Banner HTML / Ad Code</label>
-            <textarea id="set-bannertop-html" rows="3"></textarea>
+            <label>Top Banner HTML / Ad Code</label>
+            <textarea id="set-bannertop-html" class="form-textarea" rows="3"></textarea>
           </div>
 
           <!-- Sidebar Banner -->
-          <div class="form-toggle-row" style="margin-top: 20px;">
-            <div class="toggle-info">
-              <h4>Sidebar Sponsor Widget</h4>
-              <p>Shown on movie watch room sidebars</p>
+          <div class="toggle-row" style="margin-top: 16px;">
+            <div>
+              <strong style="color:#fff;">Sidebar Watch Room Banner</strong>
+              <p style="font-size: 0.8rem; color: var(--text-muted);">Shown alongside the video player in watch room</p>
             </div>
             <label class="switch">
               <input type="checkbox" id="set-bannersidebar-enabled">
@@ -227,15 +271,15 @@
             </label>
           </div>
           <div class="form-group" style="margin-top: 10px;">
-            <label for="set-bannersidebar-html">Sidebar Widget HTML / Ad Code</label>
-            <textarea id="set-bannersidebar-html" rows="3"></textarea>
+            <label>Sidebar Banner HTML / Ad Code</label>
+            <textarea id="set-bannersidebar-html" class="form-textarea" rows="3"></textarea>
           </div>
 
           <!-- Player Bottom Banner -->
-          <div class="form-toggle-row" style="margin-top: 20px;">
-            <div class="toggle-info">
-              <h4>Under-Player Footer Bar</h4>
-              <p>Positioned right beneath the streaming player</p>
+          <div class="toggle-row" style="margin-top: 16px;">
+            <div>
+              <strong style="color:#fff;">Under-Player Footer Bar</strong>
+              <p style="font-size: 0.8rem; color: var(--text-muted);">Positioned right beneath the streaming player</p>
             </div>
             <label class="switch">
               <input type="checkbox" id="set-bannerplayer-enabled">
@@ -243,179 +287,143 @@
             </label>
           </div>
           <div class="form-group" style="margin-top: 10px;">
-            <label for="set-bannerplayer-html">Under-Player Banner HTML / Ad Code</label>
-            <textarea id="set-bannerplayer-html" rows="3"></textarea>
+            <label>Under-Player Banner HTML / Ad Code</label>
+            <textarea id="set-bannerplayer-html" class="form-textarea" rows="3"></textarea>
           </div>
         </div>
 
-        <!-- SCRIPT INJECTION (AdSense, Adsterra, PropellerAds) -->
+        <!-- Custom Script Injection -->
         <div class="admin-panel-card">
-          <div class="panel-header">
-            <h3>3. Ad Network Script Injection</h3>
+          <div class="panel-title-row">
+            <h3>3. Ad Network JavaScript Injection</h3>
           </div>
           <div class="form-group">
-            <label for="set-custom-script">Ad Network JavaScript Tag (Google AdSense, Adsterra, PropellerAds, PopAds)</label>
-            <textarea id="set-custom-script" rows="4" placeholder="<script async src='...'></script>"></textarea>
-            <small style="color: var(--text-muted); margin-top: 6px;">
-              Paste your external ad network verification or tag code here. It will automatically be injected on all visitor pages.
-            </small>
+            <label>Ad Network Tag (e.g. Google AdSense, Clean Banner scripts)</label>
+            <textarea id="set-custom-script" class="form-textarea" rows="4" placeholder="<script type='text/javascript' src='...'></script>"></textarea>
           </div>
         </div>
 
-        <!-- SECURITY & PIN -->
-        <div class="admin-panel-card">
-          <div class="panel-header">
-            <h3>4. Security & Admin PIN</h3>
-          </div>
-          <div class="form-group" style="max-width: 320px;">
-            <label for="set-new-pin">Change Admin PIN (Min 4 digits)</label>
-            <input type="password" id="set-new-pin" placeholder="Enter new PIN">
-            <small style="color: var(--text-muted);">Leave empty to keep your current PIN.</small>
-          </div>
-        </div>
-
-        <button type="submit" class="btn-primary" style="font-size: 1.05rem; padding: 14px 32px; width: 100%; justify-content: center;">
-          💾 Save All Monetization & Ad Settings
+        <button type="submit" class="btn-play-hero" style="width: 100%; justify-content: center; padding: 14px; font-size: 1rem;">
+          💾 Save All Monetization & Ad Network Settings
         </button>
       </form>
     </div>
 
-    <!-- TAB 3: STEP-BY-STEP EARNING GUIDE -->
-    <div class="tab-pane" id="tab-guide">
-      <div class="admin-panel-card" style="line-height: 1.8;">
-        <h3 style="font-size: 1.4rem; color: #fff; margin-bottom: 14px;">💰 How to Earn Real Money From Your Free Movie Site</h3>
-        <p style="color: var(--text-secondary); margin-bottom: 20px;">
-          Here are the 3 most lucrative and proven ways webmasters make consistent revenue from free streaming websites:
-        </p>
-
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 24px;">
-          
-          <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-glass); border-radius: var(--radius-md); padding: 20px;">
-            <h4 style="color: var(--accent-gold); margin-bottom: 8px;">1. VPN & Streaming Affiliates</h4>
-            <p style="font-size: 0.85rem; color: #aaa;">
-              <strong>Payout:</strong> $30 – $100 per signup!<br>
-              Movie viewers are the #1 target audience for VPNs (NordVPN, ExpressVPN, Surfshark) and streaming trials (Amazon Prime, Paramount+).
-            </p>
-            <p style="font-size: 0.85rem; color: #aaa; margin-top: 8px;">
-              <strong>Action:</strong> Join affiliate programs at <em>Impact.com</em> or <em>CJ.com</em>, get your referral links, and paste them into the "Pre-Roll" and "Banner" tabs above!
-            </p>
+    <!-- TAB 5: SETTINGS & SECURITY -->
+    <div class="admin-tab-pane" id="tab-settings" style="display: none;">
+      <form id="admin-settings-form">
+        <div class="admin-panel-card">
+          <div class="panel-title-row">
+            <h3>TMDB API Configuration</h3>
+          </div>
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label>The Movie Database (TMDB) API Key (v3 auth)</label>
+            <div style="display:flex; gap:10px;">
+              <input type="text" id="set-tmdb-key" class="form-input" style="flex:1;" placeholder="Enter your TMDB API Key">
+              <button type="button" class="btn-trailer-hero" onclick="testTmdbConnection()">Test Connection</button>
+            </div>
+            <small style="color: var(--text-muted); margin-top: 4px;">A free TMDB API key allows browsing over 500,000+ movies & TV shows automatically.</small>
           </div>
 
-          <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-glass); border-radius: var(--radius-md); padding: 20px;">
-            <h4 style="color: var(--accent-cyan); margin-bottom: 8px;">2. High-CPM Ad Networks</h4>
-            <p style="font-size: 0.85rem; color: #aaa;">
-              <strong>Payout:</strong> $2 – $8 per 1,000 views (CPM).<br>
-              Mainstream ad networks specifically built for media & entertainment websites include:
-            </p>
-            <ul style="font-size: 0.85rem; color: #aaa; margin: 8px 0 0 16px;">
-              <li><strong>Adsterra:</strong> Instant approval, high CPM banners & popunders.</li>
-              <li><strong>PropellerAds:</strong> Interstitials and video pre-rolls.</li>
-              <li><strong>Monetag:</strong> Multi-tag smart monetization.</li>
-            </ul>
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label>Website Name</label>
+            <input type="text" id="set-site-name" class="form-input" value="MOVIE REDX">
           </div>
 
-          <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-glass); border-radius: var(--radius-md); padding: 20px;">
-            <h4 style="color: var(--primary); margin-bottom: 8px;">3. Google AdSense (Compliant)</h4>
-            <p style="font-size: 0.85rem; color: #aaa;">
-              <strong>Payout:</strong> $4 – $15 CPM.<br>
-              AdSense requires legal compliance. Since CineStream curates open-source films, public domain cinema, and embeds with a clean DMCA page, you can apply once you add blog articles or reviews!
-            </p>
+          <div class="form-group" style="margin-bottom: 16px; max-width: 320px;">
+            <label>Change Master Admin Password (Current: 8084)</label>
+            <input type="password" id="set-new-pin" class="form-input" placeholder="New Password / PIN">
+            <small style="color: var(--text-muted); margin-top: 4px;">Leave empty to keep current password.</small>
           </div>
 
+          <button type="submit" class="btn-play-hero" style="padding: 10px 24px;">
+            💾 Save Settings & Security
+          </button>
         </div>
-
-        <div style="background: rgba(245, 197, 24, 0.1); border: 1px solid var(--accent-gold); border-radius: var(--radius-md); padding: 18px;">
-          <h4 style="color: var(--accent-gold); margin-bottom: 6px;">💡 Pro Webmaster Strategy for Maximizing Profit:</h4>
-          <p style="font-size: 0.85rem; color: #e0e0e0;">
-            1. Share your movie links on Reddit (e.g. r/fullmoviesonyoutube, r/classicfilms), Facebook movie groups, and Twitter.<br>
-            2. When users click to watch, they see your 6-second pre-roll VPN sponsor.<br>
-            3. If only 1 out of 100 viewers signs up for the VPN deal, you earn ~$40 to $70 directly!
-          </p>
-        </div>
-      </div>
+      </form>
     </div>
 
   </main>
 
-  <!-- ADD / EDIT MOVIE MODAL -->
-  <div class="modal-backdrop" id="movie-modal" role="dialog" aria-modal="true">
-    <div class="modal-content" style="max-width: 800px;">
+  <!-- ADD / EDIT CUSTOM MOVIE MODAL -->
+  <div class="modal-overlay" id="admin-movie-modal">
+    <div class="modal-container" style="max-width: 800px;">
       <div class="modal-header">
-        <h3 id="movie-modal-title">Add New Movie</h3>
-        <button class="btn-close-modal" onclick="closeMovieModal()">&times;</button>
+        <h3 id="admin-movie-modal-title">Add Custom Movie / Stream</h3>
+        <button class="btn-close-modal" onclick="closeAdminMovieModal()">&times;</button>
       </div>
 
-      <form id="movie-form">
-        <div class="form-grid">
-          <div class="form-group full-width">
-            <label for="movie-title-input">Movie Title *</label>
-            <input type="text" id="movie-title-input" required placeholder="e.g. Interstellar Odyssey">
+      <form id="admin-custom-movie-form" style="padding: 20px; overflow-y: auto; max-height: calc(85vh - 70px);">
+        <div class="form-grid-2">
+          <div class="form-group full">
+            <label>Movie Title *</label>
+            <input type="text" id="cust-title" class="form-input" required placeholder="e.g. Deadpool & Wolverine">
           </div>
 
           <div class="form-group">
-            <label for="movie-year-input">Release Year</label>
-            <input type="number" id="movie-year-input" value="2024">
+            <label>Release Year</label>
+            <input type="number" id="cust-year" class="form-input" value="2024">
           </div>
 
           <div class="form-group">
-            <label for="movie-rating-input">Rating (0 - 10)</label>
-            <input type="number" id="movie-rating-input" step="0.1" min="0" max="10" value="8.5">
+            <label>TMDB Rating (0 - 10)</label>
+            <input type="number" id="cust-rating" class="form-input" step="0.1" min="0" max="10" value="8.5">
           </div>
 
           <div class="form-group">
-            <label for="movie-quality-input">Quality Badge</label>
-            <input type="text" id="movie-quality-input" value="1080p FULL HD" placeholder="4K ULTRA HD / 1080p">
+            <label>Quality Badge</label>
+            <input type="text" id="cust-quality" class="form-input" value="4K ULTRA HD">
           </div>
 
           <div class="form-group">
-            <label for="movie-duration-input">Duration</label>
-            <input type="text" id="movie-duration-input" value="1h 45m" placeholder="e.g. 1h 45m">
+            <label>Duration</label>
+            <input type="text" id="cust-duration" class="form-input" value="2h 05m">
           </div>
 
-          <div class="form-group full-width">
-            <label for="movie-genres-input">Genres (Comma separated)</label>
-            <input type="text" id="movie-genres-input" placeholder="Action, Sci-Fi, Thriller">
+          <div class="form-group full">
+            <label>Genres (comma-separated)</label>
+            <input type="text" id="cust-genres" class="form-input" placeholder="Action, Comedy, Sci-Fi">
           </div>
 
-          <div class="form-group full-width">
-            <label for="movie-desc-input">Synopsis / Description</label>
-            <textarea id="movie-desc-input" rows="3" placeholder="Enter movie storyline..."></textarea>
+          <div class="form-group full">
+            <label>Synopsis / Description</label>
+            <textarea id="cust-desc" class="form-textarea" rows="3"></textarea>
           </div>
 
-          <div class="form-group full-width">
-            <label for="movie-poster-input">Poster Image URL</label>
-            <input type="url" id="movie-poster-input" placeholder="https://images.unsplash.com/...">
+          <div class="form-group full">
+            <label>Poster Image URL</label>
+            <input type="url" id="cust-poster" class="form-input" placeholder="https://...">
           </div>
 
-          <div class="form-group full-width">
-            <label for="movie-backdrop-input">Backdrop Landscape URL (For hero banner)</label>
-            <input type="url" id="movie-backdrop-input" placeholder="https://images.unsplash.com/...">
+          <div class="form-group full">
+            <label>Backdrop Image URL (For hero banner)</label>
+            <input type="url" id="cust-backdrop" class="form-input" placeholder="https://...">
           </div>
 
-          <div class="form-group full-width">
-            <label for="movie-videourl-input">Server 1 Video Stream URL (Direct .mp4, .webm, or CDN stream)</label>
-            <input type="url" id="movie-videourl-input" placeholder="https://commondatastorage.googleapis.com/.../movie.mp4">
+          <div class="form-group full">
+            <label>Direct Video Stream URL (Optional direct .mp4, .m3u8, or CDN stream)</label>
+            <input type="url" id="cust-videourl" class="form-input" placeholder="https://.../movie.mp4">
           </div>
 
-          <div class="form-group full-width">
-            <label for="movie-embedurl-input">Server 2 Embed URL (YouTube embed, Vimeo, or 3rd party stream player)</label>
-            <input type="url" id="movie-embedurl-input" placeholder="https://www.youtube.com/embed/...">
+          <div class="form-group full">
+            <label>Custom Embed URL (Optional custom iframe stream)</label>
+            <input type="url" id="cust-embedurl" class="form-input" placeholder="https://...">
           </div>
 
           <div class="form-group" style="flex-direction: row; align-items: center; gap: 10px;">
-            <input type="checkbox" id="movie-featured-input" style="width: 20px; height: 20px;">
-            <label for="movie-featured-input" style="margin-bottom: 0;">Feature in Top Hero Slider</label>
+            <input type="checkbox" id="cust-featured" style="width: 20px; height: 20px;">
+            <label for="cust-featured" style="margin-bottom: 0;">Feature on Top Hero Banner</label>
           </div>
 
           <div class="form-group" style="flex-direction: row; align-items: center; gap: 10px;">
-            <input type="checkbox" id="movie-trending-input" style="width: 20px; height: 20px;">
-            <label for="movie-trending-input" style="margin-bottom: 0;">Mark as Trending</label>
+            <input type="checkbox" id="cust-trending" style="width: 20px; height: 20px;">
+            <label for="cust-trending" style="margin-bottom: 0;">Mark as Trending</label>
           </div>
         </div>
 
         <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px;">
-          <button type="button" class="btn-action-edit" onclick="closeMovieModal()">Cancel</button>
-          <button type="submit" class="btn-primary">Save Movie</button>
+          <button type="button" class="btn-trailer-hero" onclick="closeAdminMovieModal()">Cancel</button>
+          <button type="submit" class="btn-play-hero" style="padding: 10px 24px;">Save Movie</button>
         </div>
       </form>
     </div>

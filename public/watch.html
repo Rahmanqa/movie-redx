@@ -2,212 +2,185 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Watch Free Movie - CineStream</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Watch Free Movie - MOVIE REDX</title>
+  <meta name="description" content="Watch high-definition free movies and TV shows online on MOVIE REDX. Fast multi-server streaming with zero buffering.">
+  <meta name="theme-color" content="#e50914">
+  <link rel="manifest" href="manifest.json">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/player.css">
-  <!-- Adsterra Popunder -->
-  <script type="text/javascript" src="https://pl31261610.profitableratecpmnetwork.com/3c/8c/4a/3c8c4a792e12eedee991c42f2b25a050.js"></script>
-  <!-- Adsterra SocialBar -->
-  <script type="text/javascript" src="https://pl31261611.profitableratecpmnetwork.com/4e/6e/ca/4e6eca3551518a455992044cc74f4c41.js"></script>
 </head>
 <body>
-
-  <!-- TOP PROMO BANNER AD SLOT -->
-  <aside class="top-ad-banner-wrapper" id="top-ad-slot" aria-label="Sponsor Advertisement">
-    <div style="display:flex; justify-content:center; align-items:center; width:100%; overflow:hidden;">
-      <script type="text/javascript">
-        atOptions = {
-          'key' : '0fe9d2d751d0409f84370999aa570e04',
-          'format' : 'iframe',
-          'height' : 90,
-          'width' : 728,
-          'params' : {}
-        };
-      </script>
-      <script type="text/javascript" src="https://www.highrevenueformat.com/0fe9d2d751d0409f84370999aa570e04/invoke.js"></script>
-    </div>
-  </aside>
 
   <!-- NAVBAR -->
   <header>
     <nav class="navbar">
-      <a href="index.html" class="nav-brand">
-        <span class="brand-logo">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+      <a href="index.html" class="nav-brand" title="MOVIE REDX">
+        <span class="brand-icon-box">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
             <path d="M18 3v2h-2V3H8v2H6V3H4v18h2v-2h2v2h8v-2h2v2h2V3h-2zM8 17H6v-2h2v2zm0-4H6v-2h2v2zm0-4H6V7h2v2zm10 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2z"/>
           </svg>
         </span>
-        <span class="brand-text">CineStream</span>
+        <div class="brand-title">
+          <span>MOVIE</span>
+          <span class="redx-tag">REDX</span>
+        </div>
       </a>
 
       <div class="nav-links">
-        <a href="index.html" class="nav-link">
+        <a href="index.html" class="nav-link-item">
           <span>🏠 Browse Catalog</span>
-        </a>
-        <a href="admin.html" class="nav-link">
-          <span>⚙️ Admin Panel</span>
-        </a>
-        <a href="https://www.profitableratecpmnetwork.com/xwh0p4b11?key=28302daec5dfcaa4dd7345a78366434a" target="_blank" rel="noopener noreferrer" class="nav-link btn-vip">
-          <span>🛡️ Stream in HD Free</span>
         </a>
       </div>
     </nav>
   </header>
 
-  <!-- WATCH ROOM CONTAINER -->
-  <main class="watch-page-container">
+  <!-- WATCH PAGE MAIN WRAPPER -->
+  <main class="watch-page-wrapper">
     <div class="watch-layout">
 
-      <!-- LEFT: VIDEO STAGE & MOVIE DETAILS -->
-      <section class="video-stage-container" id="video-stage">
-        
-        <!-- VIDEO PLAYER WRAPPER -->
-        <div class="video-player-wrapper">
+      <!-- LEFT: VIDEO STAGE & DETAILS -->
+      <section class="video-stage-container" id="video-stage-root">
 
-          <!-- PRE-ROLL MONETIZATION AD OVERLAY -->
-          <div class="preroll-overlay" id="preroll-overlay">
-            <div class="preroll-top-bar">
-              <div class="preroll-indicator">
-                <span>⚡ ADVERTISEMENT</span>
-              </div>
-              <span style="font-size: 0.8rem; color: #aaa;">Your movie will start shortly</span>
-            </div>
+        <!-- 16:9 VIDEO PLAYER BOX -->
+        <div class="video-player-box" id="player-box">
 
-            <div class="preroll-center-card">
-              <h3 id="preroll-sponsor-title">🔥 Free Cinema Pass — Unlock Ultra HD Streaming</h3>
-              <p id="preroll-sponsor-desc">Stream movies at maximum speed with zero buffering. Claim your free access pass now!</p>
-              <a href="https://www.profitableratecpmnetwork.com/xwh0p4b11?key=28302daec5dfcaa4dd7345a78366434a" target="_blank" rel="noopener noreferrer" id="preroll-cta-btn" class="btn-preroll-cta">
-                Claim Free Access Now →
-              </a>
-            </div>
-
-            <div class="preroll-bottom-bar">
-              <div class="preroll-timer" id="preroll-timer-text">
-                Video begins in 6s
-              </div>
-              <button class="btn-skip-ad" id="preroll-skip-btn">
-                Skip Ad in 6s
-              </button>
-            </div>
-          </div>
-
-          <!-- HTML5 VIDEO PLAYER -->
+          <!-- HTML5 VIDEO PLAYER (For direct MP4/HLS streams) -->
           <video 
-            id="main-video-player" 
+            id="html5-video-player" 
             class="video-player-element" 
             controls 
             preload="metadata" 
-            playsinline>
-            Your browser does not support the video tag.
+            playsinline 
+            style="display:none;">
+            Your browser does not support HTML5 video playback.
           </video>
 
-          <!-- EMBED IFRAME STREAM (For 3rd-party video servers) -->
+          <!-- EMBED IFRAME STREAM (For TMDB Embed multi-servers) -->
           <iframe 
-            id="main-iframe-player" 
+            id="embed-iframe-player" 
             class="embed-iframe-element" 
             allowfullscreen 
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
           </iframe>
+
         </div>
 
-        <!-- CONTROLS & STREAM SERVERS BAR -->
-        <div class="player-controls-bar">
-          <div class="servers-container">
+        <!-- STREAM FALLBACK & AUDIO NOTICE ALERT -->
+        <div class="stream-fallback-notice" id="fallback-notice-box">
+          <div class="notice-content-group">
+            <div class="notice-icon">💡</div>
+            <div class="notice-text">
+              <strong>Playback or Low Volume?</strong> If this movie is not playing, is buffering, or audio is quiet, 
+              <span class="notice-highlight">click on another Server button below (Server 2, 3, or 4)</span> to switch to a fast backup stream!
+            </div>
+          </div>
+          <button class="btn-quick-switch" onclick="switchNextServer()">
+            <span>⚡ Next Server</span>
+          </button>
+        </div>
+
+        <!-- STREAMING SERVER SWITCHER & CONTROLS -->
+        <div class="player-servers-bar">
+          <div class="servers-group">
             <span class="server-label">Streaming Server:</span>
-            <div id="servers-list" style="display: flex; gap: 8px;">
+            <div id="stream-servers-list" style="display:flex; flex-wrap:wrap; gap:6px;">
               <!-- Populated by player.js -->
             </div>
           </div>
 
-          <div class="action-buttons">
-            <button class="player-action-btn" id="cinema-toggle-btn" onclick="toggleCinemaMode()">
-              <span>🌙 Cinema Mode</span>
+          <div class="player-action-buttons">
+            <button class="player-action-btn btn-volume-boost" id="volume-boost-btn" onclick="boostAudioVolume()" title="Boost Movie Sound">
+              <span>🔊 Boost Volume (+200%)</span>
             </button>
-            <button class="player-action-btn" onclick="toggleFullscreen()">
+            <button class="player-action-btn" id="cinema-mode-btn" onclick="toggleCinemaMode()">
+              <span>🌙 Cinema</span>
+            </button>
+            <button class="player-action-btn" onclick="togglePlayerFullscreen()">
               <span>⛶ Fullscreen</span>
             </button>
+            <button class="player-action-btn" id="watch-trailer-trigger">
+              <span>▶ Trailer</span>
+            </button>
           </div>
         </div>
 
-        <!-- PLAYER BOTTOM AD SLOT -->
-        <div class="player-ad-slot" id="player-bottom-ad-slot" style="display:block; padding: 12px; background: rgba(0,0,0,0.5);">
-          <script async="async" data-cfasync="false" src="https://pl31261619.profitableratecpmnetwork.com/433b30239567a78825a7370f76f8c49f/invoke.js"></script>
-          <div id="container-433b30239567a78825a7370f76f8c49f"></div>
+        <!-- TV SHOW SEASON & EPISODE PICKER (Shown only for TV series) -->
+        <div class="tv-episodes-panel" id="tv-panel" style="display: none;">
+          <div class="tv-episodes-header">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <span style="font-weight: 700; font-size: 0.9rem; color: #fff;">Episodes:</span>
+              <select id="season-selector" class="season-select-box">
+                <!-- Populated by player.js -->
+              </select>
+            </div>
+            <div style="font-size: 0.8rem; color: var(--text-secondary);" id="episode-count-label">
+              Season 1
+            </div>
+          </div>
+          <div class="episodes-grid" id="episodes-grid">
+            <!-- Populated by player.js -->
+          </div>
         </div>
 
-        <!-- MOVIE DETAILS -->
-        <div class="movie-meta-panel">
-          <div class="meta-title-row">
-            <h1 class="watch-movie-title" id="watch-title">Loading movie details...</h1>
+        <!-- MOVIE DETAILS & CAST -->
+        <div class="movie-details-box">
+          <div class="watch-title-row">
+            <div>
+              <h1 class="watch-title" id="media-title">Loading title...</h1>
+              <div class="watch-meta-badges">
+                <span class="card-rating-badge" id="media-rating">★ 8.8 TMDB</span>
+                <span class="badge-quality" id="media-quality">4K ULTRA HD</span>
+                <span style="color: var(--text-secondary);" id="media-year">2024</span>
+                <span style="color: var(--text-muted);">•</span>
+                <span style="color: var(--text-secondary);" id="media-runtime">1h 45m</span>
+                <span style="color: var(--text-muted);">•</span>
+                <span style="color: var(--primary-glow); font-weight:600;" id="media-genres">Action, Sci-Fi</span>
+              </div>
+            </div>
+            <button id="media-watchlist-btn" class="btn-watchlist-hero" title="Save to Watchlist">
+              +
+            </button>
           </div>
 
-          <div class="watch-badges">
-            <span class="card-badge-rating" id="watch-rating">★ 8.5</span>
-            <span class="card-badge-quality" id="watch-quality">1080p FULL HD</span>
-            <span style="color: var(--text-secondary); font-size: 0.85rem;" id="watch-year">2024</span>
-            <span style="color: var(--text-muted); font-size: 0.85rem;">•</span>
-            <span style="color: var(--text-secondary); font-size: 0.85rem;" id="watch-duration">1h 30m</span>
-            <span style="color: var(--text-muted); font-size: 0.85rem;">•</span>
-            <span style="color: var(--accent-cyan); font-size: 0.85rem; font-weight: 600;" id="watch-genres">Sci-Fi, Action</span>
-          </div>
-
-          <p class="watch-synopsis" id="watch-desc">
-            Full movie description will be displayed here.
+          <p class="watch-synopsis" id="media-synopsis">
+            Synopsis will be displayed here.
           </p>
 
-          <div style="display: flex; gap: 12px; align-items: center; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.06);">
-            <span style="font-size: 0.85rem; color: var(--text-muted);">Share this film:</span>
-            <button class="player-action-btn" onclick="navigator.clipboard.writeText(window.location.href); alert('Movie link copied to clipboard!');">
-              🔗 Copy Share Link
-            </button>
+          <!-- CAST & CREW CAROUSEL -->
+          <div class="cast-section" id="cast-section">
+            <h4 class="cast-title">Top Cast & Performers</h4>
+            <div class="cast-scroller" id="cast-scroller">
+              <!-- Populated by player.js -->
+            </div>
           </div>
         </div>
 
       </section>
 
-      <!-- RIGHT: SIDEBAR, AFFILIATE SPONSOR & RELATED TITLES -->
-      <aside class="watch-sidebar">
+      <!-- RIGHT: SIDEBAR & RECOMMENDED TITLES -->
+      <aside class="watch-sidebar-col">
 
-        <!-- AFFILIATE RECOMMENDATION WIDGET -->
-        <div class="affiliate-promo-box">
-          <span class="ad-badge">RECOMMENDED SPONSOR</span>
-          <h4>Stream Safely in 4K Ultra HD</h4>
-          <p>Protect your IP address, stop ISP buffering, and unlock regional libraries.</p>
-          <ul class="affiliate-features">
-            <li>Zero activity logs & AES-256 encryption</li>
-            <li>Ultra high-speed 10Gbps streaming servers</li>
-            <li>30-day risk-free money-back guarantee</li>
-          </ul>
-          <a href="https://www.profitableratecpmnetwork.com/xwh0p4b11?key=28302daec5dfcaa4dd7345a78366434a" target="_blank" rel="noopener noreferrer" class="btn-sponsor-alt">
-            Claim Free Access Now →
+        <!-- FAST STREAM PASS BOX -->
+        <div class="sidebar-box" style="border-color: rgba(229, 9, 20, 0.3); background: linear-gradient(145deg, #161224, #20101b);">
+          <span class="ad-badge" style="background: var(--accent-gold); color: #000; font-size: 0.65rem; font-weight: 800; padding: 2px 6px; border-radius: 4px;">FREE PASS</span>
+          <h4 style="color:#fff; font-size: 1rem; margin: 8px 0 6px;">Stream in 4K Ultra HD</h4>
+          <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 12px;">
+            Enjoy seamless high-speed streaming on all servers with zero interruptions.
+          </p>
+          <a href="index.html" class="btn-play-hero" style="display: block; text-align: center; font-size: 0.85rem; padding: 8px 16px;">
+            Explore All Movies →
           </a>
         </div>
 
-        <!-- SIDEBAR AD SLOT -->
-        <div id="sidebar-ad-slot" style="display:flex; justify-content:center; align-items:center; margin: 12px auto; overflow:hidden;">
-          <script type="text/javascript">
-            atOptions = {
-              'key' : '3a24000e5ba5656ace9e4cfd19440f86',
-              'format' : 'iframe',
-              'height' : 250,
-              'width' : 300,
-              'params' : {}
-            };
-          </script>
-          <script type="text/javascript" src="https://www.highrevenueformat.com/3a24000e5ba5656ace9e4cfd19440f86/invoke.js"></script>
-        </div>
-
-        <!-- RELATED MOVIES -->
-        <div class="sidebar-movies-list">
-          <h4 class="sidebar-title">
-            <span>🔥 You May Also Like</span>
-          </h4>
-          <div id="sidebar-movies-list">
-            <!-- Populated dynamically by player.js -->
+        <!-- SIMILAR / RECOMMENDED TITLES -->
+        <div class="sidebar-box">
+          <h4 class="sidebar-heading">🔥 Recommended For You</h4>
+          <div class="sidebar-related-list" id="sidebar-recommendations">
+            <!-- Populated by player.js -->
           </div>
         </div>
 
@@ -216,37 +189,59 @@
     </div>
   </main>
 
+  <!-- TRAILER MODAL -->
+  <div class="modal-overlay" id="trailer-modal">
+    <div class="modal-container" style="max-width: 860px; background: #000;">
+      <div class="modal-header" style="border-color: #222;">
+        <h3 id="trailer-title">Trailer</h3>
+        <button class="btn-close-modal" id="close-trailer-modal">&times;</button>
+      </div>
+      <div style="position: relative; aspect-ratio: 16/9; width: 100%;">
+        <iframe id="trailer-iframe" style="width: 100%; height: 100%; border: none;" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOBILE BOTTOM NAVIGATION DOCK -->
+  <nav class="mobile-bottom-nav" aria-label="Mobile Navigation">
+    <a href="index.html" class="mobile-nav-tab">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+      </svg>
+      <span>Home</span>
+    </a>
+    <a href="index.html" class="mobile-nav-tab">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z"/>
+      </svg>
+      <span>Movies</span>
+    </a>
+    <a href="index.html" class="mobile-nav-tab">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12z"/>
+      </svg>
+      <span>TV Shows</span>
+    </a>
+  </nav>
+
   <!-- FOOTER -->
   <footer class="site-footer">
     <div class="footer-inner">
       <div class="footer-brand">
-        <h3>🎬 CineStream</h3>
-        <p>Watch full free movies in high definition with lightning-fast streaming servers. All streams are hosted externally or curated from open public domain archives.</p>
+        <h3>🎬 MOVIE <span style="color: var(--primary-glow); font-style: italic;">REDX</span></h3>
+        <p>Watch full free movies and TV series in HD and 4K without subscription fees. Instant multi-server playback across all mobile and desktop devices.</p>
       </div>
       <div class="footer-col">
         <h4>Legal</h4>
         <ul>
-          <li><a href="dmca.html">DMCA Takedown Notice</a></li>
+          <li><a href="dmca.html">DMCA Copyright Notice</a></li>
           <li><a href="dmca.html#privacy">Privacy Policy</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Monetization</h4>
-        <ul>
-          <li><a href="admin.html">Ad Revenue Center</a></li>
-          <li><a href="https://www.expressvpn.com" target="_blank" rel="noopener noreferrer">VPN Affiliate Partner</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Owner</h4>
-        <ul>
-          <li><a href="admin.html">Admin Dashboard</a></li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
-      <div>&copy; 2026 CineStream. All rights reserved.</div>
-      <div>Safe • Free • High Definition</div>
+      <div>&copy; 2026 MOVIE REDX. All rights reserved.</div>
+      <div>Compatible on Mobile, Tablet & Desktop Browsers</div>
     </div>
   </footer>
 

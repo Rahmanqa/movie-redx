@@ -1,34 +1,103 @@
 {
-  "siteName": "CineStream",
-  "adminPin": "1234",
+  "siteName": "MOVIE REDX",
+  "adminPin": "8084",
+  "tmdbApiKey": "8265bd1679663a7ea12ac168da84d2e8",
+  "streamServers": [
+    {
+      "id": "vidsrc_hindi",
+      "name": "🇮🇳 Hindi Server 1 (VidSrc Hindi)",
+      "movieTemplate": "https://vidsrc.to/embed/movie/{id}?lang=hi",
+      "tvTemplate": "https://vidsrc.to/embed/tv/{id}/{s}/{e}?lang=hi",
+      "type": "embed",
+      "lang": "hi"
+    },
+    {
+      "id": "vidlink_hindi",
+      "name": "🇮🇳 Hindi Server 2 (VidLink Hindi)",
+      "movieTemplate": "https://vidlink.pro/movie/{id}?primaryLang=hi&info=false&autoplay=true",
+      "tvTemplate": "https://vidlink.pro/tv/{id}/{s}/{e}?primaryLang=hi&info=false&autoplay=true",
+      "type": "embed",
+      "lang": "hi"
+    },
+    {
+      "id": "autoembed_hindi",
+      "name": "🇮🇳 Hindi Server 3 (AutoEmbed Hindi)",
+      "movieTemplate": "https://player.autoembed.cc/embed/movie/{id}?lang=hi",
+      "tvTemplate": "https://player.autoembed.cc/embed/tv/{id}/{s}/{e}?lang=hi",
+      "type": "embed",
+      "lang": "hi"
+    },
+    {
+      "id": "vidsrc",
+      "name": "Server 1 (VidSrc Fast HD)",
+      "movieTemplate": "https://vidsrc.to/embed/movie/{id}",
+      "tvTemplate": "https://vidsrc.to/embed/tv/{id}/{s}/{e}",
+      "type": "embed"
+    },
+    {
+      "id": "vidlink",
+      "name": "Server 2 (VidLink Ultra 4K)",
+      "movieTemplate": "https://vidlink.pro/movie/{id}",
+      "tvTemplate": "https://vidlink.pro/tv/{id}/{s}/{e}",
+      "type": "embed"
+    },
+    {
+      "id": "twoembed",
+      "name": "Server 3 (2Embed Multi-Sub)",
+      "movieTemplate": "https://www.2embed.cc/embed/{id}",
+      "tvTemplate": "https://www.2embed.cc/embedtv/{id}&s={s}&e={e}",
+      "type": "embed"
+    },
+    {
+      "id": "autoembed",
+      "name": "Server 4 (AutoEmbed Player)",
+      "movieTemplate": "https://player.autoembed.cc/embed/movie/{id}",
+      "tvTemplate": "https://player.autoembed.cc/embed/tv/{id}/{s}/{e}",
+      "type": "embed"
+    },
+    {
+      "id": "smashystream",
+      "name": "Server 5 (Smashy Stream)",
+      "movieTemplate": "https://embed.smashystream.com/playere.php?tmdb={id}",
+      "tvTemplate": "https://embed.smashystream.com/playere.php?tmdb={id}&season={s}&episode={e}",
+      "type": "embed"
+    },
+    {
+      "id": "moviesapi",
+      "name": "Server 6 (MoviesAPI Club)",
+      "movieTemplate": "https://moviesapi.club/movie/{id}",
+      "tvTemplate": "https://moviesapi.club/tv/{id}-{s}-{e}",
+      "type": "embed"
+    }
+  ],
   "monetization": {
     "preRoll": {
-      "enabled": true,
-      "duration": 6,
-      "sponsorTitle": "🔥 Exclusive Free Cinema Pass — Stream in Ultra HD",
-      "sponsorDescription": "Enjoy unrestricted high-speed streaming, zero buffering, and premium access. Click below to claim.",
-      "sponsorUrl": "https://www.profitableratecpmnetwork.com/xwh0p4b11?key=28302daec5dfcaa4dd7345a78366434a",
-      "ctaText": "Claim Free Access Now →",
-      "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
+      "enabled": false,
+      "duration": 5,
+      "sponsorTitle": "🔥 MOVIE REDX 4K Stream Pass",
+      "sponsorDescription": "Enjoy high-speed 4K streaming with zero lag on all devices.",
+      "sponsorUrl": "",
+      "ctaText": "Claim Free Access →",
+      "videoUrl": ""
     },
     "bannerTop": {
-      "enabled": true,
-      "html": "<div style=\"display:flex; justify-content:center; align-items:center; width:100%; overflow:hidden;\"><script type=\"text/javascript\">atOptions = {'key' : '0fe9d2d751d0409f84370999aa570e04','format' : 'iframe','height' : 90,'width' : 728,'params' : {}};</script><script type=\"text/javascript\" src=\"https://www.highrevenueformat.com/0fe9d2d751d0409f84370999aa570e04/invoke.js\"></script></div>"
+      "enabled": false,
+      "html": ""
     },
     "bannerSidebar": {
       "enabled": true,
-      "html": "<div style=\"display:flex; justify-content:center; align-items:center; margin:10px auto;\"><script type=\"text/javascript\">atOptions = {'key' : '3a24000e5ba5656ace9e4cfd19440f86','format' : 'iframe','height' : 250,'width' : 300,'params' : {}};</script><script type=\"text/javascript\" src=\"https://www.highrevenueformat.com/3a24000e5ba5656ace9e4cfd19440f86/invoke.js\"></script></div>"
+      "html": "<div style=\"background:rgba(255,255,255,0.03); border:1px solid rgba(229,9,20,0.3); border-radius:8px; padding:12px; text-align:center;\"><span style=\"color:#f5c518; font-weight:800; font-size:0.75rem;\">⚡ MOVIE REDX VIP</span><p style=\"font-size:0.8rem; color:#aaa; margin:6px 0;\">Stream 50,000+ Movies & TV Shows in 4K UHD with No Buffering.</p></div>"
     },
     "bannerPlayerBottom": {
-      "enabled": true,
-      "html": "<div style=\"width:100%; margin:15px 0;\"><script async=\"async\" data-cfasync=\"false\" src=\"https://pl31261619.profitableratecpmnetwork.com/433b30239567a78825a7370f76f8c49f/invoke.js\"></script><div id=\"container-433b30239567a78825a7370f76f8c49f\"></div></div>"
+      "enabled": false,
+      "html": ""
     },
-    "customScript": "<script type=\"text/javascript\" src=\"https://pl31261610.profitableratecpmnetwork.com/3c/8c/4a/3c8c4a792e12eedee991c42f2b25a050.js\"></script>\n<script type=\"text/javascript\" src=\"https://pl31261611.profitableratecpmnetwork.com/4e/6e/ca/4e6eca3551518a455992044cc74f4c41.js\"></script>"
+    "customScript": ""
   },
   "analytics": {
-    "totalImpressions": 2854,
-    "totalClicks": 195,
+    "totalImpressions": 3420,
+    "totalClicks": 240,
     "estimatedRpm": 3.65,
-    "estimatedEarnings": 10.57
+    "estimatedEarnings": 12.48
   }
 }

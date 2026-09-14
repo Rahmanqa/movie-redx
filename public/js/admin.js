@@ -1,12 +1,14 @@
-// Admin Dashboard Logic (Hybrid: Supports both Node.js Backend & Static Deployment)
+// Movie redx - Admin Control Suite Logic
 
-let currentAdminPin = sessionStorage.getItem('cinestream_admin_pin') || '';
+let currentAdminPin = sessionStorage.getItem('movieredx_admin_pin') || '';
 let adminMovies = [];
 let adminSettings = {};
 let editingMovieId = null;
-let isStaticMode = false;
 
-// Auth check
+const TMDB_IMG_BASE = 'https://image.tmdb.org/t/p/w500';
+const TMDB_BACKDROP_BASE = 'https://image.tmdb.org/t/p/original';
+
+// Check Auth on Page Load
 async function checkAuth() {
   if (!currentAdminPin) {
     showLoginLock();
@@ -23,60 +25,18 @@ async function checkAuth() {
     if (res.ok) {
       const data = await res.json();
       if (data.success) {
-        isStaticMode = false;
         hideLoginLock();
-        loadAdminData();
+        loadAllAdminData();
         return;
       }
     }
-    
-    // If response is 404/not ok, it's likely a static site (e.g. Render Static Site)
-    throw new Error('API unavailable, attempting static mode authentication');
+    throw new Error('PIN invalid');
   } catch (err) {
-    console.warn('Backend API not responding; checking static admin credentials...', err);
-    // Static mode fallback
-    const savedPin = localStorage.getItem('cinestream_admin_pin') || '1234';
-    if (String(currentAdminPin) === String(savedPin)) {
-      isStaticMode = true;
-      hideLoginLock();
-      showStaticModeBanner();
-      loadAdminData();
-    } else {
-      sessionStorage.removeItem('cinestream_admin_pin');
-      currentAdminPin = '';
-      showLoginLock('Invalid PIN. Please try again (Default: 1234)');
-    }
+    sessionStorage.removeItem('movieredx_admin_pin');
+    currentAdminPin = '';
+    showLoginLock('Invalid PIN. Please try again (Default: 8084)');
   }
 }
-
-function showStaticModeBanner() {
-  let banner = document.getElementById('static-mode-notice');
-  if (!banner) {
-    banner = document.createElement('div');
-    banner.id = 'static-mode-notice';
-    banner.style.cssText = 'background: rgba(245, 197, 24, 0.15); border: 1px solid var(--accent-gold); color: #fff; padding: 12px 18px; border-radius: var(--radius-sm); margin-bottom: 20px; font-size: 0.85rem; display: flex; justify-content: space-between; align-items: center; gap: 12px;';
-    banner.innerHTML = `
-      <div>
-        <strong style="color: var(--accent-gold);">⚡ Static Site Mode Detected:</strong> 
-        You deployed as a Static Site. Changes you make here are saved directly in your browser. 
-        For full cloud server database persistence, deploy as a <strong>Render Web Service</strong>.
-      </div>
-      <button onclick="exportDataFiles()" class="btn-sponsor" style="font-size: 0.75rem; padding: 6px 12px;">Export Data JSON</button>
-    `;
-    const container = document.getElementById('admin-main-content');
-    if (container) {
-      container.insertBefore(banner, container.children[1]);
-    }
-  }
-}
-
-window.exportDataFiles = function() {
-  const blob = new Blob([JSON.stringify(adminMovies, null, 2)], { type: 'application/json' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'movies.json';
-  a.click();
-};
 
 function showLoginLock(errMsg = '') {
   document.getElementById('admin-lock-screen').style.display = 'block';
@@ -93,112 +53,155 @@ function hideLoginLock() {
   document.getElementById('admin-main-content').style.display = 'block';
 }
 
-// Load data
-async function loadAdminData() {
-  await loadMovies();
-  await loadSettings();
+// Load All Data
+async function loadAllAdminData() {
+  await Promise.all([loadAdminMovies(), loadAdminSettings()]);
+  updateMetrics();
 }
 
-async function loadMovies() {
-  // Check localStorage first if in static mode
-  const localSaved = localStorage.getItem('cinestream_movies');
-  if (localSaved && isStaticMode) {
-    try {
-      adminMovies = JSON.parse(localSaved);
-      renderMoviesTable();
-      updateMetrics();
-      return;
-    } catch (e) {}
-  }
-
+async function loadAdminMovies() {
   try {
     const res = await fetch('/api/movies');
-    if (res.ok) {
-      const data = await res.json();
-      if (data.success && data.movies) {
-        adminMovies = data.movies;
-        renderMoviesTable();
-        updateMetrics();
-        return;
-      }
+    const data = await res.json();
+    if (data.success && data.movies) {
+      adminMovies = data.movies;
+      renderAdminMoviesTable();
     }
-    throw new Error('API movies endpoint unavailable');
-  } catch (e) {
-    // Fallback to static movies.json
-    try {
-      const fallbackRes = await fetch('data/movies.json');
-      const fallbackData = await fallbackRes.json();
-      if (Array.isArray(fallbackData)) {
-        adminMovies = fallbackData;
-        renderMoviesTable();
-        updateMetrics();
-      }
-    } catch (err2) {
-      console.error('Error fetching static movies.json:', err2);
-    }
+  } catch (err) {
+    console.error('Failed to load movies for admin:', err);
   }
 }
 
-async function loadSettings() {
-  const localSettings = localStorage.getItem('cinestream_settings');
-  if (localSettings && isStaticMode) {
-    try {
-      adminSettings = JSON.parse(localSettings);
-      populateSettingsForm();
-      updateMetrics();
-      return;
-    } catch (e) {}
-  }
-
+async function loadAdminSettings() {
   try {
     const res = await fetch('/api/settings');
-    if (res.ok) {
-      const data = await res.json();
-      if (data.success && data.settings) {
-        adminSettings = data.settings;
-        populateSettingsForm();
-        updateMetrics();
-        return;
-      }
+    const data = await res.json();
+    if (data.success && data.settings) {
+      adminSettings = data.settings;
+      populateSettingsForms();
+      renderStreamingServersEditor();
     }
-    throw new Error('API settings unavailable');
-  } catch (e) {
-    try {
-      const fallbackRes = await fetch('data/settings.json');
-      const fallbackData = await fallbackRes.json();
-      if (fallbackData && fallbackData.monetization) {
-        adminSettings = fallbackData;
-        populateSettingsForm();
-        updateMetrics();
-      }
-    } catch (err2) {
-      console.error('Error loading fallback settings:', err2);
-    }
+  } catch (err) {
+    console.error('Failed to load settings:', err);
   }
 }
 
-// Update Top Metric Cards
+// Update Top Metrics
 function updateMetrics() {
-  const countEl = document.getElementById('metric-total-movies');
+  const totalMoviesEl = document.getElementById('metric-total-movies');
   const impEl = document.getElementById('metric-impressions');
-  const clicksEl = document.getElementById('metric-clicks');
-  const earningsEl = document.getElementById('metric-earnings');
+  const earnEl = document.getElementById('metric-earnings');
 
-  if (countEl) countEl.textContent = adminMovies.length;
+  if (totalMoviesEl) totalMoviesEl.textContent = adminMovies.length;
 
-  const analytics = adminSettings.analytics || { totalImpressions: 2854, totalClicks: 195, estimatedEarnings: 10.57 };
-  if (impEl) impEl.textContent = (analytics.totalImpressions || 2854).toLocaleString();
-  if (clicksEl) clicksEl.textContent = (analytics.totalClicks || 195).toLocaleString();
-  if (earningsEl) earningsEl.textContent = `$${(analytics.estimatedEarnings || 10.57).toFixed(2)}`;
+  const analytics = adminSettings.analytics || { totalImpressions: 3420, estimatedEarnings: 12.48 };
+  if (impEl) impEl.textContent = (analytics.totalImpressions || 3420).toLocaleString();
+  if (earnEl) earnEl.textContent = `$${(analytics.estimatedEarnings || 12.48).toFixed(2)}`;
 }
 
-// Render Movies Table
-function renderMoviesTable() {
-  const tbody = document.getElementById('movies-table-body');
+// --- TMDB 1-CLICK IMPORTER ---
+window.searchTmdbToImport = async function() {
+  const input = document.getElementById('tmdb-import-search-input');
+  const container = document.getElementById('tmdb-search-results');
+  if (!input || !container) return;
+
+  const query = input.value.trim();
+  if (!query) return;
+
+  container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 20px; color: var(--text-muted);">Searching TMDB for "${query}"...</div>`;
+
+  try {
+    const res = await fetch(`/api/tmdb/search?q=${encodeURIComponent(query)}`);
+    const data = await res.json();
+
+    if (data.results && data.results.length > 0) {
+      let html = '';
+      data.results.slice(0, 12).forEach(item => {
+        const title = item.title || item.name || 'Untitled';
+        const isTv = item.media_type === 'tv' || Boolean(item.name);
+        const releaseDate = item.release_date || item.first_air_date || '';
+        const year = releaseDate ? releaseDate.split('-')[0] : '2024';
+        const rating = (item.vote_average || 8.0).toFixed(1);
+        const posterUrl = item.poster_path ? TMDB_IMG_BASE + item.poster_path : 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=300';
+        const backdropUrl = item.backdrop_path ? TMDB_BACKDROP_BASE + item.backdrop_path : '';
+
+        // Check if already in curated catalog
+        const isCurated = adminMovies.some(m => String(m.tmdbId) === String(item.id) || m.id === `tmdb-${item.id}`);
+
+        html += `
+          <div class="tmdb-import-card">
+            <img src="${posterUrl}" alt="${title}" class="tmdb-import-thumb" />
+            <div class="tmdb-import-info">
+              <div>
+                <h5>${title}</h5>
+                <div style="font-size:0.75rem; color:var(--text-secondary); margin-bottom:8px;">
+                  <span style="color:var(--accent-gold);">★ ${rating}</span> • <span>${year}</span> • <span>${isTv ? 'TV' : 'MOVIE'}</span>
+                </div>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:6px;">
+                <button class="btn-play-hero" style="font-size:0.75rem; padding:6px 10px; border-radius:4px; justify-content:center;" onclick="importTmdbTitle(${item.id}, '${title.replace(/'/g, "\\'")}', '${isTv ? 'tv' : 'movie'}', '${posterUrl}', '${backdropUrl}', ${rating}, '${year}', false)">
+                  ${isCurated ? '✔ In Catalog' : '+ Add to Catalog'}
+                </button>
+                <button class="btn-trailer-hero" style="font-size:0.72rem; padding:4px 8px; border-radius:4px; justify-content:center;" onclick="importTmdbTitle(${item.id}, '${title.replace(/'/g, "\\'")}', '${isTv ? 'tv' : 'movie'}', '${posterUrl}', '${backdropUrl}', ${rating}, '${year}', true)">
+                  ⭐ Feature on Hero Banner
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+      container.innerHTML = html;
+    } else {
+      container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 20px; color: var(--text-muted);">No TMDB results found for "${query}".</div>`;
+    }
+  } catch (err) {
+    container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 20px; color: #ff4b55;">Error querying TMDB: ${err.message}</div>`;
+  }
+};
+
+window.importTmdbTitle = async function(tmdbId, title, mediaType, poster, backdrop, rating, year, isFeatured) {
+  try {
+    const res = await fetch('/api/movies', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-admin-pin': currentAdminPin
+      },
+      body: JSON.stringify({
+        tmdbId,
+        mediaType,
+        title,
+        year: Number(year) || 2024,
+        rating: Number(rating) || 8.0,
+        quality: '4K ULTRA HD',
+        poster,
+        backdrop,
+        featured: isFeatured,
+        trending: true,
+        genres: ['Action', 'Cinema']
+      })
+    });
+
+    const data = await res.json();
+    if (data.success) {
+      alert(`"${title}" has been successfully imported to Movie redx catalog!`);
+      loadAdminMovies();
+      updateMetrics();
+    } else {
+      alert('Error saving movie: ' + data.message);
+    }
+  } catch (err) {
+    alert('Failed to import movie: ' + err.message);
+  }
+};
+
+// --- CURATED MOVIES TABLE ---
+function renderAdminMoviesTable() {
+  const tbody = document.getElementById('admin-movies-tbody');
   if (!tbody) return;
 
   if (adminMovies.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 24px;">No movies found.</td></tr>`;
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:24px; color:var(--text-muted);">No curated titles yet. Use the TMDB Importer or Add Custom Stream button above!</td></tr>';
     return;
   }
 
@@ -207,19 +210,19 @@ function renderMoviesTable() {
     html += `
       <tr>
         <td>
-          <img src="${m.poster}" alt="${m.title}" class="table-movie-thumb" />
+          <img src="${m.poster}" alt="${m.title}" style="width:40px; height:58px; object-fit:cover; border-radius:4px;" />
         </td>
         <td>
-          <div class="table-movie-title">${m.title}</div>
-          <div class="table-movie-meta">${m.genres ? m.genres.join(', ') : ''}</div>
+          <div style="font-weight:700; color:#fff;">${m.title}</div>
+          <div style="font-size:0.75rem; color:var(--text-secondary);">${m.genres ? m.genres.join(', ') : ''}</div>
         </td>
-        <td>${m.year}</td>
+        <td>${m.year || 2024}</td>
         <td><span style="color:var(--accent-gold); font-weight:700;">★ ${m.rating}</span></td>
-        <td><span class="card-badge-quality">${m.quality || 'HD'}</span></td>
+        <td>${m.featured ? '<span class="badge-redx" style="font-size:0.65rem;">HERO BANNER</span>' : '<span style="color:var(--text-muted); font-size:0.75rem;">Standard</span>'}</td>
         <td>
-          <div class="table-actions">
-            <button class="btn-action-edit" onclick="openEditMovieModal('${m.id}')">Edit</button>
-            <button class="btn-action-delete" onclick="deleteMovie('${m.id}', '${m.title.replace(/'/g, "\\'")}')">Delete</button>
+          <div style="display:flex; gap:8px;">
+            <button class="player-action-btn" style="padding:4px 8px; font-size:0.75rem;" onclick="openEditCustomMovieModal('${m.id}')">Edit</button>
+            <button class="player-action-btn" style="padding:4px 8px; font-size:0.75rem; color:#ff4b55; border-color:rgba(255,75,85,0.3);" onclick="deleteMovie('${m.id}', '${m.title.replace(/'/g, "\\'")}')">Delete</button>
           </div>
         </td>
       </tr>
@@ -228,14 +231,217 @@ function renderMoviesTable() {
   tbody.innerHTML = html;
 }
 
-// Populate Settings Form
-function populateSettingsForm() {
+// Open Add Custom Movie Modal
+window.openAddMovieModal = function() {
+  editingMovieId = null;
+  document.getElementById('admin-movie-modal-title').textContent = 'Add Custom Movie / Stream';
+  document.getElementById('admin-custom-movie-form').reset();
+  document.getElementById('admin-movie-modal').classList.add('active');
+};
+
+// Open Edit Custom Movie Modal
+window.openEditCustomMovieModal = function(id) {
+  const m = adminMovies.find(x => x.id === id);
+  if (!m) return;
+  editingMovieId = id;
+
+  document.getElementById('admin-movie-modal-title').textContent = 'Edit Movie';
+  document.getElementById('cust-title').value = m.title || '';
+  document.getElementById('cust-year').value = m.year || 2024;
+  document.getElementById('cust-rating').value = m.rating || 8.0;
+  document.getElementById('cust-quality').value = m.quality || '4K ULTRA HD';
+  document.getElementById('cust-duration').value = m.duration || '1h 45m';
+  document.getElementById('cust-genres').value = m.genres ? m.genres.join(', ') : '';
+  document.getElementById('cust-desc').value = m.description || '';
+  document.getElementById('cust-poster').value = m.poster || '';
+  document.getElementById('cust-backdrop').value = m.backdrop || '';
+
+  const s1 = m.servers?.find(s => s.type === 'video');
+  const s2 = m.servers?.find(s => s.type === 'embed');
+  document.getElementById('cust-videourl').value = s1 ? s1.url : '';
+  document.getElementById('cust-embedurl').value = s2 ? s2.url : '';
+  document.getElementById('cust-featured').checked = Boolean(m.featured);
+  document.getElementById('cust-trending').checked = Boolean(m.trending);
+
+  document.getElementById('admin-movie-modal').classList.add('active');
+};
+
+window.closeAdminMovieModal = function() {
+  document.getElementById('admin-movie-modal').classList.remove('active');
+};
+
+// Save Custom Movie Handler
+async function saveCustomMovie(e) {
+  e.preventDefault();
+
+  const title = document.getElementById('cust-title').value.trim();
+  const year = Number(document.getElementById('cust-year').value);
+  const rating = Number(document.getElementById('cust-rating').value);
+  const quality = document.getElementById('cust-quality').value.trim();
+  const duration = document.getElementById('cust-duration').value.trim();
+  const genres = document.getElementById('cust-genres').value.split(',').map(g => g.trim()).filter(Boolean);
+  const description = document.getElementById('cust-desc').value.trim();
+  const poster = document.getElementById('cust-poster').value.trim();
+  const backdrop = document.getElementById('cust-backdrop').value.trim();
+  const videoUrl = document.getElementById('cust-videourl').value.trim();
+  const embedUrl = document.getElementById('cust-embedurl').value.trim();
+  const featured = document.getElementById('cust-featured').checked;
+  const trending = document.getElementById('cust-trending').checked;
+
+  const payload = {
+    title,
+    year,
+    rating,
+    quality,
+    duration,
+    genres,
+    description,
+    poster,
+    backdrop,
+    videoUrl,
+    embedUrl,
+    featured,
+    trending
+  };
+
+  const url = editingMovieId ? `/api/movies/${editingMovieId}` : '/api/movies';
+  const method = editingMovieId ? 'PUT' : 'POST';
+
+  try {
+    const res = await fetch(url, {
+      method,
+      headers: {
+        'Content-Type': 'application/json',
+        'x-admin-pin': currentAdminPin
+      },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (data.success) {
+      closeAdminMovieModal();
+      loadAdminMovies();
+      updateMetrics();
+    } else {
+      alert('Error: ' + data.message);
+    }
+  } catch (err) {
+    alert('Failed to save: ' + err.message);
+  }
+}
+
+// Delete Movie Handler
+window.deleteMovie = async function(id, title) {
+  if (!confirm(`Are you sure you want to delete "${title}" from curated catalog?`)) return;
+
+  try {
+    const res = await fetch(`/api/movies/${id}`, {
+      method: 'DELETE',
+      headers: { 'x-admin-pin': currentAdminPin }
+    });
+    const data = await res.json();
+    if (data.success) {
+      loadAdminMovies();
+      updateMetrics();
+    } else {
+      alert(data.message);
+    }
+  } catch (err) {
+    alert('Error deleting: ' + err.message);
+  }
+};
+
+// --- STREAMING SERVERS EDITOR ---
+function renderStreamingServersEditor() {
+  const container = document.getElementById('servers-list-inputs');
+  if (!container) return;
+
+  const servers = adminSettings.streamServers || [
+    { id: 'vidsrc', name: 'Server 1 (VidSrc Fast HD)', movieTemplate: 'https://vidsrc.to/embed/movie/{id}', tvTemplate: 'https://vidsrc.to/embed/tv/{id}/{s}/{e}' },
+    { id: 'vidlink', name: 'Server 2 (VidLink Ultra 4K)', movieTemplate: 'https://vidlink.pro/movie/{id}', tvTemplate: 'https://vidlink.pro/tv/{id}/{s}/{e}' },
+    { id: 'twoembed', name: 'Server 3 (2Embed Multi-Sub)', movieTemplate: 'https://www.2embed.cc/embed/{id}', tvTemplate: 'https://www.2embed.cc/embedtv/{id}&s={s}&e={e}' },
+    { id: 'autoembed', name: 'Server 4 (AutoEmbed Player)', movieTemplate: 'https://player.autoembed.cc/embed/movie/{id}', tvTemplate: 'https://player.autoembed.cc/embed/tv/{id}/{s}/{e}' }
+  ];
+
+  let html = '';
+  servers.forEach((s, idx) => {
+    html += `
+      <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border-glass); border-radius:var(--radius-sm); padding:14px; margin-bottom:12px;">
+        <div style="font-weight:700; color:#fff; margin-bottom:8px;">Stream Provider #${idx + 1}</div>
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label>Server Display Name</label>
+            <input type="text" class="form-input server-name-input" value="${s.name}" required>
+          </div>
+          <div class="form-group">
+            <label>Provider ID</label>
+            <input type="text" class="form-input server-id-input" value="${s.id}" required>
+          </div>
+          <div class="form-group full">
+            <label>Movie Embed Template ({id} = TMDB ID)</label>
+            <input type="text" class="form-input server-movie-input" value="${s.movieTemplate}" required>
+          </div>
+          <div class="form-group full">
+            <label>TV Show Embed Template ({id} = TMDB ID, {s} = Season, {e} = Episode)</label>
+            <input type="text" class="form-input server-tv-input" value="${s.tvTemplate || ''}">
+          </div>
+        </div>
+      </div>
+    `;
+  });
+
+  container.innerHTML = html;
+}
+
+// Save Streaming Servers
+async function saveStreamingServers(e) {
+  e.preventDefault();
+
+  const nameInputs = document.querySelectorAll('.server-name-input');
+  const idInputs = document.querySelectorAll('.server-id-input');
+  const movieInputs = document.querySelectorAll('.server-movie-input');
+  const tvInputs = document.querySelectorAll('.server-tv-input');
+
+  const updatedServers = [];
+  for (let i = 0; i < nameInputs.length; i++) {
+    updatedServers.push({
+      id: idInputs[i].value.trim(),
+      name: nameInputs[i].value.trim(),
+      movieTemplate: movieInputs[i].value.trim(),
+      tvTemplate: tvInputs[i].value.trim(),
+      type: 'embed'
+    });
+  }
+
+  try {
+    const res = await fetch('/api/settings', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-admin-pin': currentAdminPin
+      },
+      body: JSON.stringify({ streamServers: updatedServers })
+    });
+
+    const data = await res.json();
+    if (data.success) {
+      alert('Streaming Servers updated successfully!');
+      loadAdminSettings();
+    } else {
+      alert(data.message);
+    }
+  } catch (err) {
+    alert('Error saving servers: ' + err.message);
+  }
+}
+
+// --- MONETIZATION & ADS ---
+function populateSettingsForms() {
   const m = adminSettings.monetization || {};
 
   // Pre-roll
   const pr = m.preRoll || {};
   document.getElementById('set-preroll-enabled').checked = Boolean(pr.enabled);
-  document.getElementById('set-preroll-duration').value = pr.duration || 6;
+  document.getElementById('set-preroll-duration').value = pr.duration || 5;
   document.getElementById('set-preroll-title').value = pr.sponsorTitle || '';
   document.getElementById('set-preroll-desc').value = pr.sponsorDescription || '';
   document.getElementById('set-preroll-url').value = pr.sponsorUrl || '';
@@ -258,18 +464,26 @@ function populateSettingsForm() {
 
   // Custom Script
   document.getElementById('set-custom-script').value = m.customScript || '';
+
+  // TMDB Key & Site Name
+  if (adminSettings.tmdbApiKey) {
+    document.getElementById('set-tmdb-key').value = adminSettings.tmdbApiKey;
+  }
+  if (adminSettings.siteName) {
+    document.getElementById('set-site-name').value = adminSettings.siteName;
+  }
 }
 
-// Save Settings
-async function saveSettings(e) {
-  if (e) e.preventDefault();
-  const alertEl = document.getElementById('settings-status-alert');
+// Save Monetization Settings
+async function saveMonetization(e) {
+  e.preventDefault();
+  const alertEl = document.getElementById('monetization-alert');
 
   const payload = {
     monetization: {
       preRoll: {
         enabled: document.getElementById('set-preroll-enabled').checked,
-        duration: Number(document.getElementById('set-preroll-duration').value) || 6,
+        duration: Number(document.getElementById('set-preroll-duration').value) || 5,
         sponsorTitle: document.getElementById('set-preroll-title').value.trim(),
         sponsorDescription: document.getElementById('set-preroll-desc').value.trim(),
         sponsorUrl: document.getElementById('set-preroll-url').value.trim(),
@@ -291,27 +505,6 @@ async function saveSettings(e) {
     }
   };
 
-  const newPin = document.getElementById('set-new-pin').value.trim();
-  if (newPin && newPin.length >= 4) {
-    payload.adminPin = newPin;
-    currentAdminPin = newPin;
-    sessionStorage.setItem('cinestream_admin_pin', newPin);
-    localStorage.setItem('cinestream_admin_pin', newPin);
-    document.getElementById('set-new-pin').value = '';
-  }
-
-  // If running in static site mode
-  if (isStaticMode) {
-    adminSettings = { ...adminSettings, ...payload };
-    localStorage.setItem('cinestream_settings', JSON.stringify(adminSettings));
-    alertEl.style.display = 'block';
-    alertEl.style.color = '#00e676';
-    alertEl.textContent = 'Settings and Ads updated successfully in browser!';
-    setTimeout(() => alertEl.style.display = 'none', 3500);
-    return;
-  }
-
-  // Server API mode
   try {
     const res = await fetch('/api/settings', {
       method: 'POST',
@@ -325,234 +518,124 @@ async function saveSettings(e) {
     const data = await res.json();
     if (data.success) {
       alertEl.style.display = 'block';
-      alertEl.style.color = '#00e676';
-      alertEl.textContent = 'Settings and Monetization updated successfully!';
+      alertEl.textContent = 'Monetization and Ad placements saved successfully!';
       setTimeout(() => alertEl.style.display = 'none', 3500);
-      loadSettings();
-    } else {
-      throw new Error(data.message || 'Server error');
+      loadAdminSettings();
     }
   } catch (err) {
-    // Fallback save locally
-    adminSettings = { ...adminSettings, ...payload };
-    localStorage.setItem('cinestream_settings', JSON.stringify(adminSettings));
-    alertEl.style.display = 'block';
-    alertEl.style.color = '#00e676';
-    alertEl.textContent = 'Settings saved locally (Static Mode)!';
-    setTimeout(() => alertEl.style.display = 'none', 3500);
+    alert('Error saving ads: ' + err.message);
   }
 }
 
-// Add / Edit Movie Modal Handlers
-window.openAddMovieModal = function() {
-  editingMovieId = null;
-  document.getElementById('movie-modal-title').textContent = 'Add New Movie';
-  document.getElementById('movie-form').reset();
-  document.getElementById('movie-modal').classList.add('active');
-};
-
-window.openEditMovieModal = function(movieId) {
-  const m = adminMovies.find(x => x.id === movieId);
-  if (!m) return;
-  editingMovieId = movieId;
-
-  document.getElementById('movie-modal-title').textContent = 'Edit Movie';
-  document.getElementById('movie-title-input').value = m.title || '';
-  document.getElementById('movie-year-input').value = m.year || 2024;
-  document.getElementById('movie-rating-input').value = m.rating || 8.0;
-  document.getElementById('movie-quality-input').value = m.quality || '1080p FULL HD';
-  document.getElementById('movie-duration-input').value = m.duration || '1h 30m';
-  document.getElementById('movie-genres-input').value = m.genres ? m.genres.join(', ') : '';
-  document.getElementById('movie-desc-input').value = m.description || '';
-  document.getElementById('movie-poster-input').value = m.poster || '';
-  document.getElementById('movie-backdrop-input').value = m.backdrop || '';
-
-  const s1 = m.servers?.find(s => s.type === 'video');
-  const s2 = m.servers?.find(s => s.type === 'embed');
-  document.getElementById('movie-videourl-input').value = s1 ? s1.url : '';
-  document.getElementById('movie-embedurl-input').value = s2 ? s2.url : '';
-  document.getElementById('movie-featured-input').checked = Boolean(m.featured);
-  document.getElementById('movie-trending-input').checked = Boolean(m.trending);
-
-  document.getElementById('movie-modal').classList.add('active');
-};
-
-window.closeMovieModal = function() {
-  document.getElementById('movie-modal').classList.remove('active');
-};
-
-// Save Movie (Create or Update)
-async function saveMovie(e) {
-  e.preventDefault();
-
-  const title = document.getElementById('movie-title-input').value.trim();
-  const year = Number(document.getElementById('movie-year-input').value);
-  const rating = Number(document.getElementById('movie-rating-input').value);
-  const quality = document.getElementById('movie-quality-input').value.trim();
-  const duration = document.getElementById('movie-duration-input').value.trim();
-  const genres = document.getElementById('movie-genres-input').value.split(',').map(g => g.trim()).filter(Boolean);
-  const description = document.getElementById('movie-desc-input').value.trim();
-  const poster = document.getElementById('movie-poster-input').value.trim();
-  const backdrop = document.getElementById('movie-backdrop-input').value.trim();
-  const videoUrl = document.getElementById('movie-videourl-input').value.trim();
-  const embedUrl = document.getElementById('movie-embedurl-input').value.trim();
-  const featured = document.getElementById('movie-featured-input').checked;
-  const trending = document.getElementById('movie-trending-input').checked;
-
-  const payload = {
-    title,
-    year,
-    rating,
-    quality,
-    duration,
-    genres,
-    description,
-    poster,
-    backdrop,
-    videoUrl,
-    embedUrl,
-    featured,
-    trending
-  };
-
-  // Static site mode save
-  if (isStaticMode) {
-    if (editingMovieId) {
-      const idx = adminMovies.findIndex(x => x.id === editingMovieId);
-      if (idx !== -1) {
-        adminMovies[idx] = {
-          ...adminMovies[idx],
-          ...payload,
-          servers: [
-            { name: 'Server 1 (HD)', type: 'video', url: videoUrl || adminMovies[idx].servers[0]?.url },
-            { name: 'Server 2 (Embed)', type: 'embed', url: embedUrl || '' }
-          ]
-        };
-      }
-    } else {
-      const newId = title.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-' + Date.now().toString().slice(-4);
-      adminMovies.unshift({
-        id: newId,
-        ...payload,
-        servers: [
-          { name: 'Server 1 (HD)', type: 'video', url: videoUrl || 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4' },
-          { name: 'Server 2 (Embed)', type: 'embed', url: embedUrl || '' }
-        ]
-      });
-    }
-    localStorage.setItem('cinestream_movies', JSON.stringify(adminMovies));
-    closeMovieModal();
-    renderMoviesTable();
-    updateMetrics();
+// Test TMDB Connection
+window.testTmdbConnection = async function() {
+  const key = document.getElementById('set-tmdb-key').value.trim();
+  if (!key) {
+    alert('Please enter a TMDB API Key first.');
     return;
   }
 
-  // Server API mode
-  const url = editingMovieId ? `/api/movies/${editingMovieId}` : '/api/movies';
-  const method = editingMovieId ? 'PUT' : 'POST';
+  try {
+    const res = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${key}&page=1`);
+    const data = await res.json();
+    if (data.results && data.results.length > 0) {
+      alert(`✅ TMDB API Connection Successful! Successfully connected to The Movie Database.`);
+    } else {
+      alert(`❌ TMDB API Error: ${data.status_message || 'Invalid API Key'}`);
+    }
+  } catch (err) {
+    alert('❌ Connection failed: ' + err.message);
+  }
+};
+
+// Save General Settings
+async function saveGeneralSettings(e) {
+  e.preventDefault();
+
+  const tmdbApiKey = document.getElementById('set-tmdb-key').value.trim();
+  const siteName = document.getElementById('set-site-name').value.trim();
+  const newPin = document.getElementById('set-new-pin').value.trim();
+
+  const payload = {};
+  if (tmdbApiKey) payload.tmdbApiKey = tmdbApiKey;
+  if (siteName) payload.siteName = siteName;
+  if (newPin && newPin.length >= 4) {
+    payload.adminPin = newPin;
+    currentAdminPin = newPin;
+    sessionStorage.setItem('movieredx_admin_pin', newPin);
+    document.getElementById('set-new-pin').value = '';
+  }
 
   try {
-    const res = await fetch(url, {
-      method,
+    const res = await fetch('/api/settings', {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'x-admin-pin': currentAdminPin
       },
       body: JSON.stringify(payload)
     });
+
     const data = await res.json();
     if (data.success) {
-      closeMovieModal();
-      loadMovies();
+      alert('Settings & Security updated successfully!');
+      loadAdminSettings();
     } else {
-      throw new Error(data.message);
+      alert(data.message);
     }
   } catch (err) {
-    // Fallback save in static mode
-    isStaticMode = true;
-    saveMovie(e);
+    alert('Failed to save settings: ' + err.message);
   }
 }
 
-// Delete Movie
-window.deleteMovie = async function(movieId, title) {
-  if (!confirm(`Are you sure you want to delete "${title}"?`)) return;
-
-  if (isStaticMode) {
-    adminMovies = adminMovies.filter(m => m.id !== movieId);
-    localStorage.setItem('cinestream_movies', JSON.stringify(adminMovies));
-    renderMoviesTable();
-    updateMetrics();
-    return;
-  }
-
-  try {
-    const res = await fetch(`/api/movies/${movieId}`, {
-      method: 'DELETE',
-      headers: { 'x-admin-pin': currentAdminPin }
-    });
-    const data = await res.json();
-    if (data.success) {
-      loadMovies();
-    } else {
-      throw new Error(data.message);
-    }
-  } catch (err) {
-    adminMovies = adminMovies.filter(m => m.id !== movieId);
-    localStorage.setItem('cinestream_movies', JSON.stringify(adminMovies));
-    renderMoviesTable();
-    updateMetrics();
-  }
-};
-
-// Event Listeners
+// Document Ready
 document.addEventListener('DOMContentLoaded', () => {
-  // Login lock form
+  // Login form
   const loginForm = document.getElementById('admin-login-form');
   if (loginForm) {
-    loginForm.addEventListener('submit', async (e) => {
+    loginForm.addEventListener('submit', (e) => {
       e.preventDefault();
       const pin = document.getElementById('admin-pin-input').value.trim();
       currentAdminPin = pin;
-      sessionStorage.setItem('cinestream_admin_pin', pin);
+      sessionStorage.setItem('movieredx_admin_pin', pin);
       checkAuth();
     });
   }
 
-  // Tabs switching
-  const tabs = document.querySelectorAll('.tab-btn');
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      tabs.forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-
-      tab.classList.add('active');
-      const paneId = tab.getAttribute('data-tab');
-      document.getElementById(paneId).classList.add('active');
-    });
-  });
-
-  // Settings form submit
-  const settingsForm = document.getElementById('monetization-form');
-  if (settingsForm) {
-    settingsForm.addEventListener('submit', saveSettings);
-  }
-
-  // Movie form submit
-  const movieForm = document.getElementById('movie-form');
-  if (movieForm) {
-    movieForm.addEventListener('submit', saveMovie);
-  }
-
-  // Logout
-  const logoutBtn = document.getElementById('admin-logout-btn');
+  // Logout button
+  const logoutBtn = document.getElementById('btn-admin-logout');
   if (logoutBtn) {
     logoutBtn.addEventListener('click', () => {
-      sessionStorage.removeItem('cinestream_admin_pin');
+      sessionStorage.removeItem('movieredx_admin_pin');
       currentAdminPin = '';
       showLoginLock();
     });
   }
+
+  // Tabs switching
+  document.querySelectorAll('.admin-nav-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.admin-nav-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.admin-tab-pane').forEach(p => p.style.display = 'none');
+
+      tab.classList.add('active');
+      const targetPane = document.getElementById(tab.getAttribute('data-tab'));
+      if (targetPane) targetPane.style.display = 'block';
+    });
+  });
+
+  // Forms
+  const customMovieForm = document.getElementById('admin-custom-movie-form');
+  if (customMovieForm) customMovieForm.addEventListener('submit', saveCustomMovie);
+
+  const serversForm = document.getElementById('servers-config-form');
+  if (serversForm) serversForm.addEventListener('submit', saveStreamingServers);
+
+  const monetizationForm = document.getElementById('admin-monetization-form');
+  if (monetizationForm) monetizationForm.addEventListener('submit', saveMonetization);
+
+  const settingsForm = document.getElementById('admin-settings-form');
+  if (settingsForm) settingsForm.addEventListener('submit', saveGeneralSettings);
 
   checkAuth();
 });

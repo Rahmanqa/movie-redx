@@ -2,180 +2,300 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CineStream - Watch Full Free Movies in HD</title>
-  <meta name="description" content="Stream thousands of free movies in HD quality. No sign-up required. Enjoy action, sci-fi, classics, animation and horror completely free.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>MOVIE REDX - Watch Full Free Movies & TV Shows in 4K/HD</title>
+  <meta name="description" content="MOVIE REDX - Stream thousands of free movies and TV shows in 4K and Ultra HD quality. No sign-up, zero subscription. Watch action, sci-fi, horror, anime, and trending cinema for free.">
+  <meta name="theme-color" content="#e50914">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23090b10'/><path d='M25 20 L45 20 L75 80 L55 80 Z' fill='%23e50914'/><path d='M75 20 L55 20 L25 80 L45 80 Z' fill='%23ff1e27'/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
-  <!-- Adsterra Popunder -->
-  <script type="text/javascript" src="https://pl31261610.profitableratecpmnetwork.com/3c/8c/4a/3c8c4a792e12eedee991c42f2b25a050.js"></script>
-  <!-- Adsterra SocialBar -->
-  <script type="text/javascript" src="https://pl31261611.profitableratecpmnetwork.com/4e/6e/ca/4e6eca3551518a455992044cc74f4c41.js"></script>
 </head>
 <body>
 
-  <!-- TOP PROMO BANNER AD SLOT -->
-  <aside class="top-ad-banner-wrapper" id="top-ad-slot" aria-label="Sponsor Advertisement">
-    <div style="display:flex; justify-content:center; align-items:center; width:100%; overflow:hidden;">
-      <script type="text/javascript">
-        atOptions = {
-          'key' : '0fe9d2d751d0409f84370999aa570e04',
-          'format' : 'iframe',
-          'height' : 90,
-          'width' : 728,
-          'params' : {}
-        };
-      </script>
-      <script type="text/javascript" src="https://www.highrevenueformat.com/0fe9d2d751d0409f84370999aa570e04/invoke.js"></script>
-    </div>
+  <!-- TOP NOTICE / OPTIONAL BANNER AD SLOT -->
+  <aside class="top-ad-banner-wrapper" id="top-ad-slot" style="display:none;" aria-label="Sponsor Advertisement">
+    <!-- Populated safely via admin settings if enabled -->
   </aside>
 
   <!-- NAVBAR -->
   <header>
     <nav class="navbar">
-      <a href="index.html" class="nav-brand">
-        <span class="brand-logo">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+      <a href="index.html" class="nav-brand" id="brand-logo-trigger" title="MOVIE REDX">
+        <span class="brand-icon-box">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
             <path d="M18 3v2h-2V3H8v2H6V3H4v18h2v-2h2v2h8v-2h2v2h2V3h-2zM8 17H6v-2h2v2zm0-4H6v-2h2v2zm0-4H6V7h2v2zm10 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2z"/>
           </svg>
         </span>
-        <span class="brand-text">CineStream</span>
+        <div class="brand-title">
+          <span>MOVIE</span>
+          <span class="redx-tag">REDX</span>
+        </div>
       </a>
 
+      <!-- INSTANT SEARCH WITH TMDB LIVE PREVIEW -->
       <div class="nav-search-bar">
         <span class="search-icon">🔍</span>
-        <input type="text" id="movie-search-input" placeholder="Search movies, genres, actors..." aria-label="Search movies">
+        <input type="text" id="movie-search-input" placeholder="Search movies, TV series, actors..." aria-label="Search movies" autocomplete="off">
+        <div class="search-results-dropdown" id="search-dropdown">
+          <!-- Populated dynamically by app.js -->
+        </div>
       </div>
 
+      <!-- DESKTOP NAV LINKS (Admin link hidden from normal users) -->
       <div class="nav-links">
-        <button id="open-watchlist-modal" class="nav-link">
+        <button id="open-watchlist-btn" class="nav-link-item">
           <span>★ Watchlist</span>
-          <span id="watchlist-count" class="badge-featured" style="display:none; font-size: 0.7rem; padding: 2px 6px;">0</span>
+          <span id="watchlist-badge" class="badge-redx" style="display:none; font-size: 0.65rem; padding: 2px 6px;">0</span>
         </button>
-        <a href="admin.html" class="nav-link">
-          <span>⚙️ Admin Panel</span>
-        </a>
-        <a href="https://www.profitableratecpmnetwork.com/xwh0p4b11?key=28302daec5dfcaa4dd7345a78366434a" target="_blank" rel="noopener noreferrer" class="nav-link btn-vip">
-          <span>🛡️ Stream in HD Free</span>
-        </a>
+        <button onclick="switchMediaType('trending')" class="nav-link-item">
+          <span>🔥 Trending</span>
+        </button>
       </div>
     </nav>
   </header>
 
-  <!-- HERO SPOTLIGHT SECTION -->
-  <section class="hero-container" aria-label="Featured Movie Spotlight">
-    <div class="hero-backdrop" id="hero-backdrop"></div>
-    <div class="hero-overlay"></div>
+  <!-- HERO SPOTLIGHT CAROUSEL -->
+  <section class="hero-section" id="hero-spotlight" aria-label="Featured Movie Spotlight">
+    <div class="hero-backdrop-img" id="hero-backdrop"></div>
+    <div class="hero-gradient-overlay"></div>
     <div class="hero-content">
-      <div class="hero-badges">
-        <span class="badge-featured">FEATURED</span>
+      <div class="hero-badges-row">
+        <span class="badge-redx" id="hero-tag">TRENDING #1</span>
         <span class="badge-quality" id="hero-quality">4K ULTRA HD</span>
-        <span class="badge-rating" id="hero-rating">★ 8.8</span>
+        <span class="badge-rating" id="hero-rating">★ 8.8 TMDB</span>
+        <span style="font-size: 0.8rem; color: #ccc;" id="hero-year">2024</span>
       </div>
       <h1 class="hero-title" id="hero-title">Loading Featured Movie...</h1>
-      <p class="hero-desc" id="hero-desc">Discover high-definition free streaming cinema with fast playback servers and zero subscription fees.</p>
-      <div class="hero-actions">
-        <a href="watch.html" id="hero-play-btn" class="btn-play-primary">
+      <p class="hero-overview" id="hero-overview">Discover the latest trending movies and TV shows powered by TMDB with multi-server free streaming playback.</p>
+      <div class="hero-actions-row">
+        <a href="watch.html" id="hero-play-btn" class="btn-play-hero">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
             <path d="M8 5v14l11-7z"/>
           </svg>
-          <span>Watch Now Free</span>
+          <span>Watch Free Now</span>
         </a>
-        <button id="hero-watchlist-btn" class="btn-watchlist-toggle">
-          <span>+ Add to Watchlist</span>
+        <button id="hero-trailer-btn" class="btn-trailer-hero">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M10 16.5l6-4.5-6-4.5v9zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+          </svg>
+          <span>Watch Trailer</span>
+        </button>
+        <button id="hero-watchlist-toggle" class="btn-watchlist-hero" title="Add to Watchlist">
+          +
         </button>
       </div>
     </div>
   </section>
 
-  <!-- GENRE FILTER BAR -->
-  <nav class="genre-filter-wrapper" aria-label="Genre Filters">
-    <button class="genre-pill active" data-genre="all">🔥 All Movies</button>
-    <button class="genre-pill" data-genre="Action">💥 Action</button>
-    <button class="genre-pill" data-genre="Sci-Fi">🚀 Sci-Fi</button>
-    <button class="genre-pill" data-genre="Horror">👻 Horror</button>
-    <button class="genre-pill" data-genre="Animation">🎨 Animation</button>
-    <button class="genre-pill" data-genre="Comedy">😂 Comedy</button>
-    <button class="genre-pill" data-genre="Classic">🎩 Classic</button>
-    <button class="genre-pill" data-genre="Thriller">⚡ Thriller</button>
-  </nav>
-
-  <!-- MAIN MOVIES CATALOG -->
-  <main class="main-content">
-    <div class="section-header">
-      <h2 class="section-title">
-        <span>Featured & Popular</span>
-        <span class="accent">Movies</span>
-      </h2>
-      <span style="font-size: 0.85rem; color: var(--text-muted);">Free HD Streaming • No Registration</span>
+  <!-- DISCOVERY CONTROLS (Media Tabs, Genre Pills, Filters) -->
+  <section class="discovery-controls">
+    <!-- Media Type Tabs -->
+    <div class="media-type-tabs" role="tablist">
+      <button class="media-tab active" data-type="trending">🔥 Trending Now</button>
+      <button class="media-tab" data-type="hindi">🇮🇳 Hindi Cinema</button>
+      <button class="media-tab" data-type="movie">🎬 Movies</button>
+      <button class="media-tab" data-type="tv">📺 TV Series</button>
+      <button class="media-tab" data-type="top-rated">⭐ Top Rated</button>
+      <button class="media-tab" data-type="upcoming">🚀 Upcoming</button>
     </div>
 
-    <div class="movies-grid" id="movies-grid">
-      <!-- Dynamically generated by app.js -->
+    <!-- Genre Pills -->
+    <div class="genre-pills-row" id="genre-pills-container">
+      <button class="genre-pill active" data-genre="">All Genres</button>
+      <button class="genre-pill" data-genre="28">💥 Action</button>
+      <button class="genre-pill" data-genre="12">🗺️ Adventure</button>
+      <button class="genre-pill" data-genre="16">🎨 Animation</button>
+      <button class="genre-pill" data-genre="35">😂 Comedy</button>
+      <button class="genre-pill" data-genre="80">🕵️ Crime</button>
+      <button class="genre-pill" data-genre="18">🎭 Drama</button>
+      <button class="genre-pill" data-genre="14">🧙 Fantasy</button>
+      <button class="genre-pill" data-genre="27">👻 Horror</button>
+      <button class="genre-pill" data-genre="878">🚀 Sci-Fi</button>
+      <button class="genre-pill" data-genre="53">⚡ Thriller</button>
+      <button class="genre-pill" data-genre="10749">💖 Romance</button>
     </div>
+
+    <!-- Filters Row -->
+    <div class="filter-dropdowns-row">
+      <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+        <label for="filter-language" style="font-size: 0.8rem; color: var(--text-secondary);">Language:</label>
+        <select id="filter-language" class="filter-select">
+          <option value="">🌐 All Languages</option>
+          <option value="hi">🇮🇳 Hindi (हिन्दी / Bollywood)</option>
+          <option value="te">🇮🇳 Telugu (Tollywood)</option>
+          <option value="ta">🇮🇳 Tamil (Kollywood)</option>
+          <option value="en">🇺🇸 English (Hollywood)</option>
+          <option value="ko">🇰🇷 Korean (K-Drama)</option>
+          <option value="ja">🇯🇵 Japanese (Anime)</option>
+          <option value="es">🇪🇸 Spanish (Español)</option>
+        </select>
+
+        <label for="filter-year" style="font-size: 0.8rem; color: var(--text-secondary); margin-left: 6px;">Year:</label>
+        <select id="filter-year" class="filter-select">
+          <option value="">All Years</option>
+          <option value="2025">2025</option>
+          <option value="2024">2024</option>
+          <option value="2023">2023</option>
+          <option value="2022">2022</option>
+          <option value="2021">2021</option>
+          <option value="2020">2020</option>
+          <option value="2019">2010 - 2019</option>
+          <option value="2000">Classic (2000s & older)</option>
+        </select>
+
+        <label for="filter-sort" style="font-size: 0.8rem; color: var(--text-secondary); margin-left: 6px;">Sort By:</label>
+        <select id="filter-sort" class="filter-select">
+          <option value="popularity.desc">Most Popular</option>
+          <option value="vote_average.desc">Highest Rated</option>
+          <option value="primary_release_date.desc">Newest First</option>
+        </select>
+      </div>
+
+      <div style="font-size: 0.82rem; color: var(--text-muted);">
+        Streaming over 50,000+ Movies & Series Free
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN CATALOG -->
+  <main class="main-catalog-container">
+
+    <!-- CONTINUE WATCHING SHELF -->
+    <section class="continue-watching-shelf" id="continue-watching-section">
+      <div class="shelf-header">
+        <h2 class="shelf-title">
+          <span class="shelf-indicator"></span>
+          <span>Continue Watching</span>
+        </h2>
+        <button onclick="clearContinueWatching()" style="color: var(--text-muted); font-size: 0.8rem;">Clear All</button>
+      </div>
+      <div class="continue-grid" id="continue-grid">
+        <!-- Populated dynamically by app.js -->
+      </div>
+    </section>
+
+    <!-- MAIN MOVIES GRID -->
+    <section>
+      <div class="shelf-header">
+        <h2 class="shelf-title" id="catalog-title">
+          <span class="shelf-indicator"></span>
+          <span>Explore Free Cinema</span>
+        </h2>
+        <span style="font-size: 0.82rem; color: var(--text-muted);" id="catalog-count-label">Fast Free HD Servers</span>
+      </div>
+
+      <div class="movies-grid" id="movies-grid">
+        <!-- Populated dynamically by app.js -->
+      </div>
+
+      <!-- LOAD MORE BUTTON -->
+      <div style="text-align: center; margin-top: 36px;">
+        <button id="btn-load-more" class="btn-trailer-hero" style="padding: 12px 32px; font-weight: 700;">
+          <span>Load More Titles</span>
+        </button>
+      </div>
+    </section>
+
   </main>
 
-  <!-- WATCHLIST MODAL DIALOG -->
-  <div class="modal-backdrop" id="watchlist-modal" role="dialog" aria-modal="true" aria-labelledby="watchlist-modal-title">
-    <div class="modal-content">
+  <!-- WATCHLIST MODAL -->
+  <div class="modal-overlay" id="watchlist-modal">
+    <div class="modal-container">
       <div class="modal-header">
-        <h3 id="watchlist-modal-title">Your Saved Watchlist</h3>
-        <button class="btn-close-modal" id="close-watchlist-modal" aria-label="Close modal">&times;</button>
+        <h3>★ Your Saved Watchlist</h3>
+        <button class="btn-close-modal" id="close-watchlist-modal">&times;</button>
       </div>
-      <div id="watchlist-modal-items">
+      <div class="modal-body" id="watchlist-modal-content">
         <!-- Watchlist items rendered here -->
       </div>
     </div>
   </div>
 
+  <!-- TRAILER MODAL -->
+  <div class="modal-overlay" id="trailer-modal">
+    <div class="modal-container" style="max-width: 860px; background: #000;">
+      <div class="modal-header" style="border-color: #222;">
+        <h3 id="trailer-title">Movie Trailer</h3>
+        <button class="btn-close-modal" id="close-trailer-modal">&times;</button>
+      </div>
+      <div style="position: relative; aspect-ratio: 16/9; width: 100%;">
+        <iframe id="trailer-iframe" style="width: 100%; height: 100%; border: none;" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOBILE BOTTOM NAVIGATION DOCK -->
+  <nav class="mobile-bottom-nav" aria-label="Mobile Navigation">
+    <a href="index.html" class="mobile-nav-tab active">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+      </svg>
+      <span>Home</span>
+    </a>
+    <button class="mobile-nav-tab" onclick="switchMediaType('movie')">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z"/>
+      </svg>
+      <span>Movies</span>
+    </button>
+    <button class="mobile-nav-tab" onclick="switchMediaType('tv')">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12z"/>
+      </svg>
+      <span>TV Shows</span>
+    </button>
+    <button class="mobile-nav-tab" id="mobile-search-tab">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+      </svg>
+      <span>Search</span>
+    </button>
+    <button class="mobile-nav-tab" id="mobile-watchlist-tab">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+      </svg>
+      <span>Saved</span>
+    </button>
+  </nav>
+
   <!-- FOOTER -->
   <footer class="site-footer">
     <div class="footer-inner">
       <div class="footer-brand">
-        <h3>🎬 CineStream</h3>
-        <p>Your premier destination for high-definition free streaming cinema. Enjoy timeless classics, open cinematic masterpieces, indie films, and animation without paying monthly subscription fees.</p>
-        <p class="legal-notice">
-          <strong>Disclaimer:</strong> CineStream does not host copyrighted media on its servers. All streaming media is provided by public domain archives, open-source creative foundations, or external third-party streaming services.
+        <h3>🎬 MOVIE <span style="color: var(--primary-glow); font-style: italic;">REDX</span></h3>
+        <p>Your ultimate free streaming entertainment hub. Stream high-definition movies and TV series across all devices with instant playback servers.</p>
+        <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 10px;">
+          Disclaimer: MOVIE REDX does not host copyrighted media on its servers. All streaming media is provided by non-affiliated third-party providers or open media indexes.
         </p>
       </div>
 
       <div class="footer-col">
-        <h4>Explore Genres</h4>
+        <h4>Browse Movies</h4>
         <ul>
-          <li><a href="#" onclick="document.querySelector('[data-genre=Action]').click();">Action Movies</a></li>
-          <li><a href="#" onclick="document.querySelector('[data-genre=Sci-Fi]').click();">Sci-Fi & Fantasy</a></li>
-          <li><a href="#" onclick="document.querySelector('[data-genre=Horror]').click();">Horror & Thrillers</a></li>
-          <li><a href="#" onclick="document.querySelector('[data-genre=Animation]').click();">Animated Films</a></li>
-          <li><a href="#" onclick="document.querySelector('[data-genre=Classic]').click();">Vintage Classics</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-col">
-        <h4>Monetization & Partners</h4>
-        <ul>
-          <li><a href="https://nordvpn.com" target="_blank" rel="noopener noreferrer">Streaming VPN Deal (70% Off)</a></li>
-          <li><a href="https://www.amazon.com/amazonprime" target="_blank" rel="noopener noreferrer">Amazon Prime 30-Day Free</a></li>
-          <li><a href="admin.html">Webmaster Ad Settings</a></li>
-          <li><a href="admin.html">Ad Revenue Analytics</a></li>
+          <li><a href="#" onclick="selectGenrePill('28')">Action Movies</a></li>
+          <li><a href="#" onclick="selectGenrePill('878')">Sci-Fi & Fantasy</a></li>
+          <li><a href="#" onclick="selectGenrePill('27')">Horror & Suspense</a></li>
+          <li><a href="#" onclick="selectGenrePill('16')">Animation & Anime</a></li>
+          <li><a href="#" onclick="selectGenrePill('35')">Comedy Hits</a></li>
         </ul>
       </div>
 
       <div class="footer-col">
         <h4>Legal & Policy</h4>
         <ul>
-          <li><a href="dmca.html">DMCA & Copyright Policy</a></li>
-          <li><a href="dmca.html#terms">Terms of Service</a></li>
+          <li><a href="dmca.html">DMCA & Copyright Removal</a></li>
+          <li><a href="dmca.html#terms">Terms of Use</a></li>
           <li><a href="dmca.html#privacy">Privacy Policy</a></li>
-          <li><a href="dmca.html#contact">Contact / Content Removal</a></li>
         </ul>
       </div>
     </div>
 
     <div class="footer-bottom">
-      <div>&copy; 2026 CineStream. All rights reserved.</div>
-      <div>High Definition • Free Streaming • Turnkey Monetization</div>
+      <div id="footer-copyright-trigger">&copy; 2026 MOVIE REDX. All rights reserved.</div>
+      <div>Ultra 4K & HD • Zero Fees • Compatible on Mobile & Desktop</div>
     </div>
   </footer>
 
