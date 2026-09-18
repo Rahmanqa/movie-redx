@@ -391,7 +391,7 @@ function renderCatalogGrid() {
             <div style="font-size:2rem; margin-bottom:6px;">⚡</div>
             <h4 style="font-size:0.88rem; color:#fff; font-weight:800; line-height:1.25;">4K ULTRA VIP PASS</h4>
             <p style="font-size:0.72rem; color:var(--text-secondary); margin-top:4px; line-height:1.35;">Ultra High-Speed Buffering & Ad-Free Cinema</p>
-            <a href="https://nordvpn.com" target="_blank" class="btn-sponsor-claim" style="margin-top:10px; font-size:0.74rem; padding:6px 14px; text-decoration:none;">Claim Free Trial →</a>
+            <a href="https://www.profitableratecpmnetwork.com/x394gs0y8n?key=e1fbe8dd25c9a9d0b513857fc2667364" target="_blank" class="btn-sponsor-claim" style="margin-top:10px; font-size:0.74rem; padding:6px 14px; text-decoration:none;">Claim Free Trial →</a>
           </div>
           <div class="movie-card-info">
             <div class="movie-card-title" style="color:var(--accent-gold);">Recommended Sponsor</div>
