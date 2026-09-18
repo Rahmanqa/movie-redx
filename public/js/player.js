@@ -65,50 +65,18 @@ const DEFAULT_SERVERS = [
 
   // 🇮🇳 Working Dedicated Hindi & Multi-Audio Streaming Servers (In Last)
   {
-    id: 'vidlink_hindi',
-    name: 'Server 1 (Hindi)',
-    movieTemplate: 'https://vidlink.pro/movie/{id}?primaryLang=hi&info=false&autoplay=true',
-    tvTemplate: 'https://vidlink.pro/tv/{id}/{s}/{e}?primaryLang=hi&info=false&autoplay=true',
-    type: 'embed',
-    lang: 'hi'
-  },
-  {
     id: 'multiembed_hindi',
-    name: 'Server 2 (Hindi)',
+    name: 'Server 1 (Hindi)',
     movieTemplate: 'https://multiembed.mov/?video_id={id}&tmdb=1',
     tvTemplate: 'https://multiembed.mov/?video_id={id}&tmdb=1&s={s}&e={e}',
     type: 'embed',
     lang: 'hi'
   },
   {
-    id: 'vidsrccc_hindi',
-    name: 'Server 3 (Hindi)',
-    movieTemplate: 'https://vidsrc.cc/v2/embed/movie/{id}?lang=hi',
-    tvTemplate: 'https://vidsrc.cc/v2/embed/tv/{id}/{s}/{e}?lang=hi',
-    type: 'embed',
-    lang: 'hi'
-  },
-  {
-    id: 'autoembed_hindi',
-    name: 'Server 4 (Hindi)',
-    movieTemplate: 'https://player.autoembed.cc/embed/movie/{id}?lang=hi',
-    tvTemplate: 'https://player.autoembed.cc/embed/tv/{id}/{s}/{e}?lang=hi',
-    type: 'embed',
-    lang: 'hi'
-  },
-  {
-    id: 'vidsrc_hindi',
-    name: 'Server 5 (Hindi)',
-    movieTemplate: 'https://vidsrc.to/embed/movie/{id}?lang=hi',
-    tvTemplate: 'https://vidsrc.to/embed/tv/{id}/{s}/{e}?lang=hi',
-    type: 'embed',
-    lang: 'hi'
-  },
-  {
-    id: 'smashystream_hindi',
-    name: 'Server 6 (Hindi)',
-    movieTemplate: 'https://embed.smashystream.com/playere.php?tmdb={id}&lang=hi',
-    tvTemplate: 'https://embed.smashystream.com/playere.php?tmdb={id}&season={s}&episode={e}&lang=hi',
+    id: 'vidlink_hindi',
+    name: 'Server 2 (Hindi)',
+    movieTemplate: 'https://vidlink.pro/movie/{id}?primaryLang=hi&info=false&autoplay=true',
+    tvTemplate: 'https://vidlink.pro/tv/{id}/{s}/{e}?primaryLang=hi&info=false&autoplay=true',
     type: 'embed',
     lang: 'hi'
   }
@@ -618,17 +586,21 @@ function loadActiveStreamServer() {
   if (iframeEl) {
     iframeEl.style.display = 'block';
     const tmdbId = currentTmdbId || currentCustomId || '550';
+    const imdbId = currentMedia?.imdb_id || currentMedia?.external_ids?.imdb_id || tmdbId;
     let embedUrl = '';
 
     if (currentMediaType === 'tv') {
       const template = server.tvTemplate || server.movieTemplate || 'https://vidsrc.to/embed/tv/{id}/{s}/{e}';
       embedUrl = template
-        .replace('{id}', tmdbId)
-        .replace('{s}', currentSeason)
-        .replace('{e}', currentEpisode);
+        .replace(/{id}/g, tmdbId)
+        .replace(/{imdb}/g, imdbId)
+        .replace(/{s}/g, currentSeason)
+        .replace(/{e}/g, currentEpisode);
     } else {
       const template = server.movieTemplate || 'https://vidsrc.to/embed/movie/{id}';
-      embedUrl = template.replace('{id}', tmdbId);
+      embedUrl = template
+        .replace(/{id}/g, tmdbId)
+        .replace(/{imdb}/g, imdbId);
     }
 
     iframeEl.src = embedUrl;
