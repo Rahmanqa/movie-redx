@@ -21,24 +21,24 @@ const WATCHLIST_KEY = 'movieredx_watchlist';
 const DEFAULT_SERVERS = [
   // 🌐 Global High-Speed Streaming Servers (First)
   {
-    id: 'vidsrc',
+    id: 'vidsrc_me',
     name: 'Server 1',
-    movieTemplate: 'https://vidsrc.to/embed/movie/{id}',
-    tvTemplate: 'https://vidsrc.to/embed/tv/{id}/{s}/{e}',
+    movieTemplate: 'https://vidsrc.me/embed/movie?tmdb={id}',
+    tvTemplate: 'https://vidsrc.me/embed/tv?tmdb={id}&season={s}&episode={e}',
     type: 'embed'
   },
   {
     id: 'vidlink',
     name: 'Server 2',
-    movieTemplate: 'https://vidlink.pro/movie/{id}',
-    tvTemplate: 'https://vidlink.pro/tv/{id}/{s}/{e}',
+    movieTemplate: 'https://vidlink.pro/movie/{id}?autoplay=true',
+    tvTemplate: 'https://vidlink.pro/tv/{id}/{s}/{e}?autoplay=true',
     type: 'embed'
   },
   {
-    id: 'twoembed',
+    id: 'embed_su',
     name: 'Server 3',
-    movieTemplate: 'https://www.2embed.cc/embed/{id}',
-    tvTemplate: 'https://www.2embed.cc/embedtv/{id}&s={s}&e={e}',
+    movieTemplate: 'https://embed.su/embed/movie/{id}',
+    tvTemplate: 'https://embed.su/embed/tv/{id}/{s}/{e}',
     type: 'embed'
   },
   {
@@ -49,10 +49,10 @@ const DEFAULT_SERVERS = [
     type: 'embed'
   },
   {
-    id: 'smashystream',
+    id: 'twoembed',
     name: 'Server 5',
-    movieTemplate: 'https://embed.smashystream.com/playere.php?tmdb={id}',
-    tvTemplate: 'https://embed.smashystream.com/playere.php?tmdb={id}&season={s}&episode={e}',
+    movieTemplate: 'https://www.2embed.cc/embed/{id}',
+    tvTemplate: 'https://www.2embed.cc/embedtv/{id}&s={s}&e={e}',
     type: 'embed'
   },
   {
@@ -253,7 +253,7 @@ function renderMediaInfo(media, type) {
   }
 
   if (titleEl) titleEl.textContent = title;
-  if (ratingEl) ratingEl.innerHTML = `★ ${rating} TMDB`;
+  if (ratingEl) ratingEl.innerHTML = `★ ${rating}`;
   if (qualityEl) qualityEl.textContent = media.quality || '4K ULTRA HD';
   if (yearEl) yearEl.textContent = year;
   if (runtimeEl) runtimeEl.textContent = runtime;

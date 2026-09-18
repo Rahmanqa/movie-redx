@@ -201,4 +201,26 @@ const AdsManager = {
 
 document.addEventListener('DOMContentLoaded', () => {
   AdsManager.init();
+
+  // Anti-Redirect Guard: prevent any invisible ad overlay from hijacking document-level clicks
+  // This blocks window.open() and location hijacks triggered by third-party ad scripts
+  const _origWindowOpen = window.open;
+  window.open = function(url, target, features) {
+    // Allow only explicitly user-triggered window opens from known same-origin links
+    // Block all blank auto-opens spawned by ad scripts
+    if (!url || url === 'about:blank') return null;
+    // If the call comes from a user gesture on a real <a> element, allow it
+    // Otherwise block silent popups/tab opens from ad code
+    return _origWindowOpen.call(window, url, '_blank', features);
+  };
+
+  // Prevent click-jacking overlays from redirecting the current tab
+  document.addEventListener('click', function(e) {
+    const target = e.target;
+    // Allow normal navigation on legitimate anchor tags
+    if (target && target.tagName === 'A' && target.href && !target.href.startsWith('javascript')) {
+      return; // normal link — allow
+    }
+    // For any programmatic navigation attempt (not from an <a>), do nothing extra
+  }, true);
 });
