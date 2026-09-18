@@ -462,6 +462,19 @@ function populateSettingsForms() {
   document.getElementById('set-bannerplayer-enabled').checked = Boolean(bp.enabled);
   document.getElementById('set-bannerplayer-html').value = bp.html || '';
 
+  // Adsterra Dedicated Units
+  const adst = m.adsterra || {};
+  const elSocial = document.getElementById('set-adsterra-socialbar');
+  const elPop = document.getElementById('set-adsterra-popunder');
+  const elLead = document.getElementById('set-adsterra-leaderboard');
+  const elSide = document.getElementById('set-adsterra-sidebar');
+  const elDirect = document.getElementById('set-adsterra-directlink');
+  if (elSocial) elSocial.value = adst.socialBarScript || '';
+  if (elPop) elPop.value = adst.popunderScript || '';
+  if (elLead) elLead.value = adst.leaderboardCode || '';
+  if (elSide) elSide.value = adst.sidebarCode || '';
+  if (elDirect) elDirect.value = adst.directLinkUrl || '';
+
   // Custom Script
   document.getElementById('set-custom-script').value = m.customScript || '';
 
@@ -500,6 +513,14 @@ async function saveMonetization(e) {
       bannerPlayerBottom: {
         enabled: document.getElementById('set-bannerplayer-enabled').checked,
         html: document.getElementById('set-bannerplayer-html').value
+      },
+      adsterra: {
+        enabled: true,
+        socialBarScript: document.getElementById('set-adsterra-socialbar') ? document.getElementById('set-adsterra-socialbar').value.trim() : '',
+        popunderScript: document.getElementById('set-adsterra-popunder') ? document.getElementById('set-adsterra-popunder').value.trim() : '',
+        leaderboardCode: document.getElementById('set-adsterra-leaderboard') ? document.getElementById('set-adsterra-leaderboard').value.trim() : '',
+        sidebarCode: document.getElementById('set-adsterra-sidebar') ? document.getElementById('set-adsterra-sidebar').value.trim() : '',
+        directLinkUrl: document.getElementById('set-adsterra-directlink') ? document.getElementById('set-adsterra-directlink').value.trim() : ''
       },
       customScript: document.getElementById('set-custom-script').value
     }

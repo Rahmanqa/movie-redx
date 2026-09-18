@@ -292,14 +292,56 @@
           </div>
         </div>
 
+        <!-- Adsterra Dedicated Ad Units -->
+        <div class="admin-panel-card" style="border: 1px solid rgba(229, 9, 20, 0.4); background: linear-gradient(145deg, rgba(20, 25, 38, 0.9), rgba(30, 15, 25, 0.9));">
+          <div class="panel-title-row">
+            <div>
+              <h3 style="display:flex; align-items:center; gap:8px;">
+                <span style="background:var(--primary); color:#fff; font-size:0.75rem; padding:2px 8px; border-radius:4px;">RECOMMENDED</span>
+                <span>3. Adsterra Ad Network Integration</span>
+              </h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top:4px;">
+                Paste your Adsterra Zone codes below for maximum streaming CPM revenue.
+              </p>
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group full">
+              <label>Adsterra Social Bar Code (In-Page Push Tag)</label>
+              <textarea id="set-adsterra-socialbar" class="form-textarea" rows="2" placeholder="<script type='text/javascript' src='//plXXXXX.highcpmgate.com/...'></script>"></textarea>
+            </div>
+
+            <div class="form-group full">
+              <label>Adsterra Popunder Code</label>
+              <textarea id="set-adsterra-popunder" class="form-textarea" rows="2" placeholder="<script type='text/javascript' src='//plXXXXX.highcpmgate.com/...'></script>"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label>Adsterra 728x90 Banner Tag (Header / Leaderboard)</label>
+              <textarea id="set-adsterra-leaderboard" class="form-textarea" rows="4" placeholder="<script type='text/javascript'>atOptions = {'key' : '...', 'format' : 'iframe', 'height' : 90, 'width' : 728};</script><script type='text/javascript' src='//www.highperformanceformat.com/.../invoke.js'></script>"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label>Adsterra 300x250 Banner Tag (Sidebar / Watch Room)</label>
+              <textarea id="set-adsterra-sidebar" class="form-textarea" rows="4" placeholder="<script type='text/javascript'>atOptions = {'key' : '...', 'format' : 'iframe', 'height' : 250, 'width' : 300};</script><script type='text/javascript' src='//www.highperformanceformat.com/.../invoke.js'></script>"></textarea>
+            </div>
+
+            <div class="form-group full">
+              <label>Adsterra Direct Link (Smartlink URL for custom buttons)</label>
+              <input type="url" id="set-adsterra-directlink" class="form-input" placeholder="https://www.highperformanceformat.com/...">
+            </div>
+          </div>
+        </div>
+
         <!-- Custom Script Injection -->
         <div class="admin-panel-card">
           <div class="panel-title-row">
-            <h3>3. Ad Network JavaScript Injection</h3>
+            <h3>4. Additional Ad Network & Analytics Tags</h3>
           </div>
           <div class="form-group">
-            <label>Ad Network Tag (e.g. Google AdSense, Clean Banner scripts)</label>
-            <textarea id="set-custom-script" class="form-textarea" rows="4" placeholder="<script type='text/javascript' src='...'></script>"></textarea>
+            <label>Custom JavaScript Tags (e.g. Google Analytics, PopAds, Monetag)</label>
+            <textarea id="set-custom-script" class="form-textarea" rows="3" placeholder="<script type='text/javascript' src='...'></script>"></textarea>
           </div>
         </div>
 
