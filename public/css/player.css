@@ -190,6 +190,21 @@
   font-weight: 800;
 }
 
+.server-hindi-btn {
+  border-color: rgba(245, 197, 24, 0.35);
+}
+
+.server-hindi-btn:hover {
+  border-color: rgba(245, 197, 24, 0.7);
+}
+
+.server-hindi-btn.active {
+  background: linear-gradient(135deg, var(--primary), #b85d00);
+  border-color: var(--accent-gold);
+  color: #fff;
+  box-shadow: 0 2px 12px rgba(245, 197, 24, 0.35);
+}
+
 .player-action-buttons {
   display: flex;
   align-items: center;

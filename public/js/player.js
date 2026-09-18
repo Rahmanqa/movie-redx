@@ -19,30 +19,7 @@ const WATCHLIST_KEY = 'movieredx_watchlist';
 
 // Default Fallback Streaming Embed Servers
 const DEFAULT_SERVERS = [
-  {
-    id: 'vidsrc_hindi',
-    name: 'Server 1 (Hindi)',
-    movieTemplate: 'https://vidsrc.to/embed/movie/{id}?lang=hi',
-    tvTemplate: 'https://vidsrc.to/embed/tv/{id}/{s}/{e}?lang=hi',
-    type: 'embed',
-    lang: 'hi'
-  },
-  {
-    id: 'vidlink_hindi',
-    name: 'Server 2 (Hindi)',
-    movieTemplate: 'https://vidlink.pro/movie/{id}?primaryLang=hi&info=false&autoplay=true',
-    tvTemplate: 'https://vidlink.pro/tv/{id}/{s}/{e}?primaryLang=hi&info=false&autoplay=true',
-    type: 'embed',
-    lang: 'hi'
-  },
-  {
-    id: 'autoembed_hindi',
-    name: 'Server 3 (Hindi)',
-    movieTemplate: 'https://player.autoembed.cc/embed/movie/{id}?lang=hi',
-    tvTemplate: 'https://player.autoembed.cc/embed/tv/{id}/{s}/{e}?lang=hi',
-    type: 'embed',
-    lang: 'hi'
-  },
+  // 🌐 Global High-Speed Streaming Servers (First)
   {
     id: 'vidsrc',
     name: 'Server 1',
@@ -84,6 +61,56 @@ const DEFAULT_SERVERS = [
     movieTemplate: 'https://moviesapi.club/movie/{id}',
     tvTemplate: 'https://moviesapi.club/tv/{id}-{s}-{e}',
     type: 'embed'
+  },
+
+  // 🇮🇳 Working Dedicated Hindi & Multi-Audio Streaming Servers (In Last)
+  {
+    id: 'vidlink_hindi',
+    name: 'Server 1 (Hindi)',
+    movieTemplate: 'https://vidlink.pro/movie/{id}?primaryLang=hi&info=false&autoplay=true',
+    tvTemplate: 'https://vidlink.pro/tv/{id}/{s}/{e}?primaryLang=hi&info=false&autoplay=true',
+    type: 'embed',
+    lang: 'hi'
+  },
+  {
+    id: 'multiembed_hindi',
+    name: 'Server 2 (Hindi)',
+    movieTemplate: 'https://multiembed.mov/?video_id={id}&tmdb=1',
+    tvTemplate: 'https://multiembed.mov/?video_id={id}&tmdb=1&s={s}&e={e}',
+    type: 'embed',
+    lang: 'hi'
+  },
+  {
+    id: 'vidsrccc_hindi',
+    name: 'Server 3 (Hindi)',
+    movieTemplate: 'https://vidsrc.cc/v2/embed/movie/{id}?lang=hi',
+    tvTemplate: 'https://vidsrc.cc/v2/embed/tv/{id}/{s}/{e}?lang=hi',
+    type: 'embed',
+    lang: 'hi'
+  },
+  {
+    id: 'autoembed_hindi',
+    name: 'Server 4 (Hindi)',
+    movieTemplate: 'https://player.autoembed.cc/embed/movie/{id}?lang=hi',
+    tvTemplate: 'https://player.autoembed.cc/embed/tv/{id}/{s}/{e}?lang=hi',
+    type: 'embed',
+    lang: 'hi'
+  },
+  {
+    id: 'vidsrc_hindi',
+    name: 'Server 5 (Hindi)',
+    movieTemplate: 'https://vidsrc.to/embed/movie/{id}?lang=hi',
+    tvTemplate: 'https://vidsrc.to/embed/tv/{id}/{s}/{e}?lang=hi',
+    type: 'embed',
+    lang: 'hi'
+  },
+  {
+    id: 'smashystream_hindi',
+    name: 'Server 6 (Hindi)',
+    movieTemplate: 'https://embed.smashystream.com/playere.php?tmdb={id}&lang=hi',
+    tvTemplate: 'https://embed.smashystream.com/playere.php?tmdb={id}&season={s}&episode={e}&lang=hi',
+    type: 'embed',
+    lang: 'hi'
   }
 ];
 
@@ -132,19 +159,33 @@ async function initWatchRoom() {
   initPrerollAd();
 }
 
+function sortServersGlobalFirst(servers) {
+  const globals = [];
+  const hindis = [];
+  servers.forEach(s => {
+    const isHindi = s.lang === 'hi' || /hindi/i.test(s.id) || /hindi/i.test(s.name);
+    if (isHindi) {
+      hindis.push(s);
+    } else {
+      globals.push(s);
+    }
+  });
+  return [...globals, ...hindis];
+}
+
 // Load Stream Servers from Settings
 async function loadServerConfigs() {
   try {
     const res = await fetch('/api/settings');
     const data = await res.json();
     if (data.success && data.settings && Array.isArray(data.settings.streamServers) && data.settings.streamServers.length > 0) {
-      availableServers = data.settings.streamServers;
+      availableServers = sortServersGlobalFirst(data.settings.streamServers);
       return;
     }
   } catch (e) {
     console.warn('Using default stream server templates:', e);
   }
-  availableServers = DEFAULT_SERVERS;
+  availableServers = sortServersGlobalFirst(DEFAULT_SERVERS);
 }
 
 
@@ -454,23 +495,24 @@ function renderServerButtons() {
   const container = document.getElementById('stream-servers-list');
   if (!container) return;
 
+  let globalCounter = 0;
+  let hindiCounter = 0;
+
   let html = '';
   availableServers.forEach((server, idx) => {
-    let displayName = server.name || `Server ${idx + 1}`;
+    let displayName = '';
+    const isHindi = server.lang === 'hi' || /hindi/i.test(server.id) || /hindi/i.test(server.name);
     
-    // Normalize and clean up names to standard clean format:
-    // "Server 1 (Hindi)", "Server 2 (Hindi)", "Server 3 (Hindi)", "Server 1", "Server 2", etc.
-    if (server.lang === 'hi' || /hindi/i.test(server.id) || /hindi/i.test(displayName)) {
-      const numMatch = displayName.match(/\d+/) || [idx + 1];
-      displayName = `Server ${numMatch[0]} (Hindi)`;
+    if (isHindi) {
+      hindiCounter++;
+      displayName = `Server ${hindiCounter} (Hindi)`;
     } else {
-      const numMatch = displayName.match(/\d+/);
-      const sNum = numMatch ? numMatch[0] : (idx + 1);
-      displayName = `Server ${sNum}`;
+      globalCounter++;
+      displayName = `Server ${globalCounter}`;
     }
 
     html += `
-      <button class="server-btn ${idx === currentServerIndex ? 'active' : ''}" onclick="switchStreamServer(${idx})" title="Stream on ${displayName}">
+      <button class="server-btn ${idx === currentServerIndex ? 'active' : ''} ${isHindi ? 'server-hindi-btn' : ''}" onclick="switchStreamServer(${idx})" title="Stream on ${displayName}">
         ${displayName}
       </button>
     `;
