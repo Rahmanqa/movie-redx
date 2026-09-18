@@ -5,7 +5,7 @@
   "streamServers": [
     {
       "id": "vidsrc_hindi",
-      "name": "🇮🇳 Hindi Server 1 (VidSrc Hindi)",
+      "name": "Server 1 (Hindi)",
       "movieTemplate": "https://vidsrc.to/embed/movie/{id}?lang=hi",
       "tvTemplate": "https://vidsrc.to/embed/tv/{id}/{s}/{e}?lang=hi",
       "type": "embed",
@@ -13,7 +13,7 @@
     },
     {
       "id": "vidlink_hindi",
-      "name": "🇮🇳 Hindi Server 2 (VidLink Hindi)",
+      "name": "Server 2 (Hindi)",
       "movieTemplate": "https://vidlink.pro/movie/{id}?primaryLang=hi&info=false&autoplay=true",
       "tvTemplate": "https://vidlink.pro/tv/{id}/{s}/{e}?primaryLang=hi&info=false&autoplay=true",
       "type": "embed",
@@ -21,7 +21,7 @@
     },
     {
       "id": "autoembed_hindi",
-      "name": "🇮🇳 Hindi Server 3 (AutoEmbed Hindi)",
+      "name": "Server 3 (Hindi)",
       "movieTemplate": "https://player.autoembed.cc/embed/movie/{id}?lang=hi",
       "tvTemplate": "https://player.autoembed.cc/embed/tv/{id}/{s}/{e}?lang=hi",
       "type": "embed",
@@ -29,42 +29,42 @@
     },
     {
       "id": "vidsrc",
-      "name": "Server 1 (VidSrc Fast HD)",
+      "name": "Server 1",
       "movieTemplate": "https://vidsrc.to/embed/movie/{id}",
       "tvTemplate": "https://vidsrc.to/embed/tv/{id}/{s}/{e}",
       "type": "embed"
     },
     {
       "id": "vidlink",
-      "name": "Server 2 (VidLink Ultra 4K)",
+      "name": "Server 2",
       "movieTemplate": "https://vidlink.pro/movie/{id}",
       "tvTemplate": "https://vidlink.pro/tv/{id}/{s}/{e}",
       "type": "embed"
     },
     {
       "id": "twoembed",
-      "name": "Server 3 (2Embed Multi-Sub)",
+      "name": "Server 3",
       "movieTemplate": "https://www.2embed.cc/embed/{id}",
       "tvTemplate": "https://www.2embed.cc/embedtv/{id}&s={s}&e={e}",
       "type": "embed"
     },
     {
       "id": "autoembed",
-      "name": "Server 4 (AutoEmbed Player)",
+      "name": "Server 4",
       "movieTemplate": "https://player.autoembed.cc/embed/movie/{id}",
       "tvTemplate": "https://player.autoembed.cc/embed/tv/{id}/{s}/{e}",
       "type": "embed"
     },
     {
       "id": "smashystream",
-      "name": "Server 5 (Smashy Stream)",
+      "name": "Server 5",
       "movieTemplate": "https://embed.smashystream.com/playere.php?tmdb={id}",
       "tvTemplate": "https://embed.smashystream.com/playere.php?tmdb={id}&season={s}&episode={e}",
       "type": "embed"
     },
     {
       "id": "moviesapi",
-      "name": "Server 6 (MoviesAPI Club)",
+      "name": "Server 6",
       "movieTemplate": "https://moviesapi.club/movie/{id}",
       "tvTemplate": "https://moviesapi.club/tv/{id}-{s}-{e}",
       "type": "embed"
@@ -76,28 +76,28 @@
       "duration": 5,
       "sponsorTitle": "🔥 MOVIE REDX 4K Stream Pass",
       "sponsorDescription": "Enjoy high-speed 4K streaming with zero lag on all devices.",
-      "sponsorUrl": "",
+      "sponsorUrl": "https://nordvpn.com",
       "ctaText": "Claim Free Access →",
       "videoUrl": ""
     },
     "bannerTop": {
-      "enabled": false,
-      "html": ""
+      "enabled": true,
+      "html": "<div style=\"background:rgba(255,255,255,0.03); border:1px dashed rgba(229,9,20,0.35); border-radius:8px; padding:8px 16px; display:flex; align-items:center; justify-content:space-between; gap:12px; cursor:pointer;\"><div style=\"display:flex; align-items:center; gap:8px;\"><span style=\"background:#e50914; color:#fff; font-size:0.6rem; font-weight:800; padding:2px 6px; border-radius:3px;\">SPONSORED</span><span style=\"font-size:0.82rem; font-weight:700; color:#fff;\">Stream All Movies in 4K HDR with Ultra-Fast Speed</span></div><span style=\"color:#f5c518; font-size:0.75rem; font-weight:800;\">Watch Free Trial →</span></div>"
     },
     "bannerSidebar": {
       "enabled": true,
-      "html": "<div style=\"background:rgba(255,255,255,0.03); border:1px solid rgba(229,9,20,0.3); border-radius:8px; padding:12px; text-align:center;\"><span style=\"color:#f5c518; font-weight:800; font-size:0.75rem;\">⚡ MOVIE REDX VIP</span><p style=\"font-size:0.8rem; color:#aaa; margin:6px 0;\">Stream 50,000+ Movies & TV Shows in 4K UHD with No Buffering.</p></div>"
+      "html": "<div style=\"background:rgba(255,255,255,0.03); border:1px solid rgba(229,9,20,0.3); border-radius:8px; padding:12px; text-align:center;\"><span style=\"color:#f5c518; font-weight:800; font-size:0.75rem;\">⚡ MOVIE REDX VIP PASS</span><p style=\"font-size:0.8rem; color:#aaa; margin:6px 0;\">Stream 50,000+ Movies & TV Shows in 4K UHD with No Buffering.</p><a href=\"#\" style=\"display:inline-block; background:#e50914; color:#fff; font-size:0.75rem; font-weight:800; padding:5px 12px; border-radius:4px; margin-top:4px;\">Get VIP for $4.99</a></div>"
     },
     "bannerPlayerBottom": {
-      "enabled": false,
-      "html": ""
+      "enabled": true,
+      "html": "<div style=\"background:linear-gradient(90deg, rgba(20,25,38,0.95), rgba(15,19,29,0.95)); border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:10px 16px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;\"><div style=\"display:flex; align-items:center; gap:10px;\"><span style=\"font-size:1.2rem;\">🛡️</span><div><div style=\"font-size:0.84rem; font-weight:800; color:#fff;\">Secure High-Speed Streaming with NordVPN (74% OFF)</div><div style=\"font-size:0.75rem; color:#a0a6b5;\">Protect your privacy, bypass buffering, and unlock global cinema.</div></div></div><a href=\"https://nordvpn.com\" target=\"_blank\" style=\"background:#e50914; color:#fff; font-size:0.78rem; font-weight:800; padding:6px 14px; border-radius:6px;\">Claim 74% Discount</a></div>"
     },
     "customScript": ""
   },
   "analytics": {
-    "totalImpressions": 3420,
-    "totalClicks": 240,
-    "estimatedRpm": 3.65,
-    "estimatedEarnings": 12.48
+    "totalImpressions": 4820,
+    "totalClicks": 340,
+    "estimatedRpm": 4.15,
+    "estimatedEarnings": 20.00
   }
 }

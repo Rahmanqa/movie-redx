@@ -15,6 +15,11 @@
 </head>
 <body>
 
+  <!-- TOP PROMO AD SLOT -->
+  <aside class="top-ad-banner-wrapper" id="top-ad-slot" style="display:none;" aria-label="Sponsor Advertisement">
+    <!-- Populated by ads.js if enabled -->
+  </aside>
+
   <!-- NAVBAR -->
   <header>
     <nav class="navbar">
@@ -29,6 +34,12 @@
           <span class="redx-tag">REDX</span>
         </div>
       </a>
+
+      <!-- INSTANT SEARCH ON WATCH PAGE -->
+      <div class="nav-search-bar">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="movie-search-input" placeholder="Search other movies..." aria-label="Search movies" autocomplete="off" onkeydown="if(event.key==='Enter'){window.location='index.html?q='+encodeURIComponent(this.value)}">
+      </div>
 
       <div class="nav-links">
         <a href="index.html" class="nav-link-item">
@@ -108,6 +119,9 @@
           </div>
         </div>
 
+        <!-- UNDER PLAYER MONETIZATION AD SLOT -->
+        <div id="player-bottom-ad-slot" style="display:none;" aria-label="Sponsor Promo"></div>
+
         <!-- TV SHOW SEASON & EPISODE PICKER (Shown only for TV series) -->
         <div class="tv-episodes-panel" id="tv-panel" style="display: none;">
           <div class="tv-episodes-header">
@@ -163,6 +177,9 @@
 
       <!-- RIGHT: SIDEBAR & RECOMMENDED TITLES -->
       <aside class="watch-sidebar-col">
+
+        <!-- DYNAMIC SIDEBAR AD SLOT -->
+        <div id="sidebar-ad-slot" style="display:none;" aria-label="Sponsor Promo"></div>
 
         <!-- FAST STREAM PASS BOX -->
         <div class="sidebar-box" style="border-color: rgba(229, 9, 20, 0.3); background: linear-gradient(145deg, #161224, #20101b);">

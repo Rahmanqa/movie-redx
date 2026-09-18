@@ -21,7 +21,7 @@ const WATCHLIST_KEY = 'movieredx_watchlist';
 const DEFAULT_SERVERS = [
   {
     id: 'vidsrc_hindi',
-    name: '🇮🇳 Hindi Server 1 (VidSrc Hindi)',
+    name: 'Server 1 (Hindi)',
     movieTemplate: 'https://vidsrc.to/embed/movie/{id}?lang=hi',
     tvTemplate: 'https://vidsrc.to/embed/tv/{id}/{s}/{e}?lang=hi',
     type: 'embed',
@@ -29,7 +29,7 @@ const DEFAULT_SERVERS = [
   },
   {
     id: 'vidlink_hindi',
-    name: '🇮🇳 Hindi Server 2 (VidLink Hindi)',
+    name: 'Server 2 (Hindi)',
     movieTemplate: 'https://vidlink.pro/movie/{id}?primaryLang=hi&info=false&autoplay=true',
     tvTemplate: 'https://vidlink.pro/tv/{id}/{s}/{e}?primaryLang=hi&info=false&autoplay=true',
     type: 'embed',
@@ -37,7 +37,7 @@ const DEFAULT_SERVERS = [
   },
   {
     id: 'autoembed_hindi',
-    name: '🇮🇳 Hindi Server 3 (AutoEmbed Hindi)',
+    name: 'Server 3 (Hindi)',
     movieTemplate: 'https://player.autoembed.cc/embed/movie/{id}?lang=hi',
     tvTemplate: 'https://player.autoembed.cc/embed/tv/{id}/{s}/{e}?lang=hi',
     type: 'embed',
@@ -45,42 +45,42 @@ const DEFAULT_SERVERS = [
   },
   {
     id: 'vidsrc',
-    name: 'Server 1 (VidSrc Fast HD)',
+    name: 'Server 1',
     movieTemplate: 'https://vidsrc.to/embed/movie/{id}',
     tvTemplate: 'https://vidsrc.to/embed/tv/{id}/{s}/{e}',
     type: 'embed'
   },
   {
     id: 'vidlink',
-    name: 'Server 2 (VidLink Ultra 4K)',
+    name: 'Server 2',
     movieTemplate: 'https://vidlink.pro/movie/{id}',
     tvTemplate: 'https://vidlink.pro/tv/{id}/{s}/{e}',
     type: 'embed'
   },
   {
     id: 'twoembed',
-    name: 'Server 3 (2Embed Multi-Sub)',
+    name: 'Server 3',
     movieTemplate: 'https://www.2embed.cc/embed/{id}',
     tvTemplate: 'https://www.2embed.cc/embedtv/{id}&s={s}&e={e}',
     type: 'embed'
   },
   {
     id: 'autoembed',
-    name: 'Server 4 (AutoEmbed Player)',
+    name: 'Server 4',
     movieTemplate: 'https://player.autoembed.cc/embed/movie/{id}',
     tvTemplate: 'https://player.autoembed.cc/embed/tv/{id}/{s}/{e}',
     type: 'embed'
   },
   {
     id: 'smashystream',
-    name: 'Server 5 (Smashy Stream)',
+    name: 'Server 5',
     movieTemplate: 'https://embed.smashystream.com/playere.php?tmdb={id}',
     tvTemplate: 'https://embed.smashystream.com/playere.php?tmdb={id}&season={s}&episode={e}',
     type: 'embed'
   },
   {
     id: 'moviesapi',
-    name: 'Server 6 (MoviesAPI Club)',
+    name: 'Server 6',
     movieTemplate: 'https://moviesapi.club/movie/{id}',
     tvTemplate: 'https://moviesapi.club/tv/{id}-{s}-{e}',
     type: 'embed'
@@ -456,9 +456,22 @@ function renderServerButtons() {
 
   let html = '';
   availableServers.forEach((server, idx) => {
+    let displayName = server.name || `Server ${idx + 1}`;
+    
+    // Normalize and clean up names to standard clean format:
+    // "Server 1 (Hindi)", "Server 2 (Hindi)", "Server 3 (Hindi)", "Server 1", "Server 2", etc.
+    if (server.lang === 'hi' || /hindi/i.test(server.id) || /hindi/i.test(displayName)) {
+      const numMatch = displayName.match(/\d+/) || [idx + 1];
+      displayName = `Server ${numMatch[0]} (Hindi)`;
+    } else {
+      const numMatch = displayName.match(/\d+/);
+      const sNum = numMatch ? numMatch[0] : (idx + 1);
+      displayName = `Server ${sNum}`;
+    }
+
     html += `
-      <button class="server-btn ${idx === currentServerIndex ? 'active' : ''}" onclick="switchStreamServer(${idx})">
-        ${server.name || `Server ${idx + 1}`}
+      <button class="server-btn ${idx === currentServerIndex ? 'active' : ''}" onclick="switchStreamServer(${idx})" title="Stream on ${displayName}">
+        ${displayName}
       </button>
     `;
   });
