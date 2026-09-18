@@ -13,8 +13,6 @@
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/player.css">
 
-  <!-- ADSTERRA POPUNDER -->
-  <script src="https://pl31401479.profitableratecpmnetwork.com/fd/e4/e6/fde4e6132ced57c57213b0f86bc166e2.js"></script>
 </head>
 <body>
 
@@ -73,12 +71,13 @@
             Your browser does not support HTML5 video playback.
           </video>
 
-          <!-- EMBED IFRAME STREAM (For TMDB Embed multi-servers) -->
+          <!-- EMBED IFRAME STREAM (For TMDB Embed multi-servers with anti-redirect protection) -->
           <iframe 
             id="embed-iframe-player" 
             class="embed-iframe-element" 
             allowfullscreen 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            sandbox="allow-scripts allow-same-origin allow-forms allow-presentation allow-fullscreen">
           </iframe>
 
         </div>

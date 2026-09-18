@@ -86,7 +86,7 @@
     "adsterra": {
       "enabled": true,
       "socialBarScript": "<script src=\"https://pl31401480.profitableratecpmnetwork.com/c5/07/e0/c507e042dea65dec4c1a932563878bad.js\"></script>",
-      "popunderScript": "<script src=\"https://pl31401479.profitableratecpmnetwork.com/fd/e4/e6/fde4e6132ced57c57213b0f86bc166e2.js\"></script>",
+      "popunderScript": "",
       "leaderboardCode": "<script type=\"text/javascript\">atOptions = {'key' : 'faf781d5f82a23c6093fdc9a1a3b2377', 'format' : 'iframe', 'height' : 90, 'width' : 728, 'params' : {}};</script><script type=\"text/javascript\" src=\"https://www.highrevenueformat.com/faf781d5f82a23c6093fdc9a1a3b2377/invoke.js\"></script>",
       "sidebarCode": "<script type=\"text/javascript\">atOptions = {'key' : '86f9a4f85e1d3fe5e8763a21cbb5cfdc', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {}};</script><script type=\"text/javascript\" src=\"https://www.highrevenueformat.com/86f9a4f85e1d3fe5e8763a21cbb5cfdc/invoke.js\"></script>",
       "directLinkUrl": "https://www.profitableratecpmnetwork.com/x394gs0y8n?key=e1fbe8dd25c9a9d0b513857fc2667364"
@@ -94,9 +94,9 @@
     "customScript": ""
   },
   "analytics": {
-    "totalImpressions": 4829,
+    "totalImpressions": 4839,
     "totalClicks": 340,
     "estimatedRpm": 4.15,
-    "estimatedEarnings": 71.04
+    "estimatedEarnings": 71.08
   }
 }

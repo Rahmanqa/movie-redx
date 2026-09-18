@@ -1,34 +1,102 @@
 {
-  "siteName": "CineStream",
-  "adminPin": "1234",
+  "siteName": "MOVIE REDX",
+  "adminPin": "8084",
+  "tmdbApiKey": "8265bd1679663a7ea12ac168da84d2e8",
+  "streamServers": [
+    {
+      "id": "vidsrc",
+      "name": "Server 1",
+      "movieTemplate": "https://vidsrc.to/embed/movie/{id}",
+      "tvTemplate": "https://vidsrc.to/embed/tv/{id}/{s}/{e}",
+      "type": "embed"
+    },
+    {
+      "id": "vidlink",
+      "name": "Server 2",
+      "movieTemplate": "https://vidlink.pro/movie/{id}",
+      "tvTemplate": "https://vidlink.pro/tv/{id}/{s}/{e}",
+      "type": "embed"
+    },
+    {
+      "id": "twoembed",
+      "name": "Server 3",
+      "movieTemplate": "https://www.2embed.cc/embed/{id}",
+      "tvTemplate": "https://www.2embed.cc/embedtv/{id}&s={s}&e={e}",
+      "type": "embed"
+    },
+    {
+      "id": "autoembed",
+      "name": "Server 4",
+      "movieTemplate": "https://player.autoembed.cc/embed/movie/{id}",
+      "tvTemplate": "https://player.autoembed.cc/embed/tv/{id}/{s}/{e}",
+      "type": "embed"
+    },
+    {
+      "id": "smashystream",
+      "name": "Server 5",
+      "movieTemplate": "https://embed.smashystream.com/playere.php?tmdb={id}",
+      "tvTemplate": "https://embed.smashystream.com/playere.php?tmdb={id}&season={s}&episode={e}",
+      "type": "embed"
+    },
+    {
+      "id": "moviesapi",
+      "name": "Server 6",
+      "movieTemplate": "https://moviesapi.club/movie/{id}",
+      "tvTemplate": "https://moviesapi.club/tv/{id}-{s}-{e}",
+      "type": "embed"
+    },
+    {
+      "id": "multiembed_hindi",
+      "name": "Server 1 (Hindi)",
+      "movieTemplate": "https://multiembed.mov/?video_id={id}&tmdb=1",
+      "tvTemplate": "https://multiembed.mov/?video_id={id}&tmdb=1&s={s}&e={e}",
+      "type": "embed",
+      "lang": "hi"
+    },
+    {
+      "id": "vidlink_hindi",
+      "name": "Server 2 (Hindi)",
+      "movieTemplate": "https://vidlink.pro/movie/{id}?primaryLang=hi&info=false&autoplay=true",
+      "tvTemplate": "https://vidlink.pro/tv/{id}/{s}/{e}?primaryLang=hi&info=false&autoplay=true",
+      "type": "embed",
+      "lang": "hi"
+    }
+  ],
   "monetization": {
     "preRoll": {
-      "enabled": true,
-      "duration": 6,
-      "sponsorTitle": "🔥 Exclusive Free Cinema Pass — Stream in Ultra HD",
-      "sponsorDescription": "Enjoy unrestricted high-speed streaming, zero buffering, and premium access. Click below to claim.",
-      "sponsorUrl": "https://www.profitableratecpmnetwork.com/xwh0p4b11?key=28302daec5dfcaa4dd7345a78366434a",
-      "ctaText": "Claim Free Access Now →",
-      "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
+      "enabled": false,
+      "duration": 5,
+      "sponsorTitle": "🔥 MOVIE REDX 4K Stream Pass",
+      "sponsorDescription": "Enjoy high-speed 4K streaming with zero lag on all devices.",
+      "sponsorUrl": "https://www.profitableratecpmnetwork.com/x394gs0y8n?key=e1fbe8dd25c9a9d0b513857fc2667364",
+      "ctaText": "Claim Free Access →"
     },
     "bannerTop": {
       "enabled": true,
-      "html": "<div style=\"display:flex; justify-content:center; align-items:center; width:100%; overflow:hidden;\"><script type=\"text/javascript\">atOptions = {'key' : '0fe9d2d751d0409f84370999aa570e04','format' : 'iframe','height' : 90,'width' : 728,'params' : {}};</script><script type=\"text/javascript\" src=\"https://www.highrevenueformat.com/0fe9d2d751d0409f84370999aa570e04/invoke.js\"></script></div>"
+      "html": "<div style=\"display:flex; justify-content:center; align-items:center; width:100%; overflow:hidden;\"><script type=\"text/javascript\">atOptions = {'key' : 'faf781d5f82a23c6093fdc9a1a3b2377', 'format' : 'iframe', 'height' : 90, 'width' : 728, 'params' : {}};</script><script type=\"text/javascript\" src=\"https://www.highrevenueformat.com/faf781d5f82a23c6093fdc9a1a3b2377/invoke.js\"></script></div>"
     },
     "bannerSidebar": {
       "enabled": true,
-      "html": "<div style=\"display:flex; justify-content:center; align-items:center; margin:10px auto;\"><script type=\"text/javascript\">atOptions = {'key' : '3a24000e5ba5656ace9e4cfd19440f86','format' : 'iframe','height' : 250,'width' : 300,'params' : {}};</script><script type=\"text/javascript\" src=\"https://www.highrevenueformat.com/3a24000e5ba5656ace9e4cfd19440f86/invoke.js\"></script></div>"
+      "html": "<div style=\"display:flex; justify-content:center; align-items:center; width:100%; overflow:hidden;\"><script type=\"text/javascript\">atOptions = {'key' : '86f9a4f85e1d3fe5e8763a21cbb5cfdc', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {}};</script><script type=\"text/javascript\" src=\"https://www.highrevenueformat.com/86f9a4f85e1d3fe5e8763a21cbb5cfdc/invoke.js\"></script></div>"
     },
     "bannerPlayerBottom": {
       "enabled": true,
-      "html": "<div style=\"width:100%; margin:15px 0;\"><script async=\"async\" data-cfasync=\"false\" src=\"https://pl31261619.profitableratecpmnetwork.com/433b30239567a78825a7370f76f8c49f/invoke.js\"></script><div id=\"container-433b30239567a78825a7370f76f8c49f\"></div></div>"
+      "html": "<div style=\"display:flex; justify-content:center; align-items:center; width:100%; overflow:hidden; margin: 10px 0;\"><script type=\"text/javascript\">atOptions = {'key' : 'faf781d5f82a23c6093fdc9a1a3b2377', 'format' : 'iframe', 'height' : 90, 'width' : 728, 'params' : {}};</script><script type=\"text/javascript\" src=\"https://www.highrevenueformat.com/faf781d5f82a23c6093fdc9a1a3b2377/invoke.js\"></script></div>"
     },
-    "customScript": "<script type=\"text/javascript\" src=\"https://pl31261610.profitableratecpmnetwork.com/3c/8c/4a/3c8c4a792e12eedee991c42f2b25a050.js\"></script>\n<script type=\"text/javascript\" src=\"https://pl31261611.profitableratecpmnetwork.com/4e/6e/ca/4e6eca3551518a455992044cc74f4c41.js\"></script>"
+    "adsterra": {
+      "enabled": true,
+      "socialBarScript": "<script src=\"https://pl31401480.profitableratecpmnetwork.com/c5/07/e0/c507e042dea65dec4c1a932563878bad.js\"></script>",
+      "popunderScript": "",
+      "leaderboardCode": "<script type=\"text/javascript\">atOptions = {'key' : 'faf781d5f82a23c6093fdc9a1a3b2377', 'format' : 'iframe', 'height' : 90, 'width' : 728, 'params' : {}};</script><script type=\"text/javascript\" src=\"https://www.highrevenueformat.com/faf781d5f82a23c6093fdc9a1a3b2377/invoke.js\"></script>",
+      "sidebarCode": "<script type=\"text/javascript\">atOptions = {'key' : '86f9a4f85e1d3fe5e8763a21cbb5cfdc', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {}};</script><script type=\"text/javascript\" src=\"https://www.highrevenueformat.com/86f9a4f85e1d3fe5e8763a21cbb5cfdc/invoke.js\"></script>",
+      "directLinkUrl": "https://www.profitableratecpmnetwork.com/x394gs0y8n?key=e1fbe8dd25c9a9d0b513857fc2667364"
+    },
+    "customScript": ""
   },
   "analytics": {
-    "totalImpressions": 2854,
-    "totalClicks": 195,
-    "estimatedRpm": 3.65,
-    "estimatedEarnings": 10.57
+    "totalImpressions": 4839,
+    "totalClicks": 340,
+    "estimatedRpm": 4.15,
+    "estimatedEarnings": 71.08
   }
 }
