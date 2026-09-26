@@ -6,6 +6,21 @@ const fs = require('fs');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Security and Isolation Headers Middleware
+app.use((req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  res.setHeader('Permissions-Policy', 'geolocation=(), camera=(), microphone=()');
+  next();
+});
+
+// Universal Google Search Console HTML File Verification Handler
+app.get('/google:code.html', (req, res) => {
+  const code = req.params.code;
+  res.type('text/html').send(`google-site-verification: google${code}.html`);
+});
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
