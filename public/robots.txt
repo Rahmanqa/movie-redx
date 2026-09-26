@@ -4,4 +4,4 @@ Disallow: /admin.html
 Disallow: /api/admin/
 
 # Sitemap location for Googlebot, Bingbot & Search Engines
-Sitemap: https://movieredx.com/sitemap.xml
+Sitemap: https://movie-redx-1.onrender.com/sitemap.xml
