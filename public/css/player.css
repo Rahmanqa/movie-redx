@@ -182,27 +182,47 @@
   transform: translateY(-1px);
 }
 
+.server-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #6a7285;
+  margin-right: 6px;
+  display: inline-block;
+  transition: all 0.25s ease;
+}
+
+.server-btn:hover .server-status-dot {
+  background: #fff;
+}
+
+.server-btn.active .server-status-dot {
+  background: #00ff88;
+  box-shadow: 0 0 8px #00ff88, 0 0 2px #fff;
+}
+
 .server-btn.active {
-  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-  border-color: var(--primary);
-  color: #fff;
-  box-shadow: 0 2px 10px rgba(229, 9, 20, 0.45);
+  background: #ffffff !important;
+  color: #0b0e14 !important;
+  border-color: #ffffff !important;
   font-weight: 800;
+  box-shadow: 0 4px 18px rgba(255, 255, 255, 0.4), 0 0 10px rgba(0, 255, 136, 0.3) !important;
+  transform: translateY(-1px);
 }
 
 .server-hindi-btn {
-  border-color: rgba(245, 197, 24, 0.35);
+  border-color: rgba(245, 197, 24, 0.45);
 }
 
 .server-hindi-btn:hover {
-  border-color: rgba(245, 197, 24, 0.7);
+  border-color: rgba(245, 197, 24, 0.8);
 }
 
 .server-hindi-btn.active {
-  background: linear-gradient(135deg, var(--primary), #b85d00);
-  border-color: var(--accent-gold);
-  color: #fff;
-  box-shadow: 0 2px 12px rgba(245, 197, 24, 0.35);
+  background: #ffffff !important;
+  color: #0b0e14 !important;
+  border-color: var(--accent-gold) !important;
+  box-shadow: 0 4px 20px rgba(245, 197, 24, 0.45), 0 0 12px rgba(0, 255, 136, 0.4) !important;
 }
 
 .player-action-buttons {

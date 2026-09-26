@@ -63,10 +63,18 @@ const DEFAULT_SERVERS = [
     type: 'embed'
   },
 
-  // 🇮🇳 Working Dedicated Hindi & Multi-Audio Streaming Servers (In Last)
+  // 🇮🇳 Dedicated Hindi & Multi-Audio Streaming Servers (From Screenscape, MultiEmbed, VidLink)
+  {
+    id: 'screenscape_hindi',
+    name: 'Server 1 (Hindi)',
+    movieTemplate: 'https://screenscape.me/embed/movie/{id}',
+    tvTemplate: 'https://screenscape.me/embed/tv/{id}/{s}/{e}',
+    type: 'embed',
+    lang: 'hi'
+  },
   {
     id: 'multiembed_hindi',
-    name: 'Server 1 (Hindi)',
+    name: 'Server 2 (Hindi)',
     movieTemplate: 'https://multiembed.mov/?video_id={id}&tmdb=1',
     tvTemplate: 'https://multiembed.mov/?video_id={id}&tmdb=1&s={s}&e={e}',
     type: 'embed',
@@ -74,9 +82,17 @@ const DEFAULT_SERVERS = [
   },
   {
     id: 'vidlink_hindi',
-    name: 'Server 2 (Hindi)',
+    name: 'Server 3 (Hindi)',
     movieTemplate: 'https://vidlink.pro/movie/{id}?primaryLang=hi&info=false&autoplay=true',
     tvTemplate: 'https://vidlink.pro/tv/{id}/{s}/{e}?primaryLang=hi&info=false&autoplay=true',
+    type: 'embed',
+    lang: 'hi'
+  },
+  {
+    id: 'vidsrc_icu',
+    name: 'Server 4 (Hindi)',
+    movieTemplate: 'https://vidsrc.icu/embed/movie/{id}',
+    tvTemplate: 'https://vidsrc.icu/embed/tv/{id}/{s}/{e}',
     type: 'embed',
     lang: 'hi'
   }
@@ -259,6 +275,30 @@ function renderMediaInfo(media, type) {
   if (runtimeEl) runtimeEl.textContent = runtime;
   if (genresEl) genresEl.textContent = genres;
   if (synopsisEl) synopsisEl.textContent = media.overview || media.description || 'Enjoy watching in full HD quality with fast streaming servers.';
+
+  // Update dynamic JSON-LD Schema for Google Search indexing
+  const schemaEl = document.getElementById('movie-schema-jsonld');
+  if (schemaEl) {
+    try {
+      schemaEl.textContent = JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": type === 'tv' ? "TVSeries" : "Movie",
+        "name": title,
+        "datePublished": releaseDate,
+        "image": media.poster_path ? (TMDB_IMG_BASE + media.poster_path) : (media.poster || ''),
+        "description": media.overview || media.description || 'Stream for free in 4K Ultra HD on MOVIE REDX.',
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": rating,
+          "bestRating": "10",
+          "ratingCount": media.vote_count || 150
+        },
+        "genre": genres
+      });
+    } catch(e) {
+      console.warn('Schema injection warning:', e);
+    }
+  }
 
   // Watchlist button
   if (watchlistBtn) {
@@ -479,9 +519,11 @@ function renderServerButtons() {
       displayName = `Server ${globalCounter}`;
     }
 
+    const isActive = idx === currentServerIndex;
     html += `
-      <button class="server-btn ${idx === currentServerIndex ? 'active' : ''} ${isHindi ? 'server-hindi-btn' : ''}" onclick="switchStreamServer(${idx})" title="Stream on ${displayName}">
-        ${displayName}
+      <button class="server-btn ${isActive ? 'active' : ''} ${isHindi ? 'server-hindi-btn' : ''}" onclick="switchStreamServer(${idx})" title="Stream on ${displayName}">
+        <span class="server-status-dot"></span>
+        <span class="server-name-text">${displayName}</span>
       </button>
     `;
   });

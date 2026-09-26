@@ -46,8 +46,16 @@
       "type": "embed"
     },
     {
-      "id": "multiembed_hindi",
+      "id": "screenscape_hindi",
       "name": "Server 1 (Hindi)",
+      "movieTemplate": "https://screenscape.me/embed/movie/{id}",
+      "tvTemplate": "https://screenscape.me/embed/tv/{id}/{s}/{e}",
+      "type": "embed",
+      "lang": "hi"
+    },
+    {
+      "id": "multiembed_hindi",
+      "name": "Server 2 (Hindi)",
       "movieTemplate": "https://multiembed.mov/?video_id={id}&tmdb=1",
       "tvTemplate": "https://multiembed.mov/?video_id={id}&tmdb=1&s={s}&e={e}",
       "type": "embed",
@@ -55,9 +63,17 @@
     },
     {
       "id": "vidlink_hindi",
-      "name": "Server 2 (Hindi)",
+      "name": "Server 3 (Hindi)",
       "movieTemplate": "https://vidlink.pro/movie/{id}?primaryLang=hi&info=false&autoplay=true",
       "tvTemplate": "https://vidlink.pro/tv/{id}/{s}/{e}?primaryLang=hi&info=false&autoplay=true",
+      "type": "embed",
+      "lang": "hi"
+    },
+    {
+      "id": "vidsrc_icu",
+      "name": "Server 4 (Hindi)",
+      "movieTemplate": "https://vidsrc.icu/embed/movie/{id}",
+      "tvTemplate": "https://vidsrc.icu/embed/tv/{id}/{s}/{e}",
       "type": "embed",
       "lang": "hi"
     }

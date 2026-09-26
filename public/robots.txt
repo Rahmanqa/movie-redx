@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /api/admin/
+
+# Sitemap location for Googlebot, Bingbot & Search Engines
+Sitemap: https://movieredx.com/sitemap.xml

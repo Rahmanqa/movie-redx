@@ -12,7 +12,59 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <meta name="keywords" content="MOVIE REDX, movie redx, redx movie, watch movies online free, free movies, hindi movies online, watch hindi movies free, bollywood movies free, hollywood hindi dubbed movies, 4k movies streaming, watch web series online, cinema stream">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="author" content="MOVIE REDX">
+  <link rel="canonical" href="https://movieredx.com/">
 
+  <!-- Open Graph / Social Media Sharing -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="MOVIE REDX">
+  <meta property="og:url" content="https://movieredx.com/">
+  <meta property="og:title" content="MOVIE REDX - Watch Full Free Movies & TV Shows in 4K/HD | Hindi & English">
+  <meta property="og:description" content="Stream 50,000+ free movies and TV shows in 4K & Ultra HD on MOVIE REDX. Watch latest Bollywood Hindi movies, Hollywood Hindi dubbed, South cinema, and web series without sign-up.">
+  <meta property="og:image" content="https://image.tmdb.org/t/p/w1280/1E5baAaEse26fej7uHcjOgEE2t2.jpg">
+  <meta property="og:locale" content="en_US">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="MOVIE REDX - Watch Free Movies & TV Shows Online in 4K/HD">
+  <meta name="twitter:description" content="Stream thousands of free movies and TV shows in 4K and Ultra HD on MOVIE REDX with fast multi-server streaming.">
+  <meta name="twitter:image" content="https://image.tmdb.org/t/p/w1280/1E5baAaEse26fej7uHcjOgEE2t2.jpg">
+
+  <!-- Google Search Console Verification Placeholder -->
+  <meta name="google-site-verification" content="ENTER_YOUR_GOOGLE_VERIFICATION_CODE_HERE">
+
+  <!-- Structured Data (JSON-LD) for Google Search Rich Snippets & Sitelinks Search Box -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://movieredx.com/#website",
+        "url": "https://movieredx.com/",
+        "name": "MOVIE REDX",
+        "description": "Watch full free movies and TV shows online in 4K & Ultra HD quality.",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://movieredx.com/index.html?q={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://movieredx.com/#organization",
+        "name": "MOVIE REDX",
+        "url": "https://movieredx.com/",
+        "logo": "https://movieredx.com/apple-touch-icon.png"
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 
@@ -91,8 +143,8 @@
     </div>
   </section>
 
-  <!-- DISCOVERY CONTROLS (Media Tabs, Genre Pills, Filters) -->
-  <section class="discovery-controls">
+  <!-- DISCOVERY CONTROLS & ADVANCED FILTER SUITE -->
+  <section class="discovery-controls" id="discovery-section">
     <!-- Media Type Tabs -->
     <div class="media-type-tabs" role="tablist">
       <button class="media-tab active" data-type="trending">🔥 Trending Now</button>
@@ -119,44 +171,110 @@
       <button class="genre-pill" data-genre="10749">💖 Romance</button>
     </div>
 
-    <!-- Filters Row -->
-    <div class="filter-dropdowns-row">
-      <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
-        <label for="filter-language" style="font-size: 0.8rem; color: var(--text-secondary);">Language:</label>
-        <select id="filter-language" class="filter-select">
-          <option value="">🌐 All Languages</option>
-          <option value="hi">🇮🇳 Hindi (हिन्दी / Bollywood)</option>
-          <option value="te">🇮🇳 Telugu (Tollywood)</option>
-          <option value="ta">🇮🇳 Tamil (Kollywood)</option>
-          <option value="en">🇺🇸 English (Hollywood)</option>
-          <option value="ko">🇰🇷 Korean (K-Drama)</option>
-          <option value="ja">🇯🇵 Japanese (Anime)</option>
-          <option value="es">🇪🇸 Spanish (Español)</option>
-        </select>
-
-        <label for="filter-year" style="font-size: 0.8rem; color: var(--text-secondary); margin-left: 6px;">Year:</label>
-        <select id="filter-year" class="filter-select">
-          <option value="">All Years</option>
-          <option value="2025">2025</option>
-          <option value="2024">2024</option>
-          <option value="2023">2023</option>
-          <option value="2022">2022</option>
-          <option value="2021">2021</option>
-          <option value="2020">2020</option>
-          <option value="2019">2010 - 2019</option>
-          <option value="2000">Classic (2000s & older)</option>
-        </select>
-
-        <label for="filter-sort" style="font-size: 0.8rem; color: var(--text-secondary); margin-left: 6px;">Sort By:</label>
-        <select id="filter-sort" class="filter-select">
-          <option value="popularity.desc">Most Popular</option>
-          <option value="vote_average.desc">Highest Rated</option>
-          <option value="primary_release_date.desc">Newest First</option>
-        </select>
+    <!-- ADVANCED FILTER BOX (Find Movies By Specific Filters) -->
+    <div class="advanced-filter-card" id="filter-box">
+      <div class="filter-header-row">
+        <div class="filter-heading">
+          <span class="filter-icon">⚙️</span>
+          <span>Filter & Find Movies</span>
+        </div>
+        <div class="filter-actions-group">
+          <button id="btn-reset-filters" class="btn-reset-filters" title="Reset all active filters">
+            <span>↺ Clear Filters</span>
+          </button>
+        </div>
       </div>
 
-      <div style="font-size: 0.82rem; color: var(--text-muted);">
-        Streaming over 50,000+ Movies & Series Free
+      <div class="filter-inputs-grid">
+        <!-- Quick Keyword Filter -->
+        <div class="filter-field-group">
+          <label for="filter-search-input" class="filter-label">Quick Search:</label>
+          <div class="filter-input-wrap">
+            <span class="input-icon">🔍</span>
+            <input type="text" id="filter-search-input" class="filter-text-input" placeholder="Type title or actor name..." autocomplete="off">
+          </div>
+        </div>
+
+        <!-- Format / Category -->
+        <div class="filter-field-group">
+          <label for="filter-type" class="filter-label">Type / Category:</label>
+          <select id="filter-type" class="filter-select">
+            <option value="trending">🔥 Trending Now</option>
+            <option value="hindi">🇮🇳 Hindi Cinema & Dubbed</option>
+            <option value="movie">🎬 Movies Only</option>
+            <option value="tv">📺 TV Series Only</option>
+            <option value="top-rated">⭐ Highest Rated</option>
+            <option value="upcoming">🚀 Upcoming Releases</option>
+          </select>
+        </div>
+
+        <!-- Genre Dropdown -->
+        <div class="filter-field-group">
+          <label for="filter-genre" class="filter-label">Genre:</label>
+          <select id="filter-genre" class="filter-select">
+            <option value="">All Genres</option>
+            <option value="28">Action</option>
+            <option value="12">Adventure</option>
+            <option value="16">Animation / Anime</option>
+            <option value="35">Comedy</option>
+            <option value="80">Crime</option>
+            <option value="18">Drama</option>
+            <option value="14">Fantasy</option>
+            <option value="27">Horror</option>
+            <option value="878">Sci-Fi</option>
+            <option value="53">Thriller</option>
+            <option value="10749">Romance</option>
+            <option value="9648">Mystery</option>
+          </select>
+        </div>
+
+        <!-- Language Dropdown -->
+        <div class="filter-field-group">
+          <label for="filter-language" class="filter-label">Audio Language:</label>
+          <select id="filter-language" class="filter-select">
+            <option value="">🌐 All Languages</option>
+            <option value="hi">🇮🇳 Hindi (Bollywood & Dubbed)</option>
+            <option value="en">🇺🇸 English (Hollywood)</option>
+            <option value="te">🇮🇳 Telugu (Tollywood)</option>
+            <option value="ta">🇮🇳 Tamil (Kollywood)</option>
+            <option value="ml">🇮🇳 Malayalam (Mollywood)</option>
+            <option value="ko">🇰🇷 Korean (K-Drama)</option>
+            <option value="ja">🇯🇵 Japanese (Anime)</option>
+            <option value="es">🇪🇸 Spanish (Español)</option>
+          </select>
+        </div>
+
+        <!-- Year Dropdown -->
+        <div class="filter-field-group">
+          <label for="filter-year" class="filter-label">Release Year:</label>
+          <select id="filter-year" class="filter-select">
+            <option value="">All Years</option>
+            <option value="2025">2025</option>
+            <option value="2024">2024</option>
+            <option value="2023">2023</option>
+            <option value="2022">2022</option>
+            <option value="2021">2021</option>
+            <option value="2020">2020</option>
+            <option value="2019">2010 - 2019</option>
+            <option value="2000">2000s & Classics</option>
+          </select>
+        </div>
+
+        <!-- Sort By Dropdown -->
+        <div class="filter-field-group">
+          <label for="filter-sort" class="filter-label">Sort Order:</label>
+          <select id="filter-sort" class="filter-select">
+            <option value="popularity.desc">Most Popular</option>
+            <option value="vote_average.desc">Highest Rated</option>
+            <option value="primary_release_date.desc">Newest First</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Active Filters Tag Pills Container -->
+      <div id="active-filters-bar" class="active-filters-bar" style="display:none;">
+        <span class="active-label">Active Filters:</span>
+        <div id="active-filters-tags" class="active-tags-list"></div>
       </div>
     </div>
   </section>
@@ -267,6 +385,78 @@
       <span>Saved</span>
     </button>
   </nav>
+
+  <!-- SEO ON-PAGE CONTENT & STREAMING GUIDE (FOR MAXIMUM GOOGLE SEARCH VISIBILITY) -->
+  <section class="seo-guide-section" aria-label="About MOVIE REDX Streaming Platform">
+    <div class="seo-guide-container">
+      <header class="seo-guide-header">
+        <h2>Watch Free Movies & TV Shows Online in 4K/HD — MOVIE REDX</h2>
+        <p class="seo-guide-lead">
+          Welcome to <strong>MOVIE REDX</strong>, your #1 destination to stream and watch full movies and TV series online for free in 4K Ultra HD, 1080p Full HD, and 720p HD. Enjoy instant access to over 50,000+ blockbuster movies, Hindi cinema, Bollywood blockbusters, South Indian Hindi dubbed movies, Hollywood action, and trending global web series with zero subscription fees, no credit card, and zero registration required.
+        </p>
+      </header>
+
+      <div class="seo-features-grid">
+        <article class="seo-feature-card">
+          <div class="feature-icon">🇮🇳</div>
+          <h3>Watch Free Hindi Movies & Dubbed Cinema</h3>
+          <p>
+            Stream thousands of latest Bollywood movies, Punjabi cinema, and South Indian movies dubbed in Hindi (Tollywood, Kollywood, Mollywood). Powered by dedicated Indian streaming servers like <strong>Screenscape</strong> and <strong>MultiEmbed</strong> with authentic dual-audio Hindi tracks.
+          </p>
+        </article>
+
+        <article class="seo-feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3>High-Speed Multi-Server Streaming</h3>
+          <p>
+            Never suffer from buffering or broken links again! MOVIE REDX features intelligent multi-server switching (Server 1 to Server 6, plus dedicated Hindi servers) so you can switch instantly to backup servers whenever a stream is busy or slow.
+          </p>
+        </article>
+
+        <article class="seo-feature-card">
+          <div class="feature-icon">📱</div>
+          <h3>Compatible Across All Devices</h3>
+          <p>
+            Watch smoothly on iPhone, iPad, Android smartphones, Windows PC, Mac, tablets, and Smart TVs. Features adaptive responsive video playback and full PWA app install support.
+          </p>
+        </article>
+      </div>
+
+      <!-- FAQ Section for Google Search Rich Snippets -->
+      <section class="seo-faq-section" aria-label="Frequently Asked Questions">
+        <h3>Frequently Asked Questions About MOVIE REDX</h3>
+        <div class="faq-list">
+          <details class="faq-item" open>
+            <summary class="faq-question">What is MOVIE REDX?</summary>
+            <div class="faq-answer">
+              <p><strong>MOVIE REDX</strong> is a next-generation online streaming index where users can watch thousands of free movies and TV shows in Ultra HD and 4K quality with multi-server playback and dual-audio support.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-question">Is MOVIE REDX completely free to watch?</summary>
+            <div class="faq-answer">
+              <p>Yes, 100% free! You never have to pay a subscription fee, buy a pass, or enter credit card information. Just select your favorite movie or TV show and start watching immediately.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-question">Can I watch Hollywood movies dubbed in Hindi?</summary>
+            <div class="faq-answer">
+              <p>Yes! Simply click on the <strong>Hindi Cinema</strong> tab on the homepage or select any Hindi streaming server on the watch page to enjoy Hollywood action, Marvel, DC, and international hits with Hindi audio tracks.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-question">How do I switch servers if a movie is not playing?</summary>
+            <div class="faq-answer">
+              <p>Below the video player, click on any streaming server button (Server 1, Server 2, Server 3, or Hindi Servers) or click the <strong>⚡ Next Server</strong> button to switch to an active backup stream.</p>
+            </div>
+          </details>
+        </div>
+      </section>
+    </div>
+  </section>
 
   <!-- FOOTER -->
   <footer class="site-footer">
