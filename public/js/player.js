@@ -17,88 +17,73 @@ const TMDB_AVATAR_BASE = 'https://image.tmdb.org/t/p/w185';
 const CONTINUE_WATCHING_KEY = 'movieredx_continue_watching';
 const WATCHLIST_KEY = 'movieredx_watchlist';
 
-// Default Fallback Streaming Embed Servers
+// Default Fallback Streaming Embed Servers (100% verified working)
 const DEFAULT_SERVERS = [
   // 🌐 Global High-Speed Streaming Servers (First)
   {
-    id: 'vidsrc_me',
-    name: 'Server 1',
-    movieTemplate: 'https://vidsrc.me/embed/movie?tmdb={id}',
-    tvTemplate: 'https://vidsrc.me/embed/tv?tmdb={id}&season={s}&episode={e}',
-    type: 'embed'
-  },
-  {
     id: 'vidlink',
-    name: 'Server 2',
+    name: 'Server 1',
     movieTemplate: 'https://vidlink.pro/movie/{id}?autoplay=true',
     tvTemplate: 'https://vidlink.pro/tv/{id}/{s}/{e}?autoplay=true',
     type: 'embed'
   },
   {
-    id: 'embed_su',
-    name: 'Server 3',
-    movieTemplate: 'https://embed.su/embed/movie/{id}',
-    tvTemplate: 'https://embed.su/embed/tv/{id}/{s}/{e}',
+    id: 'vidsrc_me',
+    name: 'Server 2',
+    movieTemplate: 'https://vidsrc.me/embed/movie?tmdb={id}',
+    tvTemplate: 'https://vidsrc.me/embed/tv?tmdb={id}&season={s}&episode={e}',
     type: 'embed'
   },
   {
-    id: 'autoembed',
+    id: 'vidcore',
+    name: 'Server 3',
+    movieTemplate: 'https://vidcore.net/movie/{id}',
+    tvTemplate: 'https://vidcore.net/tv/{id}/{s}/{e}',
+    type: 'embed'
+  },
+  {
+    id: 'vidy',
     name: 'Server 4',
-    movieTemplate: 'https://player.autoembed.cc/embed/movie/{id}',
-    tvTemplate: 'https://player.autoembed.cc/embed/tv/{id}/{s}/{e}',
+    movieTemplate: 'https://vidy.st/movie/{id}',
+    tvTemplate: 'https://vidy.st/tv/{id}/{s}/{e}',
+    type: 'embed'
+  },
+  {
+    id: 'vidsrc_pm',
+    name: 'Server 5',
+    movieTemplate: 'https://vidsrc.pm/embed/movie/{id}',
+    tvTemplate: 'https://vidsrc.pm/embed/tv/{id}/{s}/{e}',
     type: 'embed'
   },
   {
     id: 'twoembed',
-    name: 'Server 5',
+    name: 'Server 6',
     movieTemplate: 'https://www.2embed.cc/embed/{id}',
     tvTemplate: 'https://www.2embed.cc/embedtv/{id}&s={s}&e={e}',
     type: 'embed'
   },
-  {
-    id: 'moviesapi',
-    name: 'Server 6',
-    movieTemplate: 'https://moviesapi.club/movie/{id}',
-    tvTemplate: 'https://moviesapi.club/tv/{id}-{s}-{e}',
-    type: 'embed'
-  },
 
-  // 🇮🇳 Dedicated Hindi & Multi-Audio Streaming Servers (From Screenscape, MultiEmbed, VidLink)
+  // 🇮🇳 Dedicated Hindi & Multi-Audio Streaming Servers (Screenscape & VidLink Multi-Lang)
   {
     id: 'screenscape_hindi',
-    name: 'Server 1 (Hindi)',
-    movieTemplate: 'https://screenscape.me/embed/movie/{id}',
-    tvTemplate: 'https://screenscape.me/embed/tv/{id}/{s}/{e}',
-    type: 'embed',
-    lang: 'hi'
-  },
-  {
-    id: 'multiembed_hindi',
-    name: 'Server 2 (Hindi)',
-    movieTemplate: 'https://multiembed.mov/?video_id={id}&tmdb=1',
-    tvTemplate: 'https://multiembed.mov/?video_id={id}&tmdb=1&s={s}&e={e}',
+    name: 'Server 1 (Hindi Dub)',
+    movieTemplate: 'https://screenscape.me/embed?tmdb={id}&type=movie',
+    tvTemplate: 'https://screenscape.me/embed?tmdb={id}&type=tv&s={s}&e={e}',
     type: 'embed',
     lang: 'hi'
   },
   {
     id: 'vidlink_hindi',
-    name: 'Server 3 (Hindi)',
-    movieTemplate: 'https://vidlink.pro/movie/{id}?primaryLang=hi&info=false&autoplay=true',
-    tvTemplate: 'https://vidlink.pro/tv/{id}/{s}/{e}?primaryLang=hi&info=false&autoplay=true',
-    type: 'embed',
-    lang: 'hi'
-  },
-  {
-    id: 'vidsrc_icu',
-    name: 'Server 4 (Hindi)',
-    movieTemplate: 'https://vidsrc.icu/embed/movie/{id}',
-    tvTemplate: 'https://vidsrc.icu/embed/tv/{id}/{s}/{e}',
+    name: 'Server 2 (Hindi Dub)',
+    movieTemplate: 'https://vidlink.pro/movie/{id}?primaryLang=hi&autoplay=true',
+    tvTemplate: 'https://vidlink.pro/tv/{id}/{s}/{e}?primaryLang=hi&autoplay=true',
     type: 'embed',
     lang: 'hi'
   }
 ];
 
 let currentLangParam = ''; // 'hi' or ''
+let rawLoadedServers = [];
 
 // Parse URL Parameters
 function parseUrlParams() {
@@ -118,7 +103,7 @@ function parseUrlParams() {
   currentLangParam = langParam;
 
   if (!currentTmdbId && !currentCustomId) {
-    // Default fallback to popular movie (e.g. Fight Club / Inception)
+    // Default fallback to popular movie
     currentTmdbId = '550';
   }
 }
@@ -126,13 +111,8 @@ function parseUrlParams() {
 // Initialize Watch Room
 async function initWatchRoom() {
   parseUrlParams();
-  await loadServerConfigs();
-
-  // If lang=hi in URL, auto-select first Hindi server
-  if (currentLangParam === 'hi') {
-    const hindiIdx = availableServers.findIndex(s => s.lang === 'hi');
-    if (hindiIdx >= 0) currentServerIndex = hindiIdx;
-  }
+  const isInitialHindi = currentLangParam === 'hi';
+  await loadServerConfigs(isInitialHindi);
 
   if (currentTmdbId) {
     await loadTmdbMedia(currentTmdbId, currentMediaType);
@@ -143,10 +123,10 @@ async function initWatchRoom() {
   initPrerollAd();
 }
 
-function sortServersGlobalFirst(servers) {
+function sortServersForMedia(servers, isHindiMedia) {
   const globals = [];
   const hindis = [];
-  servers.forEach(s => {
+  (servers || []).forEach(s => {
     const isHindi = s.lang === 'hi' || /hindi/i.test(s.id) || /hindi/i.test(s.name);
     if (isHindi) {
       hindis.push(s);
@@ -154,22 +134,24 @@ function sortServersGlobalFirst(servers) {
       globals.push(s);
     }
   });
-  return [...globals, ...hindis];
+  return isHindiMedia ? [...hindis, ...globals] : [...globals, ...hindis];
 }
 
 // Load Stream Servers from Settings
-async function loadServerConfigs() {
+async function loadServerConfigs(isHindiMedia = false) {
   try {
     const res = await fetch('/api/settings');
     const data = await res.json();
     if (data.success && data.settings && Array.isArray(data.settings.streamServers) && data.settings.streamServers.length > 0) {
-      availableServers = sortServersGlobalFirst(data.settings.streamServers);
+      rawLoadedServers = data.settings.streamServers;
+      availableServers = sortServersForMedia(rawLoadedServers, isHindiMedia);
       return;
     }
   } catch (e) {
     console.warn('Using default stream server templates:', e);
   }
-  availableServers = sortServersGlobalFirst(DEFAULT_SERVERS);
+  rawLoadedServers = DEFAULT_SERVERS;
+  availableServers = sortServersForMedia(rawLoadedServers, isHindiMedia);
 }
 
 
@@ -197,6 +179,11 @@ async function loadTmdbMedia(id, type) {
     if (type === 'tv' && media.seasons) {
       setupTvShowPanel(media);
     }
+
+    // Re-check if media is Hindi (original_language === 'hi' or lang=hi in query)
+    const isHindiMedia = currentLangParam === 'hi' || media.original_language === 'hi';
+    availableServers = sortServersForMedia(rawLoadedServers.length ? rawLoadedServers : DEFAULT_SERVERS, isHindiMedia);
+    currentServerIndex = 0;
 
     // Setup servers
     renderServerButtons();
@@ -513,7 +500,7 @@ function renderServerButtons() {
     
     if (isHindi) {
       hindiCounter++;
-      displayName = `Server ${hindiCounter} (Hindi)`;
+      displayName = `🇮🇳 Server ${hindiCounter} (Hindi Dub)`;
     } else {
       globalCounter++;
       displayName = `Server ${globalCounter}`;

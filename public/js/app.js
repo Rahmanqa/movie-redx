@@ -291,7 +291,7 @@ function setupHeroSpotlight() {
     if (heroBackdrop) heroBackdrop.style.backgroundImage = `url('${backdropUrl}')`;
     if (heroTitle) heroTitle.textContent = title;
     if (heroOverview) heroOverview.textContent = item.overview || item.description || 'Watch now in full HD quality.';
-    if (heroRating) heroRating.innerHTML = `★ ${rating} TMDB`;
+    if (heroRating) heroRating.innerHTML = `★ ${rating}`;
     if (heroQuality) heroQuality.textContent = '4K ULTRA HD';
     if (heroYear) heroYear.textContent = year;
     if (heroTag) heroTag.textContent = index === 0 ? '🔥 TRENDING #1' : `FEATURED #${index + 1}`;

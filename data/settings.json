@@ -4,76 +4,60 @@
   "tmdbApiKey": "8265bd1679663a7ea12ac168da84d2e8",
   "streamServers": [
     {
-      "id": "vidsrc_me",
-      "name": "Server 1",
-      "movieTemplate": "https://vidsrc.me/embed/movie?tmdb={id}",
-      "tvTemplate": "https://vidsrc.me/embed/tv?tmdb={id}&season={s}&episode={e}",
-      "type": "embed"
-    },
-    {
       "id": "vidlink",
-      "name": "Server 2",
+      "name": "Server 1",
       "movieTemplate": "https://vidlink.pro/movie/{id}?autoplay=true",
       "tvTemplate": "https://vidlink.pro/tv/{id}/{s}/{e}?autoplay=true",
       "type": "embed"
     },
     {
-      "id": "embed_su",
-      "name": "Server 3",
-      "movieTemplate": "https://embed.su/embed/movie/{id}",
-      "tvTemplate": "https://embed.su/embed/tv/{id}/{s}/{e}",
+      "id": "vidsrc_me",
+      "name": "Server 2",
+      "movieTemplate": "https://vidsrc.me/embed/movie?tmdb={id}",
+      "tvTemplate": "https://vidsrc.me/embed/tv?tmdb={id}&season={s}&episode={e}",
       "type": "embed"
     },
     {
-      "id": "autoembed",
+      "id": "vidcore",
+      "name": "Server 3",
+      "movieTemplate": "https://vidcore.net/movie/{id}",
+      "tvTemplate": "https://vidcore.net/tv/{id}/{s}/{e}",
+      "type": "embed"
+    },
+    {
+      "id": "vidy",
       "name": "Server 4",
-      "movieTemplate": "https://player.autoembed.cc/embed/movie/{id}",
-      "tvTemplate": "https://player.autoembed.cc/embed/tv/{id}/{s}/{e}",
+      "movieTemplate": "https://vidy.st/movie/{id}",
+      "tvTemplate": "https://vidy.st/tv/{id}/{s}/{e}",
+      "type": "embed"
+    },
+    {
+      "id": "vidsrc_pm",
+      "name": "Server 5",
+      "movieTemplate": "https://vidsrc.pm/embed/movie/{id}",
+      "tvTemplate": "https://vidsrc.pm/embed/tv/{id}/{s}/{e}",
       "type": "embed"
     },
     {
       "id": "twoembed",
-      "name": "Server 5",
+      "name": "Server 6",
       "movieTemplate": "https://www.2embed.cc/embed/{id}",
       "tvTemplate": "https://www.2embed.cc/embedtv/{id}&s={s}&e={e}",
       "type": "embed"
     },
     {
-      "id": "moviesapi",
-      "name": "Server 6",
-      "movieTemplate": "https://moviesapi.club/movie/{id}",
-      "tvTemplate": "https://moviesapi.club/tv/{id}-{s}-{e}",
-      "type": "embed"
-    },
-    {
       "id": "screenscape_hindi",
-      "name": "Server 1 (Hindi)",
-      "movieTemplate": "https://screenscape.me/embed/movie/{id}",
-      "tvTemplate": "https://screenscape.me/embed/tv/{id}/{s}/{e}",
-      "type": "embed",
-      "lang": "hi"
-    },
-    {
-      "id": "multiembed_hindi",
-      "name": "Server 2 (Hindi)",
-      "movieTemplate": "https://multiembed.mov/?video_id={id}&tmdb=1",
-      "tvTemplate": "https://multiembed.mov/?video_id={id}&tmdb=1&s={s}&e={e}",
+      "name": "Server 1 (Hindi Dub)",
+      "movieTemplate": "https://screenscape.me/embed?tmdb={id}&type=movie",
+      "tvTemplate": "https://screenscape.me/embed?tmdb={id}&type=tv&s={s}&e={e}",
       "type": "embed",
       "lang": "hi"
     },
     {
       "id": "vidlink_hindi",
-      "name": "Server 3 (Hindi)",
-      "movieTemplate": "https://vidlink.pro/movie/{id}?primaryLang=hi&info=false&autoplay=true",
-      "tvTemplate": "https://vidlink.pro/tv/{id}/{s}/{e}?primaryLang=hi&info=false&autoplay=true",
-      "type": "embed",
-      "lang": "hi"
-    },
-    {
-      "id": "vidsrc_icu",
-      "name": "Server 4 (Hindi)",
-      "movieTemplate": "https://vidsrc.icu/embed/movie/{id}",
-      "tvTemplate": "https://vidsrc.icu/embed/tv/{id}/{s}/{e}",
+      "name": "Server 2 (Hindi Dub)",
+      "movieTemplate": "https://vidlink.pro/movie/{id}?primaryLang=hi&autoplay=true",
+      "tvTemplate": "https://vidlink.pro/tv/{id}/{s}/{e}?primaryLang=hi&autoplay=true",
       "type": "embed",
       "lang": "hi"
     }
@@ -110,9 +94,9 @@
     "customScript": ""
   },
   "analytics": {
-    "totalImpressions": 4844,
+    "totalImpressions": 4855,
     "totalClicks": 340,
     "estimatedRpm": 4.15,
-    "estimatedEarnings": 71.1
+    "estimatedEarnings": 71.15
   }
 }
