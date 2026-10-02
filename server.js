@@ -21,6 +21,19 @@ app.get('/google:code.html', (req, res) => {
   res.type('text/html').send(`google-site-verification: google${code}.html`);
 });
 
+// Explicit Search Engine Crawler Endpoints
+app.get('/sitemap.xml', (req, res) => {
+  res.setHeader('Content-Type', 'application/xml');
+  res.setHeader('Cache-Control', 'public, max-age=3600');
+  res.sendFile(path.join(__dirname, 'public', 'sitemap.xml'));
+});
+
+app.get('/robots.txt', (req, res) => {
+  res.setHeader('Content-Type', 'text/plain');
+  res.setHeader('Cache-Control', 'public, max-age=3600');
+  res.sendFile(path.join(__dirname, 'public', 'robots.txt'));
+});
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -546,6 +559,11 @@ app.get('/dmca', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'dmca.html'));
 });
 
+// Health check endpoint (used by keep-alive ping)
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', uptime: process.uptime(), timestamp: new Date().toISOString() });
+});
+
 // Start Server
 app.listen(PORT, () => {
   console.log(`====================================================`);
@@ -555,4 +573,26 @@ app.listen(PORT, () => {
   console.log(`⚙️  Admin Panel:  http://localhost:${PORT}/admin.html (Master PIN: 8084)`);
   console.log(`⚖️  DMCA Page:    http://localhost:${PORT}/dmca.html`);
   console.log(`====================================================`);
+
+  // ── Keep-Alive Self-Ping ─────────────────────────────────────────
+  // Render.com free tier sleeps after 15 min of inactivity.
+  // This pings the server every 14 minutes to keep it awake
+  // so Google's crawler can ALWAYS fetch the sitemap & pages without timeout.
+  const LIVE_URL = process.env.RENDER_EXTERNAL_URL || 'https://movie-redx-1.onrender.com';
+  const PING_INTERVAL_MS = 14 * 60 * 1000; // 14 minutes
+
+  // Run ping only in production / cloud deploy
+  if (process.env.PORT && process.env.PORT !== '3000') {
+    setInterval(async () => {
+      try {
+        const pingUrl = `${LIVE_URL}/health`;
+        const res = await fetch(pingUrl);
+        console.log(`[KeepAlive] Pinged ${pingUrl} → ${res.status}`);
+      } catch (err) {
+        console.warn(`[KeepAlive] Ping failed: ${err.message}`);
+      }
+    }, PING_INTERVAL_MS);
+    console.log(`🟢 Keep-Alive enabled — pinging ${LIVE_URL}/health every 14 min`);
+  }
+  // ────────────────────────────────────────────────────────────────
 });
