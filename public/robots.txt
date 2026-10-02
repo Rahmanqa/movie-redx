@@ -1,3 +1,8 @@
+User-agent: Googlebot
+Allow: /
+Disallow: /admin.html
+Disallow: /api/admin/
+
 User-agent: *
 Allow: /
 Disallow: /admin.html
@@ -5,3 +10,4 @@ Disallow: /api/admin/
 
 # Sitemap location for Googlebot, Bingbot & Search Engines
 Sitemap: https://movie-redx-1.onrender.com/sitemap.xml
+
