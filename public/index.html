@@ -3,23 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-  <title>MOVIE REDX - Watch Free Hindi Dubbed Movies & TV Shows Online in HD/4K</title>
-  <meta name="description" content="MOVIE REDX - Watch free Hindi dubbed movies, Bollywood films, Hollywood movies in Hindi, South Indian dubbed movies, and web series online in HD & 4K. No registration, no subscription. Stream instantly!">
+  <title>MOVIE REDX - Movies & TV Series Discovery Guide, Cast & Where to Watch</title>
+  <meta name="description" content="Discover movies and TV shows on MOVIE REDX. Explore comprehensive cast credits, trailers, ratings, release dates, and official streaming provider directories.">
   <meta name="theme-color" content="#e50914">
-  <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23090b10'/><path d='M25 20 L45 20 L75 80 L55 80 Z' fill='%23e50914'/><path d='M75 20 L55 20 L25 80 L45 80 Z' fill='%23ff1e27'/></svg>">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
-  <meta name="keywords" content="MOVIE REDX, movie redx, redx movie, watch movies online free, hindi dubbed movies, watch hindi movies free, bollywood movies online, hollywood hindi dubbed, south hindi dubbed movies, free streaming site, watch free movies 2024, watch free movies 2025, 4k movies streaming, watch web series online, free web series, movie redx onrender, hindi movies streaming, free hindi film online, action movies hindi, new movies hindi dubbed, latest bollywood movies, hindi movie website">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-  <meta name="author" content="MOVIE REDX">
-  <meta name="language" content="English, Hindi">
-  <meta name="revisit-after" content="3 days">
-  <meta name="rating" content="General">
-  <meta name="geo.region" content="IN">
-  <meta name="geo.placename" content="India">
   <link rel="canonical" href="https://movie-redx-1.onrender.com/">
 
   <!-- Open Graph / Social Media Sharing -->
@@ -129,7 +123,7 @@
     <nav class="navbar">
       <a href="index.html" class="nav-brand" id="brand-logo-trigger" title="MOVIE REDX">
         <span class="brand-icon-box">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
             <path d="M18 3v2h-2V3H8v2H6V3H4v18h2v-2h2v2h8v-2h2v2h2V3h-2zM8 17H6v-2h2v2zm0-4H6v-2h2v2zm0-4H6V7h2v2zm10 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2z"/>
           </svg>
         </span>
@@ -139,241 +133,220 @@
         </div>
       </a>
 
-      <!-- INSTANT SEARCH WITH TMDB LIVE PREVIEW -->
-      <div class="nav-search-bar">
-        <span class="search-icon">🔍</span>
-        <input type="text" id="movie-search-input" placeholder="Search movies, TV series, actors..." aria-label="Search movies" autocomplete="off">
-        <div class="search-results-dropdown" id="search-dropdown">
-          <!-- Populated dynamically by app.js -->
-        </div>
-      </div>
-
-      <!-- DESKTOP NAV LINKS (Admin link hidden from normal users) -->
+      <!-- DESKTOP NAV LINKS -->
       <div class="nav-links">
-        <button id="open-watchlist-btn" class="nav-link-item">
-          <span>★ Watchlist</span>
+        <button onclick="switchMediaType('trending')" class="nav-link-item active" data-nav="trending">
+          <span>Home</span>
+        </button>
+        <button onclick="switchMediaType('movie')" class="nav-link-item" data-nav="movie">
+          <span>Movies</span>
+        </button>
+        <button onclick="switchMediaType('hindi')" class="nav-link-item" data-nav="hindi">
+          <span>Hindi Dubbed</span>
+        </button>
+        <button id="open-watchlist-btn" class="nav-link-item" data-nav="watchlist">
+          <span>My List</span>
           <span id="watchlist-badge" class="badge-redx" style="display:none; font-size: 0.65rem; padding: 2px 6px;">0</span>
         </button>
-        <button onclick="switchMediaType('trending')" class="nav-link-item">
-          <span>🔥 Trending</span>
-        </button>
       </div>
+
+      <!-- MASTER FILTER BUTTON (TOP-RIGHT) -->
+      <button type="button" class="btn-master-filter-trigger" id="master-filter-trigger" aria-expanded="false" aria-controls="master-filter-panel" aria-label="Open Filters" title="Filters">
+        <svg class="filter-funnel-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z"/>
+        </svg>
+        <span class="filter-btn-text">Filters</span>
+        <span class="filter-badge" id="master-filter-badge" style="display:none;" aria-label="Active filters count">0</span>
+      </button>
     </nav>
   </header>
 
-  <!-- HERO SPOTLIGHT CAROUSEL -->
-  <section class="hero-section" id="hero-spotlight" aria-label="Featured Movie Spotlight">
-    <div class="hero-backdrop-img" id="hero-backdrop"></div>
-    <div class="hero-gradient-overlay"></div>
-    <div class="hero-content">
-      <div class="hero-badges-row">
-        <span class="badge-redx" id="hero-tag">TRENDING #1</span>
-        <span class="badge-quality" id="hero-quality">4K ULTRA HD</span>
-        <span class="badge-rating" id="hero-rating">★ 8.8</span>
-        <span style="font-size: 0.8rem; color: #ccc;" id="hero-year">2024</span>
-      </div>
-      <h1 class="hero-title" id="hero-title">Loading Featured Movie...</h1>
-      <p class="hero-overview" id="hero-overview">Discover the latest trending movies and TV shows with multi-server free 4K streaming playback.</p>
-      <div class="hero-actions-row">
-        <a href="watch.html" id="hero-play-btn" class="btn-play-hero">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M8 5v14l11-7z"/>
-          </svg>
-          <span>Watch Free Now</span>
-        </a>
-        <button id="hero-trailer-btn" class="btn-trailer-hero">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M10 16.5l6-4.5-6-4.5v9zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
-          </svg>
-          <span>Watch Trailer</span>
-        </button>
-        <button id="hero-watchlist-toggle" class="btn-watchlist-hero" title="Add to Watchlist">
-          +
-        </button>
-      </div>
-    </div>
-  </section>
-
-  <!-- DISCOVERY CONTROLS & ADVANCED FILTER SUITE -->
-  <section class="discovery-controls" id="discovery-section">
-    <!-- Media Type Tabs -->
-    <div class="media-type-tabs" role="tablist">
-      <button class="media-tab active" data-type="trending">🔥 Trending Now</button>
-      <button class="media-tab" data-type="hindi">🇮🇳 Hindi Cinema</button>
-      <button class="media-tab" data-type="movie">🎬 Movies</button>
-      <button class="media-tab" data-type="tv">📺 TV Series</button>
-      <button class="media-tab" data-type="top-rated">⭐ Top Rated</button>
-      <button class="media-tab" data-type="upcoming">🚀 Upcoming</button>
-    </div>
-
-    <!-- Genre Pills -->
-    <div class="genre-pills-row" id="genre-pills-container">
-      <button class="genre-pill active" data-genre="">All Genres</button>
-      <button class="genre-pill" data-genre="28">💥 Action</button>
-      <button class="genre-pill" data-genre="12">🗺️ Adventure</button>
-      <button class="genre-pill" data-genre="16">🎨 Animation</button>
-      <button class="genre-pill" data-genre="35">😂 Comedy</button>
-      <button class="genre-pill" data-genre="80">🕵️ Crime</button>
-      <button class="genre-pill" data-genre="18">🎭 Drama</button>
-      <button class="genre-pill" data-genre="14">🧙 Fantasy</button>
-      <button class="genre-pill" data-genre="27">👻 Horror</button>
-      <button class="genre-pill" data-genre="878">🚀 Sci-Fi</button>
-      <button class="genre-pill" data-genre="53">⚡ Thriller</button>
-      <button class="genre-pill" data-genre="10749">💖 Romance</button>
-    </div>
-
-    <!-- ADVANCED FILTER BOX (Find Movies By Specific Filters) -->
-    <div class="advanced-filter-card" id="filter-box">
-      <div class="filter-header-row">
-        <div class="filter-heading">
-          <span class="filter-icon">⚙️</span>
-          <span>Filter & Find Movies</span>
-        </div>
-        <div class="filter-actions-group">
-          <button id="btn-reset-filters" class="btn-reset-filters" title="Reset all active filters">
-            <span>↺ Clear Filters</span>
-          </button>
-        </div>
-      </div>
-
-      <div class="filter-inputs-grid">
-        <!-- Quick Keyword Filter -->
-        <div class="filter-field-group">
-          <label for="filter-search-input" class="filter-label">Quick Search:</label>
-          <div class="filter-input-wrap">
-            <span class="input-icon">🔍</span>
-            <input type="text" id="filter-search-input" class="filter-text-input" placeholder="Type title or actor name..." autocomplete="off">
-          </div>
-        </div>
-
-        <!-- Format / Category -->
-        <div class="filter-field-group">
-          <label for="filter-type" class="filter-label">Type / Category:</label>
-          <select id="filter-type" class="filter-select">
-            <option value="trending">🔥 Trending Now</option>
-            <option value="hindi">🇮🇳 Hindi Cinema & Dubbed</option>
-            <option value="movie">🎬 Movies Only</option>
-            <option value="tv">📺 TV Series Only</option>
-            <option value="top-rated">⭐ Highest Rated</option>
-            <option value="upcoming">🚀 Upcoming Releases</option>
-          </select>
-        </div>
-
-        <!-- Genre Dropdown -->
-        <div class="filter-field-group">
-          <label for="filter-genre" class="filter-label">Genre:</label>
-          <select id="filter-genre" class="filter-select">
-            <option value="">All Genres</option>
-            <option value="28">Action</option>
-            <option value="12">Adventure</option>
-            <option value="16">Animation / Anime</option>
-            <option value="35">Comedy</option>
-            <option value="80">Crime</option>
-            <option value="18">Drama</option>
-            <option value="14">Fantasy</option>
-            <option value="27">Horror</option>
-            <option value="878">Sci-Fi</option>
-            <option value="53">Thriller</option>
-            <option value="10749">Romance</option>
-            <option value="9648">Mystery</option>
-          </select>
-        </div>
-
-        <!-- Language Dropdown -->
-        <div class="filter-field-group">
-          <label for="filter-language" class="filter-label">Audio Language:</label>
-          <select id="filter-language" class="filter-select">
-            <option value="">🌐 All Languages</option>
-            <option value="hi">🇮🇳 Hindi (Bollywood & Dubbed)</option>
-            <option value="en">🇺🇸 English (Hollywood)</option>
-            <option value="te">🇮🇳 Telugu (Tollywood)</option>
-            <option value="ta">🇮🇳 Tamil (Kollywood)</option>
-            <option value="ml">🇮🇳 Malayalam (Mollywood)</option>
-            <option value="ko">🇰🇷 Korean (K-Drama)</option>
-            <option value="ja">🇯🇵 Japanese (Anime)</option>
-            <option value="es">🇪🇸 Spanish (Español)</option>
-          </select>
-        </div>
-
-        <!-- Year Dropdown -->
-        <div class="filter-field-group">
-          <label for="filter-year" class="filter-label">Release Year:</label>
-          <select id="filter-year" class="filter-select">
-            <option value="">All Years</option>
-            <option value="2025">2025</option>
-            <option value="2024">2024</option>
-            <option value="2023">2023</option>
-            <option value="2022">2022</option>
-            <option value="2021">2021</option>
-            <option value="2020">2020</option>
-            <option value="2019">2010 - 2019</option>
-            <option value="2000">2000s & Classics</option>
-          </select>
-        </div>
-
-        <!-- Sort By Dropdown -->
-        <div class="filter-field-group">
-          <label for="filter-sort" class="filter-label">Sort Order:</label>
-          <select id="filter-sort" class="filter-select">
-            <option value="popularity.desc">Most Popular</option>
-            <option value="vote_average.desc">Highest Rated</option>
-            <option value="primary_release_date.desc">Newest First</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- Active Filters Tag Pills Container -->
-      <div id="active-filters-bar" class="active-filters-bar" style="display:none;">
-        <span class="active-label">Active Filters:</span>
-        <div id="active-filters-tags" class="active-tags-list"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ADSTERRA NATIVE BANNER ZONE -->
-  <aside class="adsterra-native-container" style="max-width: 1400px; margin: 10px auto; padding: 0 20px; width: 100%; display: flex; justify-content: center;" aria-label="Sponsored Content">
-    <script async="async" data-cfasync="false" src="https://pl31401483.profitableratecpmnetwork.com/74c925aa8e9986e66f4c84279725ebe7/invoke.js"></script>
-    <div id="container-74c925aa8e9986e66f4c84279725ebe7"></div>
-  </aside>
 
   <!-- MAIN CATALOG -->
   <main class="main-catalog-container">
 
-    <!-- CONTINUE WATCHING SHELF -->
-    <section class="continue-watching-shelf" id="continue-watching-section">
-      <div class="shelf-header">
-        <h2 class="shelf-title">
-          <span class="shelf-indicator"></span>
-          <span>Continue Watching</span>
-        </h2>
-        <button onclick="clearContinueWatching()" style="color: var(--text-muted); font-size: 0.8rem;">Clear All</button>
-      </div>
-      <div class="continue-grid" id="continue-grid">
-        <!-- Populated dynamically by app.js -->
-      </div>
-    </section>
+      <!-- MOVIES CATALOG PRO LAYOUT -->
+      <div class="catalog-layout-container">
+        <!-- LEFT: CATALOG MAIN CONTENT -->
+        <div class="catalog-main-content">
+          <!-- CATALOG HEADER: Movies Title, Live Results Count, MediaType Chips & Active Filter Chips -->
+          <div class="catalog-header-pro">
+            <div class="catalog-title-row">
+              <h1 class="catalog-main-title" id="catalog-title">Movies</h1>
+              <span class="catalog-results-badge" id="catalog-results-count">128 results</span>
+            </div>
 
-    <!-- MAIN MOVIES GRID -->
-    <section>
-      <div class="shelf-header">
-        <h2 class="shelf-title" id="catalog-title">
-          <span class="shelf-indicator"></span>
-          <span>Explore Free Cinema</span>
-        </h2>
-        <span style="font-size: 0.82rem; color: var(--text-muted);" id="catalog-count-label">Fast Free HD Servers</span>
+            <!-- MEDIA TYPE QUICK TABS -->
+            <div class="catalog-media-tabs" id="catalog-media-tabs">
+              <button type="button" class="media-tab-pill active" data-type="trending">Trending Now</button>
+              <button type="button" class="media-tab-pill" data-type="hindi">Hindi Cinema</button>
+              <button type="button" class="media-tab-pill" data-type="movie">Movies</button>
+              <button type="button" class="media-tab-pill" data-type="tv">TV Series</button>
+              <button type="button" class="media-tab-pill" data-type="top-rated">Top Rated</button>
+              <button type="button" class="media-tab-pill" data-type="upcoming">Upcoming</button>
+            </div>
+
+            <!-- ACTIVE SUMMARY CHIPS ROW -->
+            <div class="catalog-active-chips-row" id="master-active-filters-bar" style="display:none;">
+              <span class="active-label-text">Active:</span>
+              <div class="active-chips-container" id="active-chips-container">
+                <!-- Rendered dynamically by app.js: e.g. Action ✕, Comedy ✕ -->
+              </div>
+              <button type="button" class="btn-clear-all-summary" id="btn-clear-all-summary">Clear all</button>
+            </div>
+          </div>
+
+          <!-- MOVIES GRID -->
+          <div class="movies-grid" id="movies-grid">
+            <!-- Populated dynamically by app.js -->
+          </div>
+        </div>
+
+        <!-- RIGHT: PERSISTENT DESKTOP SIDEBAR FILTER / MOBILE BOTTOM SHEET -->
+        <aside class="master-filter-sidebar" id="master-filter-panel" role="region" aria-label="Filters">
+          <div class="mf-drag-handle" aria-hidden="true"></div>
+
+          <!-- Filter Card Header -->
+          <div class="mf-sidebar-header">
+            <div class="mf-sidebar-title">
+              <svg class="filter-funnel-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z"/>
+              </svg>
+              <span>Filters</span>
+              <span class="mf-header-badge" id="mf-header-badge" style="display:none;">0</span>
+            </div>
+            <button type="button" class="mf-reset-link" id="btn-mf-reset">Reset</button>
+            <button type="button" class="mf-mobile-close-btn" id="master-filter-close" aria-label="Close filters">
+              &times;
+            </button>
+          </div>
+
+          <!-- Filter Inputs Body -->
+          <div class="mf-sidebar-body">
+            <!-- 1. SEARCH BY TITLE -->
+            <div class="mf-section">
+              <label class="mf-section-label" for="mf-title-search">SEARCH</label>
+              <div class="mf-search-box">
+                <span class="mf-search-icon">🔍</span>
+                <input type="text" id="mf-title-search" class="mf-search-input" placeholder="Search by title..." autocomplete="off">
+              </div>
+            </div>
+
+            <!-- 2. SORT BY -->
+            <div class="mf-section">
+              <label class="mf-section-label" for="mf-sort-select">SORT BY</label>
+              <div class="mf-select-wrap">
+                <select id="mf-sort-select" class="mf-select">
+                  <option value="popularity.desc">Most Popular</option>
+                  <option value="vote_average.desc">Highest Rated</option>
+                  <option value="primary_release_date.desc">Newest Releases</option>
+                  <option value="title.asc">A - Z Title</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- 3. GENRE CHIPS (MULTI-SELECT) -->
+            <div class="mf-section">
+              <label class="mf-section-label">GENRE</label>
+              <div class="mf-genre-chips-wrap" id="mf-genre-chips">
+                <button type="button" class="mf-genre-btn" data-genre="28">Action</button>
+                <button type="button" class="mf-genre-btn" data-genre="12">Adventure</button>
+                <button type="button" class="mf-genre-btn" data-genre="16">Animation</button>
+                <button type="button" class="mf-genre-btn" data-genre="35">Comedy</button>
+                <button type="button" class="mf-genre-btn" data-genre="80">Crime</button>
+                <button type="button" class="mf-genre-btn" data-genre="18">Drama</button>
+                <button type="button" class="mf-genre-btn" data-genre="14">Fantasy</button>
+                <button type="button" class="mf-genre-btn" data-genre="27">Horror</button>
+                <button type="button" class="mf-genre-btn" data-genre="878">Sci-Fi</button>
+                <button type="button" class="mf-genre-btn" data-genre="53">Thriller</button>
+                <button type="button" class="mf-genre-btn" data-genre="10749">Romance</button>
+                <button type="button" class="mf-genre-btn" data-genre="9648">Mystery</button>
+              </div>
+            </div>
+
+            <!-- 4. AUDIO LANGUAGE CHECKBOXES -->
+            <div class="mf-section">
+              <label class="mf-section-label">AUDIO LANGUAGE</label>
+              <div class="mf-lang-checkboxes" id="mf-lang-checkboxes">
+                <label class="mf-checkbox-item">
+                  <input type="checkbox" name="mf_lang" value="hi" class="mf-check-input">
+                  <span class="mf-check-box"></span>
+                  <span class="mf-check-label">Hindi Dubbed</span>
+                </label>
+                <label class="mf-checkbox-item">
+                  <input type="checkbox" name="mf_lang" value="en" class="mf-check-input">
+                  <span class="mf-check-box"></span>
+                  <span class="mf-check-label">English</span>
+                </label>
+                <label class="mf-checkbox-item">
+                  <input type="checkbox" name="mf_lang" value="ta" class="mf-check-input">
+                  <span class="mf-check-box"></span>
+                  <span class="mf-check-label">Tamil</span>
+                </label>
+                <label class="mf-checkbox-item">
+                  <input type="checkbox" name="mf_lang" value="te" class="mf-check-input">
+                  <span class="mf-check-box"></span>
+                  <span class="mf-check-label">Telugu</span>
+                </label>
+                <label class="mf-checkbox-item">
+                  <input type="checkbox" name="mf_lang" value="ml" class="mf-check-input">
+                  <span class="mf-check-box"></span>
+                  <span class="mf-check-label">Malayalam</span>
+                </label>
+                <label class="mf-checkbox-item">
+                  <input type="checkbox" name="mf_lang" value="kn" class="mf-check-input">
+                  <span class="mf-check-box"></span>
+                  <span class="mf-check-label">Kannada</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- 5. RELEASE YEAR INPUTS -->
+            <div class="mf-section">
+              <label class="mf-section-label">RELEASE YEAR</label>
+              <div class="mf-year-inputs-row">
+                <input type="number" id="mf-year-min" class="mf-year-input" min="1970" max="2026" placeholder="2020" value="2020">
+                <input type="number" id="mf-year-max" class="mf-year-input" min="1970" max="2026" placeholder="2026" value="2026">
+              </div>
+            </div>
+
+            <!-- 6. MINIMUM RATING SLIDER -->
+            <div class="mf-section">
+              <div class="mf-rating-header">
+                <label class="mf-section-label" for="mf-rating-slider">MINIMUM RATING</label>
+                <span class="mf-rating-val" id="mf-rating-val-display">★ 6.0+</span>
+              </div>
+              <div class="mf-rating-slider-box">
+                <input type="range" id="mf-rating-slider" class="mf-range-slider" min="0" max="10" step="0.5" value="6.0">
+              </div>
+            </div>
+
+            <!-- ACTIONS -->
+            <div class="mf-actions-row">
+              <button type="button" class="btn-mf-reset-bottom" id="btn-mf-reset-bottom">Reset</button>
+              <button type="button" class="btn-mf-apply" id="btn-mf-apply">Apply filters</button>
+            </div>
+          </div>
+        </aside>
+
+        <!-- MASTER FILTER SCRIM (MOBILE / TABLET) -->
+        <div class="master-filter-scrim" id="master-filter-scrim" aria-hidden="true"></div>
       </div>
 
-      <div class="movies-grid" id="movies-grid">
-        <!-- Populated dynamically by app.js -->
-      </div>
-
-      <!-- LOAD MORE BUTTON -->
-      <div style="text-align: center; margin-top: 36px;">
-        <button id="btn-load-more" class="btn-trailer-hero" style="padding: 12px 32px; font-weight: 700;">
-          <span>Load More Titles</span>
+      <!-- PAGINATION BAR -->
+      <div class="pagination-bar" id="pagination-bar">
+        <button class="page-btn page-prev" id="page-prev-btn" title="Previous page">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+          <span class="page-btn-text">Prev</span>
+        </button>
+        <div class="page-numbers" id="page-numbers">
+          <!-- Populated by JS: 1, 2, 3 ... -->
+        </div>
+        <button class="page-btn page-next" id="page-next-btn" title="Next page">
+          <span class="page-btn-text">Next</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
         </button>
       </div>
-    </section>
 
   </main>
 
@@ -403,147 +376,92 @@
     </div>
   </div>
 
-  <!-- MOBILE BOTTOM NAVIGATION DOCK -->
+  <!-- MOBILE BOTTOM NAVIGATION DOCK (CINEVA GLASS FLOATING DOCK) -->
   <nav class="mobile-bottom-nav" aria-label="Mobile Navigation">
-    <a href="index.html" class="mobile-nav-tab active">
+    <a href="index.html" class="mobile-nav-tab active" data-tab="home">
       <svg viewBox="0 0 24 24" fill="currentColor">
         <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
       </svg>
       <span>Home</span>
     </a>
-    <button class="mobile-nav-tab" onclick="switchMediaType('movie')">
+    <button class="mobile-nav-tab" onclick="switchMediaType('movie')" data-tab="movie">
       <svg viewBox="0 0 24 24" fill="currentColor">
         <path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z"/>
       </svg>
       <span>Movies</span>
     </button>
-    <button class="mobile-nav-tab" onclick="switchMediaType('tv')">
+    <button class="mobile-nav-tab" onclick="switchMediaType('hindi')" data-tab="hindi">
       <svg viewBox="0 0 24 24" fill="currentColor">
-        <path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12z"/>
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
       </svg>
-      <span>TV Shows</span>
+      <span>Hindi</span>
     </button>
-    <button class="mobile-nav-tab" id="mobile-search-tab">
+    <button class="mobile-nav-tab" id="mobile-search-tab" data-tab="search">
       <svg viewBox="0 0 24 24" fill="currentColor">
         <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
       </svg>
       <span>Search</span>
     </button>
-    <button class="mobile-nav-tab" id="mobile-watchlist-tab">
+    <button class="mobile-nav-tab" id="mobile-watchlist-tab" data-tab="watchlist">
       <svg viewBox="0 0 24 24" fill="currentColor">
         <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
       </svg>
-      <span>Saved</span>
+      <span>My List</span>
     </button>
   </nav>
 
-  <!-- SEO ON-PAGE CONTENT & STREAMING GUIDE (FOR MAXIMUM GOOGLE SEARCH VISIBILITY) -->
-  <section class="seo-guide-section" aria-label="About MOVIE REDX Streaming Platform">
-    <div class="seo-guide-container">
-      <header class="seo-guide-header">
-        <h2>Watch Free Movies & TV Shows Online in 4K/HD — MOVIE REDX</h2>
-        <p class="seo-guide-lead">
-          Welcome to <strong>MOVIE REDX</strong>, your #1 destination to stream and watch full movies and TV series online for free in 4K Ultra HD, 1080p Full HD, and 720p HD. Enjoy instant access to over 50,000+ blockbuster movies, Hindi cinema, Bollywood blockbusters, South Indian Hindi dubbed movies, Hollywood action, and trending global web series with zero subscription fees, no credit card, and zero registration required.
-        </p>
-      </header>
-
-      <div class="seo-features-grid">
-        <article class="seo-feature-card">
-          <div class="feature-icon">🇮🇳</div>
-          <h3>Watch Free Hindi Movies & Dubbed Cinema</h3>
-          <p>
-            Stream thousands of latest Bollywood movies, Punjabi cinema, and South Indian movies dubbed in Hindi (Tollywood, Kollywood, Mollywood). Powered by dedicated Indian streaming servers like <strong>Screenscape</strong> and <strong>MultiEmbed</strong> with authentic dual-audio Hindi tracks.
-          </p>
-        </article>
-
-        <article class="seo-feature-card">
-          <div class="feature-icon">⚡</div>
-          <h3>High-Speed Multi-Server Streaming</h3>
-          <p>
-            Never suffer from buffering or broken links again! MOVIE REDX features intelligent multi-server switching (Server 1 to Server 6, plus dedicated Hindi servers) so you can switch instantly to backup servers whenever a stream is busy or slow.
-          </p>
-        </article>
-
-        <article class="seo-feature-card">
-          <div class="feature-icon">📱</div>
-          <h3>Compatible Across All Devices</h3>
-          <p>
-            Watch smoothly on iPhone, iPad, Android smartphones, Windows PC, Mac, tablets, and Smart TVs. Features adaptive responsive video playback and full PWA app install support.
-          </p>
-        </article>
-      </div>
-
-      <!-- FAQ Section for Google Search Rich Snippets -->
-      <section class="seo-faq-section" aria-label="Frequently Asked Questions">
-        <h3>Frequently Asked Questions About MOVIE REDX</h3>
-        <div class="faq-list">
-          <details class="faq-item" open>
-            <summary class="faq-question">What is MOVIE REDX?</summary>
-            <div class="faq-answer">
-              <p><strong>MOVIE REDX</strong> is a next-generation online streaming index where users can watch thousands of free movies and TV shows in Ultra HD and 4K quality with multi-server playback and dual-audio support.</p>
-            </div>
-          </details>
-
-          <details class="faq-item">
-            <summary class="faq-question">Is MOVIE REDX completely free to watch?</summary>
-            <div class="faq-answer">
-              <p>Yes, 100% free! You never have to pay a subscription fee, buy a pass, or enter credit card information. Just select your favorite movie or TV show and start watching immediately.</p>
-            </div>
-          </details>
-
-          <details class="faq-item">
-            <summary class="faq-question">Can I watch Hollywood movies dubbed in Hindi?</summary>
-            <div class="faq-answer">
-              <p>Yes! Simply click on the <strong>Hindi Cinema</strong> tab on the homepage or select any Hindi streaming server on the watch page to enjoy Hollywood action, Marvel, DC, and international hits with Hindi audio tracks.</p>
-            </div>
-          </details>
-
-          <details class="faq-item">
-            <summary class="faq-question">How do I switch servers if a movie is not playing?</summary>
-            <div class="faq-answer">
-              <p>Below the video player, click on any streaming server button (Server 1, Server 2, Server 3, or Hindi Servers) or click the <strong>⚡ Next Server</strong> button to switch to an active backup stream.</p>
-            </div>
-          </details>
-        </div>
-      </section>
-    </div>
-  </section>
 
   <!-- FOOTER -->
   <footer class="site-footer">
     <div class="footer-inner">
       <div class="footer-brand">
         <h3>🎬 MOVIE <span style="color: var(--primary-glow); font-style: italic;">REDX</span></h3>
-        <p>Your ultimate free streaming entertainment hub. Stream high-definition movies and TV series across all devices with instant playback servers.</p>
-        <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 10px;">
-          Disclaimer: MOVIE REDX does not host copyrighted media on its servers. All streaming media is provided by non-affiliated third-party providers or open media indexes.
-        </p>
+        <p>A cinema and television entertainment guide and discovery platform. Explore synopsis, cast information, theatrical trailers, and streaming provider availability.</p>
+        <div style="display: flex; align-items: center; gap: 12px; margin-top: 14px; padding: 10px 14px; background: rgba(255,255,255,0.03); border-radius: 10px; border: 1px solid rgba(255,255,255,0.06);">
+          <img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_1-5bdc75aae112b032181cb28a93a879273772371014442f104262f7d92814d015.svg" alt="TMDB Logo" width="36" height="36" style="flex-shrink: 0;" loading="lazy" />
+          <p style="font-size: 0.72rem; color: var(--text-muted); margin: 0; line-height: 1.4;">
+            This product uses the TMDB API but is not endorsed or certified by TMDB.
+          </p>
+        </div>
       </div>
 
       <div class="footer-col">
-        <h4>Browse Movies</h4>
+        <h4>Browse Categories</h4>
         <ul>
-          <li><a href="#" onclick="selectGenrePill('28')">Action Movies</a></li>
-          <li><a href="#" onclick="selectGenrePill('878')">Sci-Fi & Fantasy</a></li>
-          <li><a href="#" onclick="selectGenrePill('27')">Horror & Suspense</a></li>
-          <li><a href="#" onclick="selectGenrePill('16')">Animation & Anime</a></li>
-          <li><a href="#" onclick="selectGenrePill('35')">Comedy Hits</a></li>
+          <li><a href="/movies">All Movies</a></li>
+          <li><a href="/hindi-dubbed">Hindi Cinema</a></li>
+          <li><a href="/tv">TV Shows & Series</a></li>
+          <li><a href="/top-rated">Top Rated Cinema</a></li>
+          <li><a href="/upcoming">Upcoming Releases</a></li>
         </ul>
       </div>
 
       <div class="footer-col">
-        <h4>Legal & Policy</h4>
+        <h4>Popular Genres</h4>
         <ul>
-          <li><a href="dmca.html">DMCA & Copyright Removal</a></li>
-          <li><a href="dmca.html#terms">Terms of Use</a></li>
-          <li><a href="dmca.html#privacy">Privacy Policy</a></li>
+          <li><a href="/genre/action">Action Movies</a></li>
+          <li><a href="/genre/comedy">Comedy Films</a></li>
+          <li><a href="/genre/science-fiction">Sci-Fi & Fantasy</a></li>
+          <li><a href="/genre/horror">Horror & Thriller</a></li>
+          <li><a href="/genre/animation">Animation & Family</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Company & Legal</h4>
+        <ul>
+          <li><a href="/about">About Us</a></li>
+          <li><a href="/contact">Contact</a></li>
+          <li><a href="/privacy">Privacy Policy</a></li>
+          <li><a href="/terms">Terms of Service</a></li>
+          <li><a href="/dmca">DMCA Policy</a></li>
         </ul>
       </div>
     </div>
 
     <div class="footer-bottom">
-      <div id="footer-copyright-trigger">&copy; 2026 MOVIE REDX. All rights reserved.</div>
-      <div>Ultra 4K & HD • Zero Fees • Compatible on Mobile & Desktop</div>
+      <div id="footer-copyright-trigger">&copy; 2026 MOVIE REDX. Entertainment & Cinema Discovery Directory.</div>
+      <div><a href="/about" style="color: var(--text-muted);">About</a> • <a href="/privacy" style="color: var(--text-muted);">Privacy</a> • <a href="/terms" style="color: var(--text-muted);">Terms</a> • <a href="/sitemap.xml" style="color: var(--text-muted);">Sitemap</a></div>
     </div>
   </footer>
 

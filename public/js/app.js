@@ -4,10 +4,15 @@
 let currentMediaType = 'trending'; // 'trending', 'hindi', 'movie', 'tv', 'top-rated', 'upcoming'
 let currentLanguage = '';
 let currentGenreId = '';
+let currentGenresList = []; // Support multi-select genres
 let currentYear = '';
+let currentYearMin = 1990;
+let currentYearMax = 2026;
+let currentMinRating = 0;
 let currentSort = 'popularity.desc';
 let currentPage = 1;
 let totalPages = 1;
+let totalResultsCount = 0;
 let isLoading = false;
 let displayedItems = [];
 let heroItems = [];
@@ -194,12 +199,29 @@ async function fetchMediaData(page = 1, append = false) {
       return;
     }
 
-    if (currentGenreId || currentYear || currentLanguage) {
+    const hasActiveFilters = currentGenreId || (currentGenresList && currentGenresList.length > 0) || 
+      currentYear || currentLanguage || (currentMinRating && currentMinRating > 0) || 
+      (currentYearMin && currentYearMin > 1990) || (currentYearMax && currentYearMax < 2026);
+
+    if (hasActiveFilters) {
       const type = currentMediaType === 'tv' ? 'tv' : 'movie';
       url = `/api/tmdb/discover?type=${type}&page=${page}&sort_by=${currentSort}`;
-      if (currentGenreId) url += `&genre=${currentGenreId}`;
-      if (currentYear) url += `&year=${currentYear}`;
-      if (currentLanguage) url += `&language=${currentLanguage}`;
+      
+      const genreParam = (currentGenresList && currentGenresList.length > 0) ? currentGenresList.join(',') : currentGenreId;
+      if (genreParam) url += `&genre=${encodeURIComponent(genreParam)}`;
+      
+      if (currentYear) {
+        url += `&year=${currentYear}`;
+      } else if (currentYearMin && currentYearMax && (currentYearMin > 1990 || currentYearMax < 2026)) {
+        if (currentYearMin === currentYearMax) {
+          url += `&year=${currentYearMin}`;
+        } else {
+          url += `&year=${currentYearMax}`; // Filter by upper bound or TMDB discover year
+        }
+      }
+      
+      if (currentLanguage) url += `&language=${encodeURIComponent(currentLanguage)}`;
+      if (currentMinRating && currentMinRating > 0) url += `&min_rating=${currentMinRating}`;
     } else if (currentMediaType === 'trending') {
       url = `/api/tmdb/trending?type=all&time=day&page=${page}`;
     } else if (currentMediaType === 'movie') {
@@ -218,7 +240,9 @@ async function fetchMediaData(page = 1, append = false) {
 
     if (data.results && data.results.length > 0) {
       totalPages = data.total_pages || 100;
+      totalResultsCount = data.total_results || (data.results.length * 20);
       currentPage = page;
+      updateFilterLiveResultCount(totalResultsCount);
 
       if (append) {
         displayedItems = [...displayedItems, ...data.results];
@@ -254,6 +278,8 @@ async function loadLocalFallback() {
     const data = await res.json();
     if (data.success && data.movies) {
       displayedItems = data.movies;
+      totalPages = 1;
+      currentPage = 1;
       heroItems = data.movies.filter(m => m.featured).length > 0 ? data.movies.filter(m => m.featured) : data.movies.slice(0, 4);
       setupHeroSpotlight();
       renderCatalogGrid();
@@ -294,7 +320,13 @@ function setupHeroSpotlight() {
     if (heroRating) heroRating.innerHTML = `★ ${rating}`;
     if (heroQuality) heroQuality.textContent = '4K ULTRA HD';
     if (heroYear) heroYear.textContent = year;
-    if (heroTag) heroTag.textContent = index === 0 ? '🔥 TRENDING #1' : `FEATURED #${index + 1}`;
+    if (heroTag) {
+      if (currentMediaType === 'hindi') {
+        heroTag.textContent = 'HINDI DUBBED · POPULAR';
+      } else {
+        heroTag.textContent = index === 0 ? '🔥 TRENDING #1' : `FEATURED #${index + 1}`;
+      }
+    }
 
     const isTv = item.media_type === 'tv' || Boolean(item.name);
     const heroLangSuffix = currentMediaType === 'hindi' ? '&lang=hi' : '';
@@ -309,15 +341,20 @@ function setupHeroSpotlight() {
       };
     }
 
-    // Watchlist trigger
+    // Cineva My List / Watchlist trigger
     if (heroWatchlistBtn) {
       const inList = isItemInWatchlist(item.id);
-      heroWatchlistBtn.textContent = inList ? '✔' : '+';
-      heroWatchlistBtn.style.background = inList ? 'var(--primary)' : 'rgba(255,255,255,0.1)';
+      const iconEl = document.getElementById('hero-watchlist-icon');
+      const textEl = document.getElementById('hero-watchlist-text');
+      if (iconEl) iconEl.textContent = inList ? '✔' : '+';
+      if (textEl) textEl.textContent = inList ? 'In List' : 'My List';
+      heroWatchlistBtn.classList.toggle('in-watchlist', inList);
+
       heroWatchlistBtn.onclick = () => {
         const added = toggleWatchlistItem(item);
-        heroWatchlistBtn.textContent = added ? '✔' : '+';
-        heroWatchlistBtn.style.background = added ? 'var(--primary)' : 'rgba(255,255,255,0.1)';
+        if (iconEl) iconEl.textContent = added ? '✔' : '+';
+        if (textEl) textEl.textContent = added ? 'In List' : 'My List';
+        heroWatchlistBtn.classList.toggle('in-watchlist', added);
       };
     }
   }
@@ -343,6 +380,8 @@ function renderCatalogGrid() {
         <p>Try searching for a different keyword or select another genre filter.</p>
       </div>
     `;
+    const paginationBar = document.getElementById('pagination-bar');
+    if (paginationBar) paginationBar.style.display = 'none';
     return;
   }
 
@@ -355,8 +394,12 @@ function renderCatalogGrid() {
     const year = releaseDate ? releaseDate.split('-')[0] : '2024';
     const rating = (item.vote_average || item.rating || 8.0).toFixed(1);
     const posterUrl = item.poster_path ? TMDB_IMG_BASE + item.poster_path : (item.poster || 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=500');
-    const langSuffix = currentMediaType === 'hindi' ? '&lang=hi' : '';
-    const watchUrl = item.id ? `watch.html?tmdb=${item.id}${isTv ? '&type=tv' : ''}${langSuffix}` : `watch.html?id=${encodeURIComponent(item.id)}`;
+    const langSuffix = currentMediaType === 'hindi' ? '?lang=hi' : '';
+    const slug = (title || 'watch').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'watch';
+    const watchUrl = item.id ? `/${isTv ? 'tv' : 'movie'}/${item.id}-${slug}${langSuffix}` : `watch.html?id=${encodeURIComponent(item.id)}`;
+
+    const isHindiMedia = currentMediaType === 'hindi' || item.original_language === 'hi';
+    const badgeText = isHindiMedia ? 'HINDI' : (isTv ? 'TV' : 'HD');
 
     html += `
       <div class="movie-card" data-id="${item.id}">
@@ -369,43 +412,105 @@ function renderCatalogGrid() {
               </svg>
             </div>
           </div>
-          <span class="card-type-badge">${isTv ? 'TV' : 'HD'}</span>
+          <span class="card-type-badge">${badgeText}</span>
           <span class="card-rating-badge">★ ${rating}</span>
         </a>
         <div class="movie-card-info">
           <a href="${watchUrl}" class="movie-card-title" title="${title}">${title}</a>
           <div class="movie-card-meta">
             <span>${year}</span>
-            <span style="color: var(--primary-glow); font-weight: 700;">Free 4K</span>
+            <span style="color: var(--cyan-primary); font-weight: 700;">${badgeText}</span>
           </div>
         </div>
       </div>
     `;
-
-    // In-feed high converting sponsor card after 6th and 16th items
-    if (index === 5 || index === 15) {
-      html += `
-        <div class="movie-card native-sponsored-card">
-          <div class="card-poster-wrap" style="background: linear-gradient(135deg, #1a102b, #120919); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:16px; text-align:center;">
-            <span class="card-type-badge" style="background:var(--accent-gold); color:#000;">SPONSORED</span>
-            <div style="font-size:2rem; margin-bottom:6px;">⚡</div>
-            <h4 style="font-size:0.88rem; color:#fff; font-weight:800; line-height:1.25;">4K ULTRA VIP PASS</h4>
-            <p style="font-size:0.72rem; color:var(--text-secondary); margin-top:4px; line-height:1.35;">Ultra High-Speed Buffering & Ad-Free Cinema</p>
-            <a href="https://www.profitableratecpmnetwork.com/x394gs0y8n?key=e1fbe8dd25c9a9d0b513857fc2667364" target="_blank" class="btn-sponsor-claim" style="margin-top:10px; font-size:0.74rem; padding:6px 14px; text-decoration:none;">Claim Free Trial →</a>
-          </div>
-          <div class="movie-card-info">
-            <div class="movie-card-title" style="color:var(--accent-gold);">Recommended Sponsor</div>
-            <div class="movie-card-meta">
-              <span>Verified Partner</span>
-              <span style="color:var(--accent-gold); font-weight:700;">★ 4.9</span>
-            </div>
-          </div>
-        </div>
-      `;
-    }
   });
 
   grid.innerHTML = html;
+  renderPagination();
+}
+
+// Render Numbered Pagination Bar (1, 2, 3...)
+function renderPagination() {
+  const paginationBar = document.getElementById('pagination-bar');
+  const pageNumbersContainer = document.getElementById('page-numbers');
+  const prevBtn = document.getElementById('page-prev-btn');
+  const nextBtn = document.getElementById('page-next-btn');
+
+  if (!paginationBar || !pageNumbersContainer) return;
+
+  if (!displayedItems || displayedItems.length === 0) {
+    paginationBar.style.display = 'none';
+    return;
+  }
+
+  // Cap maxPages to 50 for smooth UX and TMDB limits
+  const maxPages = Math.min(Math.max(totalPages || 1, 1), 50);
+
+  if (maxPages <= 1) {
+    paginationBar.style.display = 'none';
+    return;
+  }
+  paginationBar.style.display = 'flex';
+
+  // Prev / Next button states
+  if (prevBtn) {
+    prevBtn.disabled = currentPage <= 1;
+    prevBtn.onclick = () => {
+      if (currentPage > 1) {
+        goToPage(currentPage - 1);
+      }
+    };
+  }
+
+  if (nextBtn) {
+    nextBtn.disabled = currentPage >= maxPages;
+    nextBtn.onclick = () => {
+      if (currentPage < maxPages) {
+        goToPage(currentPage + 1);
+      }
+    };
+  }
+
+  // Determine which page numbers to display
+  let pages = [];
+  if (maxPages <= 7) {
+    for (let i = 1; i <= maxPages; i++) pages.push(i);
+  } else {
+    if (currentPage <= 4) {
+      pages = [1, 2, 3, 4, 5, '...', maxPages];
+    } else if (currentPage >= maxPages - 3) {
+      pages = [1, '...', maxPages - 4, maxPages - 3, maxPages - 2, maxPages - 1, maxPages];
+    } else {
+      pages = [1, '...', currentPage - 1, currentPage, currentPage + 1, '...', maxPages];
+    }
+  }
+
+  pageNumbersContainer.innerHTML = pages.map(p => {
+    if (p === '...') {
+      return `<span class="page-ellipsis">•••</span>`;
+    }
+    const isActive = p === currentPage;
+    return `<button class="page-num ${isActive ? 'active' : ''}" data-page="${p}" aria-label="Page ${p}" ${isActive ? 'aria-current="page"' : ''}>${p}</button>`;
+  }).join('');
+
+  pageNumbersContainer.querySelectorAll('.page-num').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = parseInt(btn.getAttribute('data-page'), 10);
+      if (target && target !== currentPage) {
+        goToPage(target);
+      }
+    });
+  });
+}
+
+function goToPage(targetPage) {
+  if (targetPage < 1 || isLoading) return;
+  fetchMediaData(targetPage, false);
+  const targetElement = document.getElementById('catalog-title') || document.querySelector('.cineva-glass-shelf') || document.getElementById('discovery-section');
+  if (targetElement) {
+    targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 }
 
 // Live Instant Search with TMDB
@@ -589,194 +694,601 @@ window.removeWatchlistItem = function(id) {
 // Global Switch Media Type
 window.switchMediaType = function(type) {
   currentMediaType = type;
-  currentGenreId = '';
   currentPage = 1;
 
-  document.querySelectorAll('.media-tab').forEach(tab => {
+  // Sync nav links & media quick tabs
+  document.querySelectorAll('.nav-link-item').forEach(link => {
+    link.classList.toggle('active', link.getAttribute('data-nav') === type);
+  });
+  document.querySelectorAll('.media-tab-pill').forEach(tab => {
     tab.classList.toggle('active', tab.getAttribute('data-type') === type);
   });
-  document.querySelectorAll('.genre-pill').forEach(pill => {
-    pill.classList.toggle('active', pill.getAttribute('data-genre') === '');
-  });
-
-  const typeSelect = document.getElementById('filter-type');
-  if (typeSelect && typeSelect.value !== type) typeSelect.value = type;
-
-  const genreSelect = document.getElementById('filter-genre');
-  if (genreSelect) genreSelect.value = '';
 
   const titleEl = document.getElementById('catalog-title');
   if (titleEl) {
     if (type === 'hindi') {
       currentLanguage = 'hi';
-      titleEl.innerHTML = '<span class="shelf-indicator"></span><span>🇮🇳 Bollywood & Hindi Cinema</span>';
-      const langSelect = document.getElementById('filter-language');
-      if (langSelect) langSelect.value = 'hi';
+      titleEl.textContent = 'Hindi Cinema';
+      // Sync checkbox
+      document.querySelectorAll('#mf-lang-checkboxes .mf-check-input').forEach(chk => {
+        chk.checked = chk.value === 'hi';
+      });
     } else if (type === 'movie') {
-      titleEl.innerHTML = '<span class="shelf-indicator"></span><span>Popular Movies</span>';
+      titleEl.textContent = 'Popular Movies';
     } else if (type === 'tv') {
-      titleEl.innerHTML = '<span class="shelf-indicator"></span><span>Trending TV Series</span>';
+      titleEl.textContent = 'Trending TV Series';
     } else if (type === 'top-rated') {
-      titleEl.innerHTML = '<span class="shelf-indicator"></span><span>Top Rated Cinema</span>';
+      titleEl.textContent = 'Top Rated Cinema';
     } else if (type === 'upcoming') {
-      titleEl.innerHTML = '<span class="shelf-indicator"></span><span>Upcoming Releases</span>';
+      titleEl.textContent = 'Upcoming Releases';
     } else {
-      titleEl.innerHTML = '<span class="shelf-indicator"></span><span>Trending Now</span>';
+      titleEl.textContent = 'Movies';
     }
   }
 
-  updateActiveFilterTags();
+  updateActiveFilterSummaryRow();
   fetchMediaData(1, false);
 };
 
 // Global Select Genre Pill
 window.selectGenrePill = function(genreId) {
-  currentGenreId = genreId;
+  if (!currentGenresList.includes(genreId)) {
+    currentGenresList.push(genreId);
+  }
+  currentGenreId = currentGenresList.join(',');
   currentPage = 1;
 
-  document.querySelectorAll('.genre-pill').forEach(p => {
-    p.classList.toggle('active', p.getAttribute('data-genre') === genreId);
+  document.querySelectorAll('#mf-genre-chips .mf-genre-btn').forEach(btn => {
+    btn.classList.toggle('active', currentGenresList.includes(btn.getAttribute('data-genre')));
   });
 
-  const genreSelect = document.getElementById('filter-genre');
-  if (genreSelect && genreSelect.value !== genreId) genreSelect.value = genreId;
-
-  updateActiveFilterTags();
+  updateActiveFilterSummaryRow();
   fetchMediaData(1, false);
 };
 
-// Update Active Filter Tags Chips
-function updateActiveFilterTags() {
-  const bar = document.getElementById('active-filters-bar');
-  const tagsContainer = document.getElementById('active-filters-tags');
-  if (!bar || !tagsContainer) return;
+// ==========================================================================
+// MASTER FILTER SYSTEM (Unified Glass 3D Controller)
+// ==========================================================================
 
-  const tags = [];
-  if (currentMediaType && currentMediaType !== 'trending') {
-    const typeNames = {
-      'hindi': '🇮🇳 Hindi Cinema',
-      'movie': '🎬 Movies',
-      'tv': '📺 TV Series',
-      'top-rated': '⭐ Top Rated',
-      'upcoming': '🚀 Upcoming'
-    };
-    tags.push({
-      label: typeNames[currentMediaType] || currentMediaType,
-      clear: () => switchMediaType('trending')
-    });
+const GENRE_MAP = {
+  '28': 'Action',
+  '18': 'Drama',
+  '35': 'Comedy',
+  '53': 'Thriller',
+  '878': 'Sci-Fi',
+  '16': 'Animation',
+  '80': 'Crime',
+  '14': 'Fantasy',
+  '27': 'Horror',
+  '10749': 'Romance',
+  '12': 'Adventure',
+  '9648': 'Mystery'
+};
+
+const LANG_MAP = {
+  'hi': 'Hindi',
+  'en': 'English',
+  'ta': 'Tamil',
+  'te': 'Telugu',
+  'ml': 'Malayalam',
+  'kn': 'Kannada',
+  'ko': 'Korean',
+  'ja': 'Japanese',
+  'es': 'Spanish'
+};
+
+let filterLiveDebounceTimer = null;
+
+// Live result count helper
+function updateFilterLiveResultCount(count) {
+  const badgeEl = document.getElementById('catalog-results-count');
+  if (badgeEl) {
+    if (typeof count === 'number' && count > 0) {
+      badgeEl.textContent = `${count.toLocaleString()} results`;
+    } else {
+      badgeEl.textContent = '0 results';
+    }
   }
+}
 
-  if (currentGenreId) {
-    const genrePill = document.querySelector(`.genre-pill[data-genre="${currentGenreId}"]`);
-    const genreName = genrePill ? genrePill.textContent.trim() : `Genre: ${currentGenreId}`;
-    tags.push({
-      label: genreName,
-      clear: () => selectGenrePill('')
-    });
+// URL Query String Sync (Persist filters across reloads & back/forward navigation)
+function syncFiltersToUrl() {
+  try {
+    const url = new URL(window.location.href);
+    if (currentMediaType && currentMediaType !== 'trending') {
+      url.searchParams.set('type', currentMediaType);
+    } else {
+      url.searchParams.delete('type');
+    }
+
+    if (currentGenresList && currentGenresList.length > 0) {
+      url.searchParams.set('genres', currentGenresList.join(','));
+    } else {
+      url.searchParams.delete('genres');
+    }
+
+    if (currentLanguage) {
+      url.searchParams.set('lang', currentLanguage);
+    } else {
+      url.searchParams.delete('lang');
+    }
+
+    if (currentYearMin > 1990 || currentYearMax < 2026) {
+      url.searchParams.set('year_min', currentYearMin);
+      url.searchParams.set('year_max', currentYearMax);
+    } else {
+      url.searchParams.delete('year_min');
+      url.searchParams.delete('year_max');
+    }
+
+    if (currentMinRating > 0) {
+      url.searchParams.set('min_rating', currentMinRating);
+    } else {
+      url.searchParams.delete('min_rating');
+    }
+
+    if (currentSort && currentSort !== 'popularity.desc') {
+      url.searchParams.set('sort', currentSort);
+    } else {
+      url.searchParams.delete('sort');
+    }
+
+    window.history.replaceState({}, '', url.toString());
+  } catch (err) {
+    console.warn('URL sync failed:', err);
   }
+}
 
-  if (currentLanguage) {
-    const langSelect = document.getElementById('filter-language');
-    const langText = langSelect?.selectedOptions[0]?.text || `Lang: ${currentLanguage}`;
-    tags.push({
-      label: langText,
-      clear: () => {
-        currentLanguage = '';
-        if (langSelect) langSelect.value = '';
-        updateActiveFilterTags();
-        fetchMediaData(1, false);
-      }
-    });
-  }
+// Update Active Filters Count Badges and Summary Row
+function updateActiveFilterSummaryRow() {
+  const bar = document.getElementById('master-active-filters-bar');
+  const container = document.getElementById('active-chips-container');
+  const triggerBadge = document.getElementById('master-filter-badge');
+  const headerBadge = document.getElementById('mf-header-badge');
 
-  if (currentYear) {
-    tags.push({
-      label: `Year: ${currentYear}`,
-      clear: () => {
-        currentYear = '';
-        const yearSelect = document.getElementById('filter-year');
-        if (yearSelect) yearSelect.value = '';
-        updateActiveFilterTags();
-        fetchMediaData(1, false);
-      }
-    });
-  }
+  const activeChips = [];
 
-  const searchInput = document.getElementById('filter-search-input');
-  if (searchInput && searchInput.value.trim()) {
-    tags.push({
-      label: `Search: "${searchInput.value.trim()}"`,
-      clear: () => {
-        searchInput.value = '';
-        updateActiveFilterTags();
-        fetchMediaData(1, false);
-      }
-    });
-  }
-
-  if (tags.length === 0) {
-    bar.style.display = 'none';
-    tagsContainer.innerHTML = '';
-  } else {
-    bar.style.display = 'flex';
-    tagsContainer.innerHTML = tags.map((t, idx) => `
-      <span class="active-tag-chip">
-        ${t.label}
-        <button type="button" class="tag-close-btn" data-tag-idx="${idx}" title="Remove filter">&times;</button>
-      </span>
-    `).join('');
-
-    tagsContainer.querySelectorAll('.tag-close-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const idx = parseInt(btn.getAttribute('data-tag-idx'), 10);
-        if (tags[idx] && typeof tags[idx].clear === 'function') {
-          tags[idx].clear();
+  // 1. Genres
+  if (currentGenresList && currentGenresList.length > 0) {
+    currentGenresList.forEach(gid => {
+      activeChips.push({
+        label: `${GENRE_MAP[gid] || gid}`,
+        clear: () => {
+          currentGenresList = currentGenresList.filter(id => id !== gid);
+          currentGenreId = currentGenresList.join(',');
+          const chip = document.querySelector(`#mf-genre-chips .mf-genre-btn[data-genre="${gid}"]`);
+          if (chip) chip.classList.remove('active');
+          applyFiltersLive();
         }
       });
     });
   }
+
+  // 2. Language
+  if (currentLanguage) {
+    const langs = currentLanguage.split(',').filter(Boolean);
+    langs.forEach(l => {
+      activeChips.push({
+        label: `${LANG_MAP[l] || l}`,
+        clear: () => {
+          const remaining = langs.filter(x => x !== l);
+          currentLanguage = remaining.join(',');
+          document.querySelectorAll('#mf-lang-checkboxes .mf-check-input').forEach(chk => {
+            if (chk.value === l) chk.checked = false;
+          });
+          applyFiltersLive();
+        }
+      });
+    });
+  }
+
+  // 3. Year Range
+  if (currentYearMin > 1990 || currentYearMax < 2026) {
+    activeChips.push({
+      label: `${currentYearMin}-${currentYearMax}`,
+      clear: () => {
+        currentYearMin = 1990;
+        currentYearMax = 2026;
+        const minInp = document.getElementById('mf-year-min');
+        const maxInp = document.getElementById('mf-year-max');
+        if (minInp) minInp.value = 1990;
+        if (maxInp) maxInp.value = 2026;
+        applyFiltersLive();
+      }
+    });
+  }
+
+  // 4. Rating
+  if (currentMinRating > 0) {
+    activeChips.push({
+      label: `★ ${currentMinRating}+`,
+      clear: () => {
+        currentMinRating = 0;
+        const rSlider = document.getElementById('mf-rating-slider');
+        if (rSlider) rSlider.value = 0;
+        updateRatingSliderUI();
+        applyFiltersLive();
+      }
+    });
+  }
+
+  // 5. Non-default sort
+  if (currentSort && currentSort !== 'popularity.desc') {
+    const sortLabels = {
+      'vote_average.desc': 'Top Rated',
+      'primary_release_date.desc': 'Newest',
+      'title.asc': 'A-Z'
+    };
+    activeChips.push({
+      label: `Sort: ${sortLabels[currentSort] || currentSort}`,
+      clear: () => {
+        currentSort = 'popularity.desc';
+        const sortSel = document.getElementById('mf-sort-select');
+        if (sortSel) sortSel.value = 'popularity.desc';
+        applyFiltersLive();
+      }
+    });
+  }
+
+  const activeCount = activeChips.length;
+
+  // Badges on Trigger Button and Header
+  if (triggerBadge) {
+    triggerBadge.textContent = activeCount;
+    triggerBadge.style.display = activeCount > 0 ? 'inline-block' : 'none';
+  }
+  if (headerBadge) {
+    headerBadge.textContent = activeCount;
+    headerBadge.style.display = activeCount > 0 ? 'inline-block' : 'none';
+  }
+
+  // Render Summary Row below Navbar
+  if (bar && container) {
+    if (activeCount === 0) {
+      bar.style.display = 'none';
+      container.innerHTML = '';
+    } else {
+      bar.style.display = 'flex';
+      container.innerHTML = activeChips.map((chip, idx) => `
+        <span class="summary-chip" data-chip-idx="${idx}">
+          <span>${chip.label}</span>
+          <button type="button" class="summary-chip-remove" aria-label="Remove filter">&times;</button>
+        </span>
+      `).join('');
+
+      container.querySelectorAll('.summary-chip').forEach(el => {
+        const idx = parseInt(el.getAttribute('data-chip-idx'), 10);
+        el.addEventListener('click', () => {
+          if (activeChips[idx] && typeof activeChips[idx].clear === 'function') {
+            activeChips[idx].clear();
+          }
+        });
+      });
+    }
+  }
+
+  syncFiltersToUrl();
 }
 
-// 1-Click Reset All Filters Function
+// Live apply function debounced 300ms
+function applyFiltersLive() {
+  clearTimeout(filterLiveDebounceTimer);
+  filterLiveDebounceTimer = setTimeout(() => {
+    currentPage = 1;
+
+    // Update Catalog Title
+    const titleEl = document.getElementById('catalog-title');
+    if (titleEl) {
+      if (currentMediaType === 'hindi' || currentLanguage === 'hi') {
+        titleEl.textContent = 'Hindi Cinema';
+      } else if (currentMediaType === 'tv') {
+        titleEl.textContent = 'TV Series';
+      } else if (currentMediaType === 'top-rated') {
+        titleEl.textContent = 'Top Rated';
+      } else if (currentGenresList.length > 0) {
+        const names = currentGenresList.map(g => GENRE_MAP[g]).filter(Boolean).join(', ');
+        titleEl.textContent = names;
+      } else {
+        titleEl.textContent = 'Movies';
+      }
+    }
+
+    updateActiveFilterSummaryRow();
+    fetchMediaData(1, false);
+  }, 300);
+}
+
+// Single Rating Slider UI calculation
+function updateRatingSliderUI() {
+  const slider = document.getElementById('mf-rating-slider');
+  const display = document.getElementById('mf-rating-val-display');
+  if (!slider || !display) return;
+
+  const val = parseFloat(slider.value);
+  currentMinRating = val;
+
+  if (val <= 0) {
+    display.textContent = 'Any rating';
+  } else {
+    display.textContent = `★ ${val.toFixed(1)}+`;
+  }
+}
+
+// Master Filter Main Controller Initialization
+function initMasterFilterComponent() {
+  const triggerBtn = document.getElementById('master-filter-trigger');
+  const panel = document.getElementById('master-filter-panel');
+  const scrim = document.getElementById('master-filter-scrim');
+  const closeBtn = document.getElementById('master-filter-close');
+  const resetBtn = document.getElementById('btn-mf-reset');
+  const resetBottomBtn = document.getElementById('btn-mf-reset-bottom');
+  const applyBtn = document.getElementById('btn-mf-apply');
+  const clearSummaryBtn = document.getElementById('btn-clear-all-summary');
+
+  if (!panel) return;
+
+  // OPEN PANEL (MOBILE / TABLET)
+  function openPanel() {
+    panel.classList.add('active');
+    if (scrim) scrim.classList.add('active');
+    if (triggerBtn) triggerBtn.setAttribute('aria-expanded', 'true');
+    panel.setAttribute('aria-hidden', 'false');
+    if (scrim) scrim.setAttribute('aria-hidden', 'false');
+  }
+
+  // CLOSE PANEL (MOBILE / TABLET)
+  function closePanel() {
+    panel.classList.remove('active');
+    if (scrim) scrim.classList.remove('active');
+    if (triggerBtn) triggerBtn.setAttribute('aria-expanded', 'false');
+    panel.setAttribute('aria-hidden', 'true');
+    if (scrim) scrim.setAttribute('aria-hidden', 'true');
+    if (triggerBtn) triggerBtn.focus();
+  }
+
+  if (triggerBtn) {
+    triggerBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (panel.classList.contains('active')) {
+        closePanel();
+      } else {
+        openPanel();
+      }
+    });
+  }
+
+  if (closeBtn) closeBtn.addEventListener('click', closePanel);
+  if (scrim) scrim.addEventListener('click', closePanel);
+
+  // 1. MEDIA QUICK TABS (Trending Now, Hindi Cinema, Movies, TV Series, Top Rated, Upcoming)
+  const mediaTabs = document.querySelectorAll('#catalog-media-tabs .media-tab-pill');
+  mediaTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const type = tab.getAttribute('data-type');
+      window.switchMediaType(type);
+    });
+  });
+
+  // 2. SEARCH BY TITLE INPUT
+  const searchInput = document.getElementById('mf-title-search');
+  if (searchInput) {
+    let titleSearchDebounce = null;
+    searchInput.addEventListener('input', (e) => {
+      const q = e.target.value.trim();
+      clearTimeout(titleSearchDebounce);
+      titleSearchDebounce = setTimeout(() => {
+        if (q.length > 0) {
+          fetchSearchMedia(q);
+        } else {
+          fetchMediaData(1, false);
+        }
+      }, 350);
+    });
+  }
+
+  // 3. SORT SELECT DROPDOWN
+  const sortSelect = document.getElementById('mf-sort-select');
+  if (sortSelect) {
+    sortSelect.addEventListener('change', (e) => {
+      currentSort = e.target.value;
+      applyFiltersLive();
+    });
+  }
+
+  // 4. GENRE MULTI-SELECT BUTTONS
+  const genreButtons = document.querySelectorAll('#mf-genre-chips .mf-genre-btn');
+  genreButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const gid = btn.getAttribute('data-genre');
+      const idx = currentGenresList.indexOf(gid);
+      if (idx > -1) {
+        currentGenresList.splice(idx, 1);
+        btn.classList.remove('active');
+      } else {
+        currentGenresList.push(gid);
+        btn.classList.add('active');
+      }
+      currentGenreId = currentGenresList.join(',');
+      applyFiltersLive();
+    });
+  });
+
+  // 5. AUDIO LANGUAGE CHECKBOXES
+  const langCheckboxes = document.querySelectorAll('#mf-lang-checkboxes .mf-check-input');
+  langCheckboxes.forEach(chk => {
+    chk.addEventListener('change', () => {
+      const checkedVals = Array.from(langCheckboxes)
+        .filter(c => c.checked)
+        .map(c => c.value);
+      currentLanguage = checkedVals.join(',');
+      applyFiltersLive();
+    });
+  });
+
+  // 6. RELEASE YEAR INPUTS
+  const yearMinInp = document.getElementById('mf-year-min');
+  const yearMaxInp = document.getElementById('mf-year-max');
+  if (yearMinInp && yearMaxInp) {
+    const handleYearChange = () => {
+      let minVal = parseInt(yearMinInp.value, 10) || 1970;
+      let maxVal = parseInt(yearMaxInp.value, 10) || 2026;
+      if (minVal > maxVal) {
+        const tmp = minVal;
+        minVal = maxVal;
+        maxVal = tmp;
+      }
+      currentYearMin = minVal;
+      currentYearMax = maxVal;
+      applyFiltersLive();
+    };
+    yearMinInp.addEventListener('change', handleYearChange);
+    yearMaxInp.addEventListener('change', handleYearChange);
+  }
+
+  // 7. MINIMUM RATING SLIDER
+  const ratingSlider = document.getElementById('mf-rating-slider');
+  if (ratingSlider) {
+    ratingSlider.addEventListener('input', () => {
+      updateRatingSliderUI();
+      applyFiltersLive();
+    });
+    updateRatingSliderUI();
+  }
+
+  // RESET BUTTONS
+  [resetBtn, resetBottomBtn].forEach(btn => {
+    if (btn) {
+      btn.addEventListener('click', () => {
+        resetAllFilters();
+      });
+    }
+  });
+
+  // APPLY BUTTON ("Apply filters" -> closes panel on mobile, refreshes media)
+  if (applyBtn) {
+    applyBtn.addEventListener('click', () => {
+      closePanel();
+      fetchMediaData(1, false);
+      const shelf = document.getElementById('catalog-title') || document.querySelector('.catalog-layout-container');
+      if (shelf) shelf.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
+
+  // CLEAR ALL SUMMARY LINK
+  if (clearSummaryBtn) {
+    clearSummaryBtn.addEventListener('click', () => {
+      resetAllFilters();
+    });
+  }
+
+  // Restore filters from URL parameters on startup
+  restoreFiltersFromUrl();
+  updateActiveFilterSummaryRow();
+}
+
+// Restore state from URL query parameters
+function restoreFiltersFromUrl() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const typeParam = urlParams.get('type');
+  const genresParam = urlParams.get('genres') || urlParams.get('genre');
+  const langParam = urlParams.get('lang');
+  const yearMinParam = urlParams.get('year_min');
+  const yearMaxParam = urlParams.get('year_max');
+  const ratingParam = urlParams.get('min_rating');
+  const sortParam = urlParams.get('sort');
+
+  if (typeParam) {
+    currentMediaType = typeParam;
+    document.querySelectorAll('#catalog-media-tabs .media-tab-pill').forEach(t => {
+      t.classList.toggle('active', t.getAttribute('data-type') === typeParam);
+    });
+  }
+
+  if (genresParam) {
+    currentGenresList = genresParam.split(',').filter(Boolean);
+    currentGenreId = currentGenresList.join(',');
+    currentGenresList.forEach(gid => {
+      const btn = document.querySelector(`#mf-genre-chips .mf-genre-btn[data-genre="${gid}"]`);
+      if (btn) btn.classList.add('active');
+    });
+  }
+
+  if (langParam) {
+    currentLanguage = langParam;
+    const selectedLangs = langParam.split(',').filter(Boolean);
+    document.querySelectorAll('#mf-lang-checkboxes .mf-check-input').forEach(chk => {
+      chk.checked = selectedLangs.includes(chk.value);
+    });
+  }
+
+  if (yearMinParam || yearMaxParam) {
+    const minVal = parseInt(yearMinParam || '2020', 10);
+    const maxVal = parseInt(yearMaxParam || '2026', 10);
+    const minInp = document.getElementById('mf-year-min');
+    const maxInp = document.getElementById('mf-year-max');
+    if (minInp) minInp.value = minVal;
+    if (maxInp) maxInp.value = maxVal;
+    currentYearMin = minVal;
+    currentYearMax = maxVal;
+  }
+
+  if (ratingParam) {
+    const rVal = parseFloat(ratingParam);
+    const rSlider = document.getElementById('mf-rating-slider');
+    if (rSlider) rSlider.value = rVal;
+    updateRatingSliderUI();
+  }
+
+  if (sortParam) {
+    currentSort = sortParam;
+    const sortSelect = document.getElementById('mf-sort-select');
+    if (sortSelect) sortSelect.value = sortParam;
+  }
+}
+
+// 1-Click Complete Reset
 window.resetAllFilters = function() {
   currentMediaType = 'trending';
   currentLanguage = '';
   currentGenreId = '';
+  currentGenresList = [];
   currentYear = '';
+  currentYearMin = 1990;
+  currentYearMax = 2026;
+  currentMinRating = 0;
   currentSort = 'popularity.desc';
   currentPage = 1;
 
-  const typeSelect = document.getElementById('filter-type');
-  if (typeSelect) typeSelect.value = 'trending';
+  // Reset UI controls
+  document.querySelectorAll('#catalog-media-tabs .media-tab-pill').forEach(t => {
+    t.classList.toggle('active', t.getAttribute('data-type') === 'trending');
+  });
 
-  const genreSelect = document.getElementById('filter-genre');
-  if (genreSelect) genreSelect.value = '';
+  document.querySelectorAll('#mf-genre-chips .mf-genre-btn').forEach(b => b.classList.remove('active'));
 
-  const langSelect = document.getElementById('filter-language');
-  if (langSelect) langSelect.value = '';
+  document.querySelectorAll('#mf-lang-checkboxes .mf-check-input').forEach(c => {
+    c.checked = false;
+  });
 
-  const yearSelect = document.getElementById('filter-year');
-  if (yearSelect) yearSelect.value = '';
-
-  const sortSelect = document.getElementById('filter-sort');
-  if (sortSelect) sortSelect.value = 'popularity.desc';
-
-  const searchInput = document.getElementById('filter-search-input');
+  const searchInput = document.getElementById('mf-title-search');
   if (searchInput) searchInput.value = '';
 
-  document.querySelectorAll('.media-tab').forEach(tab => {
-    tab.classList.toggle('active', tab.getAttribute('data-type') === 'trending');
-  });
+  const sortSelect = document.getElementById('mf-sort-select');
+  if (sortSelect) sortSelect.value = 'popularity.desc';
 
-  document.querySelectorAll('.genre-pill').forEach(pill => {
-    pill.classList.toggle('active', pill.getAttribute('data-genre') === '');
-  });
+  const yearMinInp = document.getElementById('mf-year-min');
+  const yearMaxInp = document.getElementById('mf-year-max');
+  if (yearMinInp) yearMinInp.value = 2020;
+  if (yearMaxInp) yearMaxInp.value = 2026;
+
+  const rSlider = document.getElementById('mf-rating-slider');
+  if (rSlider) rSlider.value = 0;
+  updateRatingSliderUI();
 
   const titleEl = document.getElementById('catalog-title');
-  if (titleEl) titleEl.innerHTML = '<span class="shelf-indicator"></span><span>Trending Now</span>';
+  if (titleEl) titleEl.textContent = 'Movies';
 
-  updateActiveFilterTags();
+  updateActiveFilterSummaryRow();
   fetchMediaData(1, false);
 };
 
@@ -838,121 +1350,7 @@ document.addEventListener('DOMContentLoaded', () => {
   fetchMediaData(1, false);
   initSearch();
   initHiddenAdminTrigger();
-
-  // Media tabs click
-  document.querySelectorAll('.media-tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      const type = tab.getAttribute('data-type');
-      switchMediaType(type);
-    });
-  });
-
-  // Type filter dropdown
-  const typeSelect = document.getElementById('filter-type');
-  if (typeSelect) {
-    typeSelect.addEventListener('change', (e) => {
-      switchMediaType(e.target.value);
-    });
-  }
-
-  // Genre filter dropdown
-  const genreSelect = document.getElementById('filter-genre');
-  if (genreSelect) {
-    genreSelect.addEventListener('change', (e) => {
-      selectGenrePill(e.target.value);
-    });
-  }
-
-  // Language filter select
-  const langSelect = document.getElementById('filter-language');
-  if (langSelect) {
-    langSelect.addEventListener('change', (e) => {
-      currentLanguage = e.target.value;
-      if (currentLanguage === 'hi') {
-        currentMediaType = 'hindi';
-        const tSel = document.getElementById('filter-type');
-        if (tSel) tSel.value = 'hindi';
-      }
-      updateActiveFilterTags();
-      fetchMediaData(1, false);
-    });
-  }
-
-  // Genre pills click
-  document.querySelectorAll('.genre-pill').forEach(pill => {
-    pill.addEventListener('click', () => {
-      const genre = pill.getAttribute('data-genre');
-      selectGenrePill(genre);
-    });
-  });
-
-  // Filter Year & Sort
-  const yearSelect = document.getElementById('filter-year');
-  if (yearSelect) {
-    yearSelect.addEventListener('change', (e) => {
-      currentYear = e.target.value;
-      updateActiveFilterTags();
-      fetchMediaData(1, false);
-    });
-  }
-
-  const sortSelect = document.getElementById('filter-sort');
-  if (sortSelect) {
-    sortSelect.addEventListener('change', (e) => {
-      currentSort = e.target.value;
-      fetchMediaData(1, false);
-    });
-  }
-
-  // Quick In-Filter Search Input (Debounced)
-  const filterSearchInput = document.getElementById('filter-search-input');
-  let filterSearchTimer = null;
-  if (filterSearchInput) {
-    filterSearchInput.addEventListener('input', (e) => {
-      const query = e.target.value.trim();
-      clearTimeout(filterSearchTimer);
-      filterSearchTimer = setTimeout(() => {
-        updateActiveFilterTags();
-        if (query.length >= 2) {
-          // Perform live search using TMDB API
-          fetchSearchMedia(query);
-        } else if (query.length === 0) {
-          fetchMediaData(1, false);
-        }
-      }, 400);
-    });
-  }
-
-  // Reset Filters Button
-  const btnReset = document.getElementById('btn-reset-filters');
-  if (btnReset) {
-    btnReset.addEventListener('click', () => {
-      resetAllFilters();
-    });
-  }
-
-  // Handle URL Query Parameters (e.g. ?type=hindi, ?genre=28, ?q=avatar)
-  const urlParams = new URLSearchParams(window.location.search);
-  const paramType = urlParams.get('type');
-  const paramGenre = urlParams.get('genre');
-  const paramLang = urlParams.get('lang');
-  const paramQ = urlParams.get('q');
-
-  if (paramQ) {
-    const sInput = document.getElementById('movie-search-input');
-    if (sInput) sInput.value = paramQ;
-    if (filterSearchInput) filterSearchInput.value = paramQ;
-    fetchSearchMedia(paramQ);
-  } else if (paramType) {
-    switchMediaType(paramType);
-  } else if (paramLang) {
-    currentLanguage = paramLang;
-    if (langSelect) langSelect.value = paramLang;
-    updateActiveFilterTags();
-    fetchMediaData(1, false);
-  } else if (paramGenre) {
-    selectGenrePill(paramGenre);
-  }
+  initMasterFilterComponent();
 
   // Load More Button
   const btnLoadMore = document.getElementById('btn-load-more');

@@ -1,16 +1,15 @@
-User-agent: Google-InspectionTool
-Allow: /
-
-User-agent: Googlebot
-Allow: /
-Disallow: /admin.html
-Disallow: /api/admin/
-
 User-agent: *
 Allow: /
 Disallow: /admin.html
-Disallow: /api/admin/
+Disallow: /api/
+Disallow: /*?genre=*
+Disallow: /*?genres=*
+Disallow: /*?year=*
+Disallow: /*?year_min=*
+Disallow: /*?year_max=*
+Disallow: /*?sort=*
+Disallow: /*?lang=*
+Disallow: /*?min_rating=*
+Disallow: /*?q=*
 
-# Sitemap location for Googlebot, Bingbot & Search Engines
 Sitemap: https://movie-redx-1.onrender.com/sitemap.xml
-

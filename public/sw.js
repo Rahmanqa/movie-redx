@@ -1,16 +1,12 @@
-// Movie redx Service Worker for Offline Shell Caching
-const CACHE_NAME = 'movie-redx-v1';
+// MOVIE REDX Service Worker
+const CACHE_NAME = 'movie-redx-v2';
 const STATIC_ASSETS = [
-  '/',
-  '/index.html',
-  '/watch.html',
-  '/dmca.html',
   '/css/style.css',
   '/css/player.css',
   '/js/app.js',
-  '/js/player.js',
-  '/js/ads.js',
-  '/manifest.json'
+  '/manifest.json',
+  '/favicon-32x32.png',
+  '/apple-touch-icon.png'
 ];
 
 self.addEventListener('install', (event) => {
@@ -40,19 +36,24 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  // Don't cache TMDB or streaming API calls
-  if (event.request.url.includes('/api/') || event.request.url.includes('themoviedb.org') || event.request.url.includes('/embed/')) {
-    return;
+  const url = new URL(event.request.url);
+
+  // Never intercept search engine crawlers, sitemap, robots, API, HTML page routes
+  if (
+    url.pathname.startsWith('/api/') ||
+    url.pathname === '/sitemap.xml' ||
+    url.pathname === '/robots.txt' ||
+    url.pathname === '/health' ||
+    event.request.headers.get('accept')?.includes('text/html') ||
+    event.request.headers.get('user-agent')?.includes('bot') ||
+    event.request.headers.get('user-agent')?.includes('crawl') ||
+    event.request.headers.get('user-agent')?.includes('spider')
+  ) {
+    return; // Pass through straight to network
   }
 
+  // Network-first for everything else, fallback to cache for static CSS/JS
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      return cachedResponse || fetch(event.request).catch(() => {
-        // Fallback for html pages
-        if (event.request.headers.get('accept')?.includes('text/html')) {
-          return caches.match('/index.html');
-        }
-      });
-    })
+    fetch(event.request).catch(() => caches.match(event.request))
   );
 });

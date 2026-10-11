@@ -119,12 +119,23 @@ let rawLoadedServers = [];
 // Parse URL Parameters
 function parseUrlParams() {
   const params = new URLSearchParams(window.location.search);
-  const tmdbParam = params.get('tmdb');
-  const typeParam = params.get('type') || 'movie';
+  let tmdbParam = params.get('tmdb');
+  let typeParam = params.get('type') || 'movie';
   const idParam = params.get('id');
   const seasonParam = parseInt(params.get('s'), 10) || 1;
   const episodeParam = parseInt(params.get('e'), 10) || 1;
   const langParam = params.get('lang') || '';
+
+  // Check if pathname is /movie/123-slug or /tv/123-slug
+  const pathParts = window.location.pathname.split('/').filter(Boolean);
+  if (pathParts.length >= 2 && (pathParts[0] === 'movie' || pathParts[0] === 'tv')) {
+    typeParam = pathParts[0];
+    const idSlug = pathParts[1];
+    const match = idSlug.match(/^(\d+)/);
+    if (match) {
+      tmdbParam = match[1];
+    }
+  }
 
   currentTmdbId = tmdbParam;
   currentMediaType = typeParam;
@@ -422,7 +433,8 @@ function renderSimilar(similarList, type) {
     const rating = (item.vote_average || item.rating || 8.0).toFixed(1);
     const posterUrl = item.poster_path ? TMDB_IMG_BASE + item.poster_path : (item.poster || 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=200');
     const isTv = type === 'tv' || Boolean(item.name);
-    const watchUrl = item.id ? `watch.html?tmdb=${item.id}${isTv ? '&type=tv' : ''}` : `watch.html?id=${encodeURIComponent(item.id)}`;
+    const slug = (title || 'watch').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'watch';
+    const watchUrl = item.id ? `/${isTv ? 'tv' : 'movie'}/${item.id}-${slug}` : `watch.html?id=${encodeURIComponent(item.id)}`;
 
     html += `
       <a href="${watchUrl}" class="sidebar-item">
