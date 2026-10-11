@@ -596,9 +596,15 @@ async function fetchSearchMedia(query) {
     const data = await res.json();
     if (data.results && data.results.length > 0) {
       displayedItems = data.results;
+      totalPages = data.total_pages || 1;
+      totalResultsCount = data.total_results || data.results.length;
+      updateFilterLiveResultCount(totalResultsCount);
       renderCatalogGrid();
     } else {
       displayedItems = [];
+      totalPages = 1;
+      totalResultsCount = 0;
+      updateFilterLiveResultCount(0);
       renderCatalogGrid();
     }
   } catch (e) {
@@ -1046,6 +1052,10 @@ function initMasterFilterComponent() {
     if (triggerBtn) triggerBtn.focus();
   }
 
+  // Expose for mobile bottom nav and external triggers
+  window.openMasterFilterPanel = openPanel;
+  window.closeMasterFilterPanel = closePanel;
+
   if (triggerBtn) {
     triggerBtn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -1375,14 +1385,27 @@ document.addEventListener('DOMContentLoaded', () => {
   if (mobileWatchlistTab) mobileWatchlistTab.addEventListener('click', openWatchlist);
   if (closeWatchlistBtn) closeWatchlistBtn.addEventListener('click', () => watchlistModal.classList.remove('active'));
 
-  // Mobile Search Tab
+  // Mobile Search Tab (Opens filter bottom sheet & focuses search input)
   const mobileSearchTab = document.getElementById('mobile-search-tab');
   if (mobileSearchTab) {
     mobileSearchTab.addEventListener('click', () => {
-      const input = document.getElementById('movie-search-input');
-      if (input) {
-        input.focus();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+      // 1. Open the filter panel if on mobile/tablet
+      if (typeof window.openMasterFilterPanel === 'function') {
+        window.openMasterFilterPanel();
+      }
+      // 2. Focus the title search input inside the filter drawer
+      const mfSearch = document.getElementById('mf-title-search');
+      if (mfSearch) {
+        setTimeout(() => {
+          mfSearch.focus();
+          mfSearch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 150);
+      } else {
+        const topInput = document.getElementById('movie-search-input');
+        if (topInput) {
+          topInput.focus();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
       }
     });
   }

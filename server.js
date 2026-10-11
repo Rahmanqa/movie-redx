@@ -920,10 +920,7 @@ function sharedFooter() {
     <div class="footer-brand">
       <h3>🎬 MOVIE <span style="color:#e50914;">REDX</span></h3>
       <p>A cinema and television entertainment guide. Explore cast, trailers, ratings, and where to watch.</p>
-      <div style="display:flex;align-items:center;gap:10px;margin-top:12px;padding:8px 12px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06);">
-        <img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_1-5bdc75aae112b032181cb28a93a879273772371014442f104262f7d92814d015.svg" alt="TMDB" width="32" height="32" loading="lazy"/>
-        <p style="font-size:.72rem;color:#94a3b8;margin:0;line-height:1.4;">This product uses the TMDB API but is not endorsed or certified by TMDB.</p>
-      </div>
+      
     </div>
     <div class="footer-col">
       <h4>Browse</h4>
