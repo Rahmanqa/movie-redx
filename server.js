@@ -1127,7 +1127,7 @@ app.get('/movie/:idSlug', async (req, res) => {
       ${genres.length ? `<div style="margin-bottom:16px;">${genres.map(g => `<a href="/genre/${slugify(g.name)}" style="display:inline-block;background:rgba(0,210,255,.1);border:1px solid rgba(0,210,255,.3);color:#00d2ff;padding:4px 14px;border-radius:20px;margin:3px;text-decoration:none;font-size:.85rem;">${escHtml(g.name)}</a>`).join('')}</div>` : ''}
       ${director ? `<p style="color:#cbd5e1;margin-bottom:8px;"><strong style="color:#fff;">Director:</strong> <span itemprop="director" itemscope itemtype="https://schema.org/Person"><span itemprop="name">${escHtml(director.name)}</span></span></p>` : ''}
       ${overview ? `<p style="color:#94a3b8;line-height:1.8;margin-bottom:20px;" itemprop="description">${escHtml(overview)}</p>` : ''}
-      <a href="/movie/${tmdbId}-${slug}" class="btn-play-hero" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;padding:12px 28px;border-radius:50px;background:linear-gradient(135deg,#e50914,#ff1e27);color:#fff;font-weight:800;font-size:1rem;box-shadow:0 8px 24px rgba(229,9,20,.4);">
+      <a href="/watch.html?tmdb=${tmdbId}${langHint ? '&lang=hi' : ''}" class="btn-play-hero" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;padding:12px 28px;border-radius:50px;background:linear-gradient(135deg,#e50914,#ff1e27);color:#fff;font-weight:800;font-size:1rem;box-shadow:0 8px 24px rgba(229,9,20,.4);">
         ▶ Watch Now
       </a>
     </div>
@@ -1277,7 +1277,7 @@ app.get('/tv/:idSlug', async (req, res) => {
       ${genres.length ? `<div style="margin-bottom:16px;">${genres.map(g => `<a href="/genre/${slugify(g.name)}" style="display:inline-block;background:rgba(0,210,255,.1);border:1px solid rgba(0,210,255,.3);color:#00d2ff;padding:4px 14px;border-radius:20px;margin:3px;text-decoration:none;font-size:.85rem;">${escHtml(g.name)}</a>`).join('')}</div>` : ''}
       ${creators.length ? `<p style="color:#cbd5e1;margin-bottom:8px;"><strong style="color:#fff;">Created by:</strong> ${creators.map(c => escHtml(c.name)).join(', ')}</p>` : ''}
       ${overview ? `<p style="color:#94a3b8;line-height:1.8;margin-bottom:20px;">${escHtml(overview)}</p>` : ''}
-      <a href="/tv/${tmdbId}-${slug}" class="btn-play-hero" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;padding:12px 28px;border-radius:50px;background:linear-gradient(135deg,#e50914,#ff1e27);color:#fff;font-weight:800;font-size:1rem;box-shadow:0 8px 24px rgba(229,9,20,.4);">
+      <a href="/watch.html?tmdb=${tmdbId}&type=tv${langHint ? '&lang=hi' : ''}" class="btn-play-hero" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;padding:12px 28px;border-radius:50px;background:linear-gradient(135deg,#e50914,#ff1e27);color:#fff;font-weight:800;font-size:1rem;box-shadow:0 8px 24px rgba(229,9,20,.4);">
         ▶ Watch Now
       </a>
     </div>

@@ -17,16 +17,17 @@ const TMDB_AVATAR_BASE = 'https://image.tmdb.org/t/p/w185';
 const CONTINUE_WATCHING_KEY = 'movieredx_continue_watching';
 const WATCHLIST_KEY = 'movieredx_watchlist';
 
-// Default Fallback Streaming Embed Servers (100% verified working)
+// Default Fallback Streaming Embed Servers (verified working 2026)
 const DEFAULT_SERVERS = [
-  // 🌐 Global High-Speed Streaming Servers (First)
+  // 🌐 Server 1 — VidSrc.to (most reliable, multi-lang)
   {
-    id: 'vidlink',
+    id: 'vidsrc_to',
     name: 'Server 1',
-    movieTemplate: 'https://vidlink.pro/movie/{id}?autoplay=true',
-    tvTemplate: 'https://vidlink.pro/tv/{id}/{s}/{e}?autoplay=true',
+    movieTemplate: 'https://vidsrc.to/embed/movie/{id}',
+    tvTemplate: 'https://vidsrc.to/embed/tv/{id}/{s}/{e}',
     type: 'embed'
   },
+  // 🌐 Server 2 — VidSrc.me
   {
     id: 'vidsrc_me',
     name: 'Server 2',
@@ -34,20 +35,23 @@ const DEFAULT_SERVERS = [
     tvTemplate: 'https://vidsrc.me/embed/tv?tmdb={id}&season={s}&episode={e}',
     type: 'embed'
   },
+  // 🌐 Server 3 — VidLink
   {
-    id: 'vidcore',
+    id: 'vidlink',
     name: 'Server 3',
-    movieTemplate: 'https://vidcore.net/movie/{id}',
-    tvTemplate: 'https://vidcore.net/tv/{id}/{s}/{e}',
+    movieTemplate: 'https://vidlink.pro/movie/{id}?autoplay=true&title=true',
+    tvTemplate: 'https://vidlink.pro/tv/{id}/{s}/{e}?autoplay=true&title=true',
     type: 'embed'
   },
+  // 🌐 Server 4 — AutoEmbed
   {
-    id: 'vidy',
+    id: 'autoembed',
     name: 'Server 4',
-    movieTemplate: 'https://vidy.st/movie/{id}',
-    tvTemplate: 'https://vidy.st/tv/{id}/{s}/{e}',
+    movieTemplate: 'https://autoembed.co/movie/tmdb/{id}',
+    tvTemplate: 'https://autoembed.co/tv/tmdb/{id}-{s}-{e}',
     type: 'embed'
   },
+  // 🌐 Server 5 — VidSrc.pm
   {
     id: 'vidsrc_pm',
     name: 'Server 5',
@@ -55,6 +59,7 @@ const DEFAULT_SERVERS = [
     tvTemplate: 'https://vidsrc.pm/embed/tv/{id}/{s}/{e}',
     type: 'embed'
   },
+  // 🌐 Server 6 — 2Embed
   {
     id: 'twoembed',
     name: 'Server 6',
@@ -62,54 +67,75 @@ const DEFAULT_SERVERS = [
     tvTemplate: 'https://www.2embed.cc/embedtv/{id}&s={s}&e={e}',
     type: 'embed'
   },
-
-  // 🇮🇳 Dedicated Hindi & Multi-Audio Streaming Servers (Screenscape & VidLink Multi-Lang)
+  // 🌐 Server 7 — SuperEmbed
   {
-    id: 'screenscape_hindi',
-    name: '🇮🇳 Server 1 (Hindi Dub)',
-    movieTemplate: 'https://screenscape.me/embed?tmdb={id}&type=movie',
-    tvTemplate: 'https://screenscape.me/embed?tmdb={id}&type=tv&s={s}&e={e}',
-    type: 'embed',
-    lang: 'hi'
+    id: 'superembed',
+    name: 'Server 7',
+    movieTemplate: 'https://multiembed.mov/directstream.php?video_id={id}&tmdb=1',
+    tvTemplate: 'https://multiembed.mov/directstream.php?video_id={id}&tmdb=1&s={s}&e={e}',
+    type: 'embed'
   },
+  // 🌐 Server 8 — SmashyStream
+  {
+    id: 'smashystream',
+    name: 'Server 8',
+    movieTemplate: 'https://embed.smashystream.com/playere.php?tmdb={id}',
+    tvTemplate: 'https://embed.smashystream.com/playere.php?tmdb={id}&season={s}&episode={e}',
+    type: 'embed'
+  },
+  // 🌐 Server 9 — NontonGo
+  {
+    id: 'nontongo',
+    name: 'Server 9',
+    movieTemplate: 'https://www.NontonGo.net/embed/movie/{id}',
+    tvTemplate: 'https://www.NontonGo.net/embed/tv/{id}/{s}/{e}',
+    type: 'embed'
+  },
+
+  // 🇮🇳 Hindi Dub Server 1 — VidLink (Hindi lang param)
   {
     id: 'vidlink_hindi',
-    name: '🇮🇳 Server 2 (Hindi Dub)',
+    name: '🇮🇳 Server 1 (Hindi Dub)',
     movieTemplate: 'https://vidlink.pro/movie/{id}?primaryLang=hi&autoplay=true',
     tvTemplate: 'https://vidlink.pro/tv/{id}/{s}/{e}?primaryLang=hi&autoplay=true',
     type: 'embed',
     lang: 'hi'
   },
+  // 🇮🇳 Hindi Dub Server 2 — AutoEmbed Hindi
   {
     id: 'autoembed_hindi',
-    name: '🇮🇳 Server 3 (Hindi Dub)',
+    name: '🇮🇳 Server 2 (Hindi Dub)',
     movieTemplate: 'https://autoembed.co/movie/tmdb/{id}?lang=hi',
     tvTemplate: 'https://autoembed.co/tv/tmdb/{id}-{s}-{e}?lang=hi',
     type: 'embed',
     lang: 'hi'
   },
+  // 🇮🇳 Hindi Dub Server 3 — SmashyStream (multi-audio)
   {
     id: 'smashystream_hindi',
-    name: '🇮🇳 Server 4 (Hindi Dub)',
+    name: '🇮🇳 Server 3 (Hindi Dub)',
     movieTemplate: 'https://embed.smashystream.com/playere.php?tmdb={id}',
     tvTemplate: 'https://embed.smashystream.com/playere.php?tmdb={id}&season={s}&episode={e}',
     type: 'embed',
     lang: 'hi'
   },
+  // 🇮🇳 Hindi Dub Server 4 — RiveStream
   {
     id: 'rivestream_hindi',
-    name: '🇮🇳 Server 5 (Hindi Dub)',
+    name: '🇮🇳 Server 4 (Hindi Dub)',
     movieTemplate: 'https://rivestream.live/movie?tmdb={id}',
     tvTemplate: 'https://rivestream.live/tv?tmdb={id}&season={s}&episode={e}',
     type: 'embed',
     lang: 'hi'
   },
+  // 🇮🇳 Hindi Dub Server 5 — ScreenScape
   {
-    id: 'embedrise',
-    name: 'Server 7',
-    movieTemplate: 'https://embedrise.com/movie/tmdb/{id}',
-    tvTemplate: 'https://embedrise.com/tv/tmdb/{id}?season={s}&episode={e}',
-    type: 'embed'
+    id: 'screenscape_hindi',
+    name: '🇮🇳 Server 5 (Hindi Dub)',
+    movieTemplate: 'https://screenscape.me/embed?tmdb={id}&type=movie',
+    tvTemplate: 'https://screenscape.me/embed?tmdb={id}&type=tv&s={s}&e={e}',
+    type: 'embed',
+    lang: 'hi'
   }
 ];
 

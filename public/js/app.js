@@ -394,7 +394,7 @@ function renderCatalogGrid() {
     const year = releaseDate ? releaseDate.split('-')[0] : '2024';
     const rating = (item.vote_average || item.rating || 8.0).toFixed(1);
     const posterUrl = item.poster_path ? TMDB_IMG_BASE + item.poster_path : (item.poster || 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=500');
-    const langSuffix = currentMediaType === 'hindi' ? '?lang=hi' : '';
+    const langSuffix = currentLanguage === 'hi' ? '?lang=hi' : '';
     const slug = (title || 'watch').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'watch';
     const watchUrl = item.id ? `/${isTv ? 'tv' : 'movie'}/${item.id}-${slug}${langSuffix}` : `watch.html?id=${encodeURIComponent(item.id)}`;
 
