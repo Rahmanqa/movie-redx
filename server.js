@@ -957,6 +957,10 @@ function sharedFooter() {
     </div>
   </div>
   <div class="footer-bottom">
+    <p class="site-disclaimer" style="font-size:12px;color:#9aa0a6;text-align:center;margin:12px 0;">
+  MOVIE REDX uses third-party resources for movie information, images and trailers; all content belongs to its respective owners.<br>
+  We do not host or store any video files on our servers. For any copyright concern, please contact us via our <a href="/dmca.html">DMCA page</a>.
+</p>
     <div>&copy; 2026 MOVIE REDX. Entertainment &amp; Cinema Discovery Guide.</div>
     <div><a href="/about" style="color:#64748b">About</a> &bull; <a href="/privacy" style="color:#64748b">Privacy</a> &bull; <a href="/terms" style="color:#64748b">Terms</a> &bull; <a href="/sitemap.xml" style="color:#64748b">Sitemap</a></div>
   </div>

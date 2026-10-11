@@ -1640,3 +1640,8 @@ header {
   font-size: 0.8rem;
   color: var(--text-muted);
 }
+
+.footer-bottom .site-disclaimer { width: 100%; flex-basis: 100%; line-height: 1.6; }
+.footer-bottom .site-disclaimer a { color: #00d2ff; text-decoration: underline; }
+.footer-bottom .site-disclaimer a:hover { color: #fff; }
+
