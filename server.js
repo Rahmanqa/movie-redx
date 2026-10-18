@@ -177,15 +177,21 @@ app.use(express.urlencoded({ extended: true }));
 // The response is index.html enriched with SSR content (featured movie + rows of poster links)
 // so Google can crawl real URLs from view-source. Client JS app loads on top.
 app.get('/', async (req, res) => {
-  // If any filter query params are present → serve index.html with noindex
-  const hasFilter = ['genre', 'lang', 'year', 'sort', 'q', 'type', 'rating', 'min_rating'].some(k => req.query[k]);
-  if (hasFilter) {
+  // If any filter/search/sort query params are present → serve with noindex,follow and canonical to base
+  const hasQuery = Object.keys(req.query).length > 0;
+  if (hasQuery) {
     const indexHtml = fs.readFileSync(path.join(__dirname, 'public', 'index.html'), 'utf8');
-    const noindexHtml = indexHtml.replace(
-      '</head>',
-      '<meta name="robots" content="noindex,follow"></head>'
+    let noindexHtml = indexHtml.replace(
+      /<meta\s+name=["']robots["'][^>]*>/i,
+      '<meta name="robots" content="noindex,follow">'
     );
-    return res.setHeader('Content-Type', 'text/html; charset=utf-8').send(noindexHtml);
+    noindexHtml = noindexHtml.replace(
+      /<link\s+rel=["']canonical["'][^>]*>/i,
+      `<link rel="canonical" href="${SITE_URL}/">`
+    );
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.setHeader('Cache-Control', 'public, max-age=300, s-maxage=1800');
+    return res.send(noindexHtml);
   }
 
   try {
@@ -226,7 +232,7 @@ app.get('/', async (req, res) => {
 <!-- SSR content for search engines — JS app renders on top -->
 <div id="ssr-hero" style="display:none;" aria-hidden="true">
   ${featured ? `
-  <h1 style="font-size:2.2rem;font-weight:900;color:#fff;margin-bottom:8px;">
+  <h2 style="font-size:2.2rem;font-weight:900;color:#fff;margin-bottom:8px;">
     <a href="${featuredUrl}" style="color:inherit;text-decoration:none;">${escHtml(featuredTitle)}${featuredYear ? ` (${escHtml(featuredYear)})` : ''}</a>
   </h1>
   ${featuredPoster ? `<img src="${escHtml(featuredPoster)}" alt="${escHtml(featuredTitle)} featured image" loading="lazy" style="max-width:100%;border-radius:16px;" width="1280" height="720">` : ''}
@@ -858,7 +864,7 @@ function truncate(str, len) {
 }
 
 function sharedHead({ title, desc, canonical, ogImage, noindex = false, jsonld = '' }) {
-  const ogImg = ogImage || 'https://movie-redx-1.onrender.com/apple-touch-icon.png';
+  const ogImg = ogImage || `${SITE_URL}/apple-touch-icon.png`;
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
