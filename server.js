@@ -1342,7 +1342,8 @@ app.get('/tv/:idSlug', async (req, res) => {
 });
 
 // ─── Helper: render category page ─────────────────────────────────────────────
-async function renderCategoryPage(res, { pageTitle, metaDesc, canonical, heading, subheading, breadcrumbs, noindex = false, tmdbEndpoint, tmdbParams = {}, mediaType = 'movie', currentPage = 1 }) {
+async function renderCategoryPage(req, res, { pageTitle, metaDesc, canonical, heading, subheading, breadcrumbs, noindex = false, tmdbEndpoint, tmdbParams = {}, mediaType = 'movie', currentPage = 1 }) {
+  const hasFilter = req && req.query && Object.keys(req.query).some(k => k !== 'page');
   const params = { page: currentPage, ...tmdbParams };
   const data = await fetchTmdb(tmdbEndpoint, params);
   const items = (data.results || []);
@@ -1379,7 +1380,7 @@ app.get('/movies', async (req, res) => {
   const page = Math.max(1, parseInt(req.query.page) || 1);
   const canonical = `${SITE_URL}/movies`;
   try {
-    await renderCategoryPage(res, {
+    await renderCategoryPage(req, res, {
       pageTitle: 'Popular Movies 2026 — Stream & Discover | MOVIE REDX',
       metaDesc: 'Explore the most popular movies of 2026. Find cast details, trailers, ratings, and where to stream each film on MOVIE REDX.',
       canonical,
@@ -1401,7 +1402,7 @@ app.get('/tv', async (req, res) => {
   const page = Math.max(1, parseInt(req.query.page) || 1);
   const canonical = `${SITE_URL}/tv`;
   try {
-    await renderCategoryPage(res, {
+    await renderCategoryPage(req, res, {
       pageTitle: 'Popular TV Shows & Web Series 2026 | MOVIE REDX',
       metaDesc: 'Discover the most popular TV shows and web series of 2026. Find episodes, cast, trailers, and streaming providers on MOVIE REDX.',
       canonical,
@@ -1423,7 +1424,7 @@ app.get('/top-rated', async (req, res) => {
   const page = Math.max(1, parseInt(req.query.page) || 1);
   const canonical = `${SITE_URL}/top-rated`;
   try {
-    await renderCategoryPage(res, {
+    await renderCategoryPage(req, res, {
       pageTitle: 'Top Rated Movies of All Time | MOVIE REDX',
       metaDesc: 'Browse the highest-rated movies of all time, ranked by audience votes. Find trailers, cast, and streaming info on MOVIE REDX.',
       canonical,
@@ -1445,7 +1446,7 @@ app.get('/upcoming', async (req, res) => {
   const page = Math.max(1, parseInt(req.query.page) || 1);
   const canonical = `${SITE_URL}/upcoming`;
   try {
-    await renderCategoryPage(res, {
+    await renderCategoryPage(req, res, {
       pageTitle: 'Upcoming Movie Releases 2026 | MOVIE REDX',
       metaDesc: 'Preview upcoming movie releases for 2026. Get trailers, cast details, and release dates for the most anticipated films.',
       canonical,
@@ -1467,7 +1468,7 @@ app.get('/hindi-dubbed', async (req, res) => {
   const page = Math.max(1, parseInt(req.query.page) || 1);
   const canonical = `${SITE_URL}/hindi-dubbed`;
   try {
-    await renderCategoryPage(res, {
+    await renderCategoryPage(req, res, {
       pageTitle: 'Hindi Cinema — Bollywood Movies 2026 | MOVIE REDX',
       metaDesc: 'Explore popular Bollywood and Hindi language films. Find cast, trailers, ratings, and streaming providers for Hindi cinema on MOVIE REDX.',
       canonical,
@@ -1498,7 +1499,7 @@ app.get('/genre/:slug', async (req, res) => {
   }
 
   try {
-    await renderCategoryPage(res, {
+    await renderCategoryPage(req, res, {
       pageTitle: `${genreName} Movies 2026 — Cast & Streaming Info | MOVIE REDX`,
       metaDesc: `Discover the best ${genreName} movies. Find cast credits, trailers, ratings, and where to stream each film on MOVIE REDX.`,
       canonical,
