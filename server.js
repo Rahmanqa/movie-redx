@@ -865,24 +865,26 @@ function truncate(str, len) {
 
 function sharedHead({ title, desc, canonical, ogImage, noindex = false, jsonld = '' }) {
   const ogImg = ogImage || `${SITE_URL}/apple-touch-icon.png`;
+  const cleanTitle = truncate(String(title || '').replace(/&amp;/g, '&').replace(/&/g, 'and'), 60);
+  const cleanDesc = truncate(String(desc || '').replace(/&amp;/g, '&'), 155);
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-  <title>${escHtml(title)}</title>
-  <meta name="description" content="${escHtml(desc)}">
+  <title>${escHtml(cleanTitle)}</title>
+  <meta name="description" content="${escHtml(cleanDesc)}">
   ${noindex ? '<meta name="robots" content="noindex,follow">' : '<meta name="robots" content="index,follow,max-image-preview:large">'}
   <link rel="canonical" href="${escHtml(canonical)}">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="MOVIE REDX">
   <meta property="og:url" content="${escHtml(canonical)}">
-  <meta property="og:title" content="${escHtml(title)}">
-  <meta property="og:description" content="${escHtml(desc)}">
+  <meta property="og:title" content="${escHtml(cleanTitle)}">
+  <meta property="og:description" content="${escHtml(cleanDesc)}">
   <meta property="og:image" content="${escHtml(ogImg)}">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="${escHtml(title)}">
-  <meta name="twitter:description" content="${escHtml(desc)}">
+  <meta name="twitter:title" content="${escHtml(cleanTitle)}">
+  <meta name="twitter:description" content="${escHtml(cleanDesc)}">
   <meta name="twitter:image" content="${escHtml(ogImg)}">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -1325,8 +1327,8 @@ app.get('/tv/:idSlug', async (req, res) => {
   </section>` : ''}
 
   ${similarItems.length ? `
-  <section style="margin-bottom:36px;" aria-label="You May Also Like">
-    <h2 style="font-size:1.3rem;font-weight:700;color:#fff;margin-bottom:16px;">You May Also Like</h2>
+  <section style="margin-bottom:36px;" aria-label="More Like This">
+    <h2 style="font-size:1.3rem;font-weight:700;color:#fff;margin-bottom:16px;">More Like This</h2>
     <div class="movies-grid">${similarItems.map(m => posterCard(m, 'tv')).join('')}</div>
   </section>` : ''}
 </main>`;
