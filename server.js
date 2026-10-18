@@ -1357,7 +1357,7 @@ async function renderCategoryPage(req, res, { pageTitle, metaDesc, canonical, he
     desc: truncate(metaDesc, 155),
     canonical,
     ogImage,
-    noindex: noindex || currentPage > 1,
+    noindex: Boolean(noindex || currentPage > 1 || hasFilter),
     jsonld: breadcrumb
   });
   html += sharedNav();
