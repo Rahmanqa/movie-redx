@@ -516,6 +516,8 @@ header {
   grid-template-columns: repeat(5, 1fr);
   gap: 16px;
   width: 100%;
+
+  min-height: 800px;
 }
 
 @media (max-width: 1400px) {
