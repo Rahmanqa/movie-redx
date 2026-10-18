@@ -404,7 +404,7 @@ function renderCatalogGrid() {
     html += `
       <div class="movie-card" data-id="${item.id}">
         <a href="${watchUrl}" class="card-poster-wrap">
-          <img src="${posterUrl}" alt="${title}" class="card-poster-img" ${cardIdx < 4 ? 'fetchpriority="high"' : 'loading="lazy"'} width="200" height="300" />
+          <img src="${posterUrl}" alt="${title}" class="card-poster-img" ${index < 4 ? 'fetchpriority="high"' : 'loading="lazy"'} width="200" height="300" />
           <div class="card-poster-overlay">
             <div class="card-play-btn">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
