@@ -135,7 +135,7 @@
           <div class="notice-content-group">
             <div class="notice-icon">💡</div>
             <div class="notice-text">
-              <strong>Note:</strong> If current server is not working, <span class="notice-highlight">try another server</span> from the buttons below. For Hindi Dubbed audio, switch to <strong>🇮🇳 Server 1 (Hindi Dub)</strong> or <strong>🇮🇳 Server 2 (Hindi Dub)</strong>.
+              <strong>Note:</strong> If current server is not working, <span class="notice-highlight">try another server</span> from the buttons below. <strong>🇮🇳 Hindi Dubbed</strong> for Hindi audio, <strong>🇬🇧 English</strong> for original English, <strong>🌐 Multi-Audio</strong> for multiple languages.
             </div>
           </div>
           <button class="btn-quick-switch" onclick="switchNextServer()">
@@ -148,11 +148,6 @@
           <div class="servers-group">
             <div class="servers-header-row">
               <span class="server-label">Streaming Server:</span>
-              <div class="server-category-tabs" id="server-category-tabs">
-                <button type="button" class="server-cat-tab active" id="tab-cat-all" onclick="filterServerCategory('all')">All Servers</button>
-                <button type="button" class="server-cat-tab" id="tab-cat-hindi" onclick="filterServerCategory('hindi')">🇮🇳 Hindi Dubbed</button>
-                <button type="button" class="server-cat-tab" id="tab-cat-global" onclick="filterServerCategory('global')">🌐 Global</button>
-              </div>
             </div>
             <div id="stream-servers-list" style="display:flex; flex-wrap:wrap; gap:6px;">
               <!-- Populated by player.js -->

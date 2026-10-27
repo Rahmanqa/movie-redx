@@ -5,114 +5,25 @@
   "streamServers": [
     {
       "id": "vidlink_hindi",
-      "name": "🇮🇳 Server 1 (Hindi Dub — VidLink)",
+      "name": "🇮🇳 Hindi Dubbed",
       "movieTemplate": "https://vidlink.pro/movie/{id}?primaryLang=hi&autoplay=true",
       "tvTemplate": "https://vidlink.pro/tv/{id}/{s}/{e}?primaryLang=hi&autoplay=true",
       "type": "embed",
-      "lang": "hi",
-      "hindiNote": "Auto-selects Hindi audio stream when available"
+      "lang": "hi"
     },
     {
-      "id": "autoembed_hindi",
-      "name": "🇮🇳 Server 2 (Hindi Dub — AutoEmbed)",
-      "movieTemplate": "https://autoembed.co/movie/tmdb/{id}?lang=hi",
-      "tvTemplate": "https://autoembed.co/tv/tmdb/{id}-{s}-{e}?lang=hi",
+      "id": "vidlink_english",
+      "name": "🇬🇧 English",
+      "movieTemplate": "https://vidlink.pro/movie/{id}?primaryLang=en&autoplay=true&title=true",
+      "tvTemplate": "https://vidlink.pro/tv/{id}/{s}/{e}?primaryLang=en&autoplay=true&title=true",
       "type": "embed",
-      "lang": "hi",
-      "hindiNote": "Requests Hindi audio from upstream CDN"
+      "lang": "en"
     },
     {
-      "id": "videasy_hindi",
-      "name": "🇮🇳 Server 3 (Hindi Dub — Videasy)",
-      "movieTemplate": "https://player.videasy.net/movie/{id}",
-      "tvTemplate": "https://player.videasy.net/tv/{id}/{s}/{e}",
-      "type": "embed",
-      "lang": "hi",
-      "hindiNote": "Clean multi-audio player — choose Hindi in player settings"
-    },
-    {
-      "id": "vidsrc_cc_hindi",
-      "name": "🇮🇳 Server 4 (Hindi Dub — VidSrc CC)",
-      "movieTemplate": "https://vidsrc.cc/v2/embed/movie/{id}",
-      "tvTemplate": "https://vidsrc.cc/v2/embed/tv/{id}/{s}/{e}",
-      "type": "embed",
-      "lang": "hi",
-      "hindiNote": "Select Hindi in player audio track selector"
-    },
-    {
-      "id": "smashystream_hindi",
-      "name": "🇮🇳 Server 5 (Hindi Dub — SmashyStream)",
-      "movieTemplate": "https://embed.smashystream.com/playere.php?tmdb={id}",
-      "tvTemplate": "https://embed.smashystream.com/playere.php?tmdb={id}&season={s}&episode={e}",
-      "type": "embed",
-      "lang": "hi",
-      "hindiNote": "Multi-audio player — switch to Hindi audio"
-    },
-    {
-      "id": "rivestream_hindi",
-      "name": "🇮🇳 Server 6 (Hindi Dub — RiveStream)",
-      "movieTemplate": "https://rivestream.live/movie?tmdb={id}",
-      "tvTemplate": "https://rivestream.live/tv?tmdb={id}&season={s}&episode={e}",
-      "type": "embed",
-      "lang": "hi",
-      "hindiNote": "Strong Bollywood & South Indian Hindi dub catalog"
-    },
-    {
-      "id": "twoembed_hindi",
-      "name": "🇮🇳 Server 7 (Hindi Dub — 2Embed)",
-      "movieTemplate": "https://www.2embed.cc/embed/{id}",
-      "tvTemplate": "https://www.2embed.cc/embedtv/{id}&s={s}&e={e}",
-      "type": "embed",
-      "lang": "hi",
-      "hindiNote": "Alternative high availability Hindi mirror"
-    },
-    {
-      "id": "vidlink",
-      "name": "Server 1 (VidLink HD)",
-      "movieTemplate": "https://vidlink.pro/movie/{id}?autoplay=true&title=true",
-      "tvTemplate": "https://vidlink.pro/tv/{id}/{s}/{e}?autoplay=true&title=true",
-      "type": "embed"
-    },
-    {
-      "id": "vidsrc_me",
-      "name": "Server 2 (VidSrc.me)",
+      "id": "vidsrc_me_multi",
+      "name": "🌐 Multi-Audio",
       "movieTemplate": "https://vidsrc.me/embed/movie?tmdb={id}",
       "tvTemplate": "https://vidsrc.me/embed/tv?tmdb={id}&season={s}&episode={e}",
-      "type": "embed"
-    },
-    {
-      "id": "vidsrc_to",
-      "name": "Server 3 (VidSrc.to)",
-      "movieTemplate": "https://vidsrc.to/embed/movie/{id}",
-      "tvTemplate": "https://vidsrc.to/embed/tv/{id}/{s}/{e}",
-      "type": "embed"
-    },
-    {
-      "id": "videasy",
-      "name": "Server 4 (Videasy)",
-      "movieTemplate": "https://player.videasy.net/movie/{id}",
-      "tvTemplate": "https://player.videasy.net/tv/{id}/{s}/{e}",
-      "type": "embed"
-    },
-    {
-      "id": "autoembed",
-      "name": "Server 5 (AutoEmbed)",
-      "movieTemplate": "https://autoembed.co/movie/tmdb/{id}",
-      "tvTemplate": "https://autoembed.co/tv/tmdb/{id}-{s}-{e}",
-      "type": "embed"
-    },
-    {
-      "id": "vidsrc_pm",
-      "name": "Server 6 (VidSrc.pm)",
-      "movieTemplate": "https://vidsrc.pm/embed/movie/{id}",
-      "tvTemplate": "https://vidsrc.pm/embed/tv/{id}/{s}/{e}",
-      "type": "embed"
-    },
-    {
-      "id": "superembed",
-      "name": "Server 7 (SuperEmbed)",
-      "movieTemplate": "https://multiembed.mov/directstream.php?video_id={id}&tmdb=1",
-      "tvTemplate": "https://multiembed.mov/directstream.php?video_id={id}&tmdb=1&s={s}&e={e}",
       "type": "embed"
     }
   ],
