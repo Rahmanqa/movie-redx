@@ -17,130 +17,196 @@ const TMDB_AVATAR_BASE = 'https://image.tmdb.org/t/p/w185';
 const CONTINUE_WATCHING_KEY = 'movieredx_continue_watching';
 const WATCHLIST_KEY = 'movieredx_watchlist';
 
-// Default Fallback Streaming Embed Servers (verified working 2026)
+// Default Fallback Streaming Embed Servers (verified working 2025-2026)
 const DEFAULT_SERVERS = [
-  // 🌐 Server 1 — VidSrc.to (most reliable, multi-lang)
   {
-    id: 'vidsrc_to',
-    name: 'Server 1',
-    movieTemplate: 'https://vidsrc.to/embed/movie/{id}',
-    tvTemplate: 'https://vidsrc.to/embed/tv/{id}/{s}/{e}',
-    type: 'embed'
+    "id": "vidlink_hindi",
+    "name": "🇮🇳 Server 1 (Hindi Dub — VidLink)",
+    "movieTemplate": "https://vidlink.pro/movie/{id}?primaryLang=hi&autoplay=true",
+    "tvTemplate": "https://vidlink.pro/tv/{id}/{s}/{e}?primaryLang=hi&autoplay=true",
+    "type": "embed",
+    "lang": "hi",
+    "hindiNote": "Auto-selects Hindi audio stream when available"
   },
-  // 🌐 Server 2 — VidSrc.me
   {
-    id: 'vidsrc_me',
-    name: 'Server 2',
-    movieTemplate: 'https://vidsrc.me/embed/movie?tmdb={id}',
-    tvTemplate: 'https://vidsrc.me/embed/tv?tmdb={id}&season={s}&episode={e}',
-    type: 'embed'
+    "id": "autoembed_hindi",
+    "name": "🇮🇳 Server 2 (Hindi Dub — AutoEmbed)",
+    "movieTemplate": "https://autoembed.co/movie/tmdb/{id}?lang=hi",
+    "tvTemplate": "https://autoembed.co/tv/tmdb/{id}-{s}-{e}?lang=hi",
+    "type": "embed",
+    "lang": "hi",
+    "hindiNote": "Requests Hindi audio from upstream CDN"
   },
-  // 🌐 Server 3 — VidLink
   {
-    id: 'vidlink',
-    name: 'Server 3',
-    movieTemplate: 'https://vidlink.pro/movie/{id}?autoplay=true&title=true',
-    tvTemplate: 'https://vidlink.pro/tv/{id}/{s}/{e}?autoplay=true&title=true',
-    type: 'embed'
+    "id": "videasy_hindi",
+    "name": "🇮🇳 Server 3 (Hindi Dub — Videasy)",
+    "movieTemplate": "https://player.videasy.net/movie/{id}",
+    "tvTemplate": "https://player.videasy.net/tv/{id}/{s}/{e}",
+    "type": "embed",
+    "lang": "hi",
+    "hindiNote": "Clean multi-audio player — choose Hindi in player settings"
   },
-  // 🌐 Server 4 — AutoEmbed
   {
-    id: 'autoembed',
-    name: 'Server 4',
-    movieTemplate: 'https://autoembed.co/movie/tmdb/{id}',
-    tvTemplate: 'https://autoembed.co/tv/tmdb/{id}-{s}-{e}',
-    type: 'embed'
+    "id": "vidsrc_cc_hindi",
+    "name": "🇮🇳 Server 4 (Hindi Dub — VidSrc CC)",
+    "movieTemplate": "https://vidsrc.cc/v2/embed/movie/{id}",
+    "tvTemplate": "https://vidsrc.cc/v2/embed/tv/{id}/{s}/{e}",
+    "type": "embed",
+    "lang": "hi",
+    "hindiNote": "Select Hindi in player audio track selector"
   },
-  // 🌐 Server 5 — VidSrc.pm
   {
-    id: 'vidsrc_pm',
-    name: 'Server 5',
-    movieTemplate: 'https://vidsrc.pm/embed/movie/{id}',
-    tvTemplate: 'https://vidsrc.pm/embed/tv/{id}/{s}/{e}',
-    type: 'embed'
+    "id": "smashystream_hindi",
+    "name": "🇮🇳 Server 5 (Hindi Dub — SmashyStream)",
+    "movieTemplate": "https://embed.smashystream.com/playere.php?tmdb={id}",
+    "tvTemplate": "https://embed.smashystream.com/playere.php?tmdb={id}&season={s}&episode={e}",
+    "type": "embed",
+    "lang": "hi",
+    "hindiNote": "Multi-audio player — switch to Hindi audio"
   },
-  // 🌐 Server 6 — 2Embed
   {
-    id: 'twoembed',
-    name: 'Server 6',
-    movieTemplate: 'https://www.2embed.cc/embed/{id}',
-    tvTemplate: 'https://www.2embed.cc/embedtv/{id}&s={s}&e={e}',
-    type: 'embed'
+    "id": "rivestream_hindi",
+    "name": "🇮🇳 Server 6 (Hindi Dub — RiveStream)",
+    "movieTemplate": "https://rivestream.live/movie?tmdb={id}",
+    "tvTemplate": "https://rivestream.live/tv?tmdb={id}&season={s}&episode={e}",
+    "type": "embed",
+    "lang": "hi",
+    "hindiNote": "Strong Bollywood & South Indian Hindi dub catalog"
   },
-  // 🌐 Server 7 — SuperEmbed
   {
-    id: 'superembed',
-    name: 'Server 7',
-    movieTemplate: 'https://multiembed.mov/directstream.php?video_id={id}&tmdb=1',
-    tvTemplate: 'https://multiembed.mov/directstream.php?video_id={id}&tmdb=1&s={s}&e={e}',
-    type: 'embed'
+    "id": "twoembed_hindi",
+    "name": "🇮🇳 Server 7 (Hindi Dub — 2Embed)",
+    "movieTemplate": "https://www.2embed.cc/embed/{id}",
+    "tvTemplate": "https://www.2embed.cc/embedtv/{id}&s={s}&e={e}",
+    "type": "embed",
+    "lang": "hi",
+    "hindiNote": "Alternative high availability Hindi mirror"
   },
-  // 🌐 Server 8 — SmashyStream
   {
-    id: 'smashystream',
-    name: 'Server 8',
-    movieTemplate: 'https://embed.smashystream.com/playere.php?tmdb={id}',
-    tvTemplate: 'https://embed.smashystream.com/playere.php?tmdb={id}&season={s}&episode={e}',
-    type: 'embed'
+    "id": "vidlink",
+    "name": "Server 1 (VidLink HD)",
+    "movieTemplate": "https://vidlink.pro/movie/{id}?autoplay=true&title=true",
+    "tvTemplate": "https://vidlink.pro/tv/{id}/{s}/{e}?autoplay=true&title=true",
+    "type": "embed"
   },
-  // 🌐 Server 9 — NontonGo
   {
-    id: 'nontongo',
-    name: 'Server 9',
-    movieTemplate: 'https://www.NontonGo.net/embed/movie/{id}',
-    tvTemplate: 'https://www.NontonGo.net/embed/tv/{id}/{s}/{e}',
-    type: 'embed'
+    "id": "vidsrc_me",
+    "name": "Server 2 (VidSrc.me)",
+    "movieTemplate": "https://vidsrc.me/embed/movie?tmdb={id}",
+    "tvTemplate": "https://vidsrc.me/embed/tv?tmdb={id}&season={s}&episode={e}",
+    "type": "embed"
   },
-
-  // 🇮🇳 Hindi Dub Server 1 — VidLink (Hindi lang param)
   {
-    id: 'vidlink_hindi',
-    name: '🇮🇳 Server 1 (Hindi Dub)',
-    movieTemplate: 'https://vidlink.pro/movie/{id}?primaryLang=hi&autoplay=true',
-    tvTemplate: 'https://vidlink.pro/tv/{id}/{s}/{e}?primaryLang=hi&autoplay=true',
-    type: 'embed',
-    lang: 'hi'
+    "id": "vidsrc_to",
+    "name": "Server 3 (VidSrc.to)",
+    "movieTemplate": "https://vidsrc.to/embed/movie/{id}",
+    "tvTemplate": "https://vidsrc.to/embed/tv/{id}/{s}/{e}",
+    "type": "embed"
   },
-  // 🇮🇳 Hindi Dub Server 2 — AutoEmbed Hindi
   {
-    id: 'autoembed_hindi',
-    name: '🇮🇳 Server 2 (Hindi Dub)',
-    movieTemplate: 'https://autoembed.co/movie/tmdb/{id}?lang=hi',
-    tvTemplate: 'https://autoembed.co/tv/tmdb/{id}-{s}-{e}?lang=hi',
-    type: 'embed',
-    lang: 'hi'
+    "id": "videasy",
+    "name": "Server 4 (Videasy)",
+    "movieTemplate": "https://player.videasy.net/movie/{id}",
+    "tvTemplate": "https://player.videasy.net/tv/{id}/{s}/{e}",
+    "type": "embed"
   },
-  // 🇮🇳 Hindi Dub Server 3 — SmashyStream (multi-audio)
   {
-    id: 'smashystream_hindi',
-    name: '🇮🇳 Server 3 (Hindi Dub)',
-    movieTemplate: 'https://embed.smashystream.com/playere.php?tmdb={id}',
-    tvTemplate: 'https://embed.smashystream.com/playere.php?tmdb={id}&season={s}&episode={e}',
-    type: 'embed',
-    lang: 'hi'
+    "id": "autoembed",
+    "name": "Server 5 (AutoEmbed)",
+    "movieTemplate": "https://autoembed.co/movie/tmdb/{id}",
+    "tvTemplate": "https://autoembed.co/tv/tmdb/{id}-{s}-{e}",
+    "type": "embed"
   },
-  // 🇮🇳 Hindi Dub Server 4 — RiveStream
   {
-    id: 'rivestream_hindi',
-    name: '🇮🇳 Server 4 (Hindi Dub)',
-    movieTemplate: 'https://rivestream.live/movie?tmdb={id}',
-    tvTemplate: 'https://rivestream.live/tv?tmdb={id}&season={s}&episode={e}',
-    type: 'embed',
-    lang: 'hi'
+    "id": "vidsrc_pm",
+    "name": "Server 6 (VidSrc.pm)",
+    "movieTemplate": "https://vidsrc.pm/embed/movie/{id}",
+    "tvTemplate": "https://vidsrc.pm/embed/tv/{id}/{s}/{e}",
+    "type": "embed"
   },
-  // 🇮🇳 Hindi Dub Server 5 — ScreenScape
   {
-    id: 'screenscape_hindi',
-    name: '🇮🇳 Server 5 (Hindi Dub)',
-    movieTemplate: 'https://screenscape.me/embed?tmdb={id}&type=movie',
-    tvTemplate: 'https://screenscape.me/embed?tmdb={id}&type=tv&s={s}&e={e}',
-    type: 'embed',
-    lang: 'hi'
+    "id": "superembed",
+    "name": "Server 7 (SuperEmbed)",
+    "movieTemplate": "https://multiembed.mov/directstream.php?video_id={id}&tmdb=1",
+    "tvTemplate": "https://multiembed.mov/directstream.php?video_id={id}&tmdb=1&s={s}&e={e}",
+    "type": "embed"
   }
 ];
 
 let currentLangParam = ''; // 'hi' or ''
 let rawLoadedServers = [];
+let isSafeZoneActive = typeof localStorage !== 'undefined' ? localStorage.getItem('movieredx_safe_zone') !== 'false' : true;
+let currentServerCategory = 'all'; // 'all', 'hindi', 'global'
+
+function updateSafeZoneUI() {
+  const bar = document.getElementById('safe-zone-bar');
+  const btn = document.getElementById('safe-mode-toggle-btn');
+  const btnText = document.getElementById('safe-mode-btn-text');
+  const stateText = document.getElementById('safe-zone-state-text');
+
+  if (btn) {
+    btn.classList.toggle('active', isSafeZoneActive);
+    btn.classList.toggle('off', !isSafeZoneActive);
+  }
+  if (bar) {
+    bar.classList.toggle('relaxed', !isSafeZoneActive);
+  }
+  if (btnText) {
+    btnText.textContent = isSafeZoneActive ? 'Safe Shield: ON' : 'Safe Shield: OFF';
+  }
+  if (stateText) {
+    stateText.textContent = isSafeZoneActive ? 'PROTECTED' : 'RELAXED';
+  }
+}
+
+window.toggleSafeZone = function() {
+  isSafeZoneActive = !isSafeZoneActive;
+  try {
+    localStorage.setItem('movieredx_safe_zone', isSafeZoneActive ? 'true' : 'false');
+  } catch(e) {}
+  updateSafeZoneUI();
+
+  const iframeEl = document.getElementById('embed-iframe-player');
+  if (iframeEl) {
+    if (isSafeZoneActive) {
+      iframeEl.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-presentation');
+    } else {
+      iframeEl.removeAttribute('sandbox');
+    }
+  }
+  loadActiveStreamServer();
+};
+
+window.filterServerCategory = function(cat) {
+  currentServerCategory = cat;
+
+  document.querySelectorAll('.server-cat-tab').forEach(tab => {
+    tab.classList.remove('active');
+  });
+  const activeTab = document.getElementById('tab-cat-' + cat);
+  if (activeTab) activeTab.classList.add('active');
+
+  renderServerButtons();
+
+  const filtered = getFilteredServers();
+  const currentServer = availableServers[currentServerIndex];
+  if (filtered.length > 0 && !filtered.some(s => s.id === currentServer?.id)) {
+    const newIdx = availableServers.findIndex(s => s.id === filtered[0].id);
+    if (newIdx !== -1) {
+      switchStreamServer(newIdx);
+    }
+  }
+};
+
+function getFilteredServers() {
+  if (currentServerCategory === 'hindi') {
+    return availableServers.filter(s => s.lang === 'hi' || /hindi/i.test(s.id) || /hindi/i.test(s.name));
+  }
+  if (currentServerCategory === 'global') {
+    return availableServers.filter(s => !(s.lang === 'hi' || /hindi/i.test(s.id) || /hindi/i.test(s.name)));
+  }
+  return availableServers;
+}
 
 // Parse URL Parameters
 function parseUrlParams() {
@@ -188,6 +254,7 @@ async function initWatchRoom() {
     await loadCustomMedia(currentCustomId);
   }
 
+  updateSafeZoneUI();
   initPrerollAd();
 }
 
@@ -252,6 +319,13 @@ async function loadTmdbMedia(id, type) {
     const isHindiMedia = currentLangParam === 'hi' || media.original_language === 'hi';
     availableServers = sortServersForMedia(rawLoadedServers.length ? rawLoadedServers : DEFAULT_SERVERS, isHindiMedia);
     currentServerIndex = 0;
+    if (isHindiMedia) {
+      currentServerCategory = 'hindi';
+      const allTab = document.getElementById('tab-cat-all');
+      const hindiTab = document.getElementById('tab-cat-hindi');
+      if (allTab) allTab.classList.remove('active');
+      if (hindiTab) hindiTab.classList.add('active');
+    }
 
     // Setup servers
     renderServerButtons();
@@ -559,30 +633,25 @@ function renderServerButtons() {
   const container = document.getElementById('stream-servers-list');
   if (!container) return;
 
-  let globalCounter = 0;
-  let hindiCounter = 0;
-
+  const filtered = getFilteredServers();
   let html = '';
-  availableServers.forEach((server, idx) => {
-    let displayName = '';
-    const isHindi = server.lang === 'hi' || /hindi/i.test(server.id) || /hindi/i.test(server.name);
-    
-    if (isHindi) {
-      hindiCounter++;
-      displayName = `🇮🇳 Server ${hindiCounter} (Hindi Dub)`;
-    } else {
-      globalCounter++;
-      displayName = `Server ${globalCounter}`;
-    }
 
-    const isActive = idx === currentServerIndex;
+  filtered.forEach(server => {
+    const realIdx = availableServers.findIndex(s => s.id === server.id);
+    const isHindi = server.lang === 'hi' || /hindi/i.test(server.id) || /hindi/i.test(server.name);
+    const isActive = realIdx === currentServerIndex;
+    const titleHint = server.hindiNote ? `${server.name} — ${server.hindiNote}` : `Stream on ${server.name}`;
+
     html += `
-      <button class="server-btn ${isActive ? 'active' : ''} ${isHindi ? 'server-hindi-btn' : ''}" onclick="switchStreamServer(${idx})" title="Stream on ${displayName}">
+      <button class="server-btn ${isActive ? 'active' : ''} ${isHindi ? 'server-hindi-btn' : ''}" 
+        onclick="switchStreamServer(${realIdx})" 
+        title="${titleHint}">
         <span class="server-status-dot"></span>
-        <span class="server-name-text">${displayName}</span>
+        <span class="server-name-text">${server.name}</span>
       </button>
     `;
   });
+
   container.innerHTML = html;
 }
 
@@ -660,6 +729,29 @@ function loadActiveStreamServer() {
 
   const iframeEl = document.getElementById('embed-iframe-player');
   const videoEl = document.getElementById('html5-video-player');
+  const fallbackNotice = document.getElementById('fallback-notice-box');
+
+  // SAFE ZONE PROTECTION (Sandbox blocks popups & malicious redirects)
+  if (iframeEl) {
+    if (isSafeZoneActive) {
+      iframeEl.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-presentation');
+    } else {
+      iframeEl.removeAttribute('sandbox');
+    }
+  }
+
+  // Update notice box dynamically with audio track guidance
+  if (fallbackNotice) {
+    const isHindi = server.lang === 'hi' || /hindi/i.test(server.id) || /hindi/i.test(server.name);
+    const noticeText = fallbackNotice.querySelector('.notice-text');
+    if (noticeText) {
+      if (isHindi) {
+        noticeText.innerHTML = `<strong>🇮🇳 Hindi Audio Server:</strong> Streaming on <span class="notice-highlight">${server.name}</span>. ${server.hindiNote || 'Select Hindi in player audio options.'} If buffering, try next Hindi server.`;
+      } else {
+        noticeText.innerHTML = `<strong>Streaming Server:</strong> <span class="notice-highlight">${server.name}</span>. For Hindi Dubbed audio, switch to <strong style="color:var(--accent-gold);">🇮🇳 Hindi Dubbed</strong> servers above.`;
+      }
+    }
+  }
 
   // If server is direct video file
   if (server.type === 'video' && server.url) {

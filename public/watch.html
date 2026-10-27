@@ -86,6 +86,23 @@
       <!-- LEFT: VIDEO STAGE & DETAILS -->
       <section class="video-stage-container" id="video-stage-root">
 
+                <!-- SAFE ZONE & AD-SHIELD PROTECTED BAR -->
+        <div class="safe-zone-shield-bar" id="safe-zone-bar">
+          <div class="safe-zone-info">
+            <span class="safe-shield-icon">🛡️</span>
+            <div class="safe-zone-text-group">
+              <span class="safe-zone-badge">SAFE ZONE ACTIVE</span>
+              <span class="safe-zone-desc">Popups &amp; Malicious Ad Redirects Blocked</span>
+            </div>
+          </div>
+          <div class="safe-zone-actions">
+            <button type="button" class="btn-safe-mode active" id="safe-mode-toggle-btn" onclick="toggleSafeZone()" title="Toggle Safe Zone Sandbox (Protects your browser)">
+              <span class="shield-dot"></span>
+              <span id="safe-mode-btn-text">Safe Shield: ON</span>
+            </button>
+          </div>
+        </div>
+
         <!-- 16:9 VIDEO PLAYER BOX -->
         <div class="video-player-box" id="player-box">
 
@@ -106,6 +123,7 @@
             class="embed-iframe-element" 
             allowfullscreen 
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            sandbox="allow-scripts allow-same-origin allow-forms allow-presentation"
             referrerpolicy="origin"
             loading="lazy">
           </iframe>
@@ -128,7 +146,14 @@
         <!-- STREAMING SERVER SWITCHER & CONTROLS -->
         <div class="player-servers-bar">
           <div class="servers-group">
-            <span class="server-label">Streaming Server:</span>
+            <div class="servers-header-row">
+              <span class="server-label">Streaming Server:</span>
+              <div class="server-category-tabs" id="server-category-tabs">
+                <button type="button" class="server-cat-tab active" id="tab-cat-all" onclick="filterServerCategory('all')">All Servers</button>
+                <button type="button" class="server-cat-tab" id="tab-cat-hindi" onclick="filterServerCategory('hindi')">🇮🇳 Hindi Dubbed</button>
+                <button type="button" class="server-cat-tab" id="tab-cat-global" onclick="filterServerCategory('global')">🌐 Global</button>
+              </div>
+            </div>
             <div id="stream-servers-list" style="display:flex; flex-wrap:wrap; gap:6px;">
               <!-- Populated by player.js -->
             </div>
