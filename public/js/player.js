@@ -20,26 +20,40 @@ const WATCHLIST_KEY = 'movieredx_watchlist';
 // Default Fallback Streaming Embed Servers (verified working 2025-2026)
 const DEFAULT_SERVERS = [
   {
-    "id": "videasy_hindi",
-    "name": "🇮🇳 Hindi Dubbed",
+    "id": "server_1_hindi",
+    "name": "🇮🇳 Server 1 (Hindi Dubbed)",
     "movieTemplate": "https://player.videasy.to/movie/{id}?lang=hi",
     "tvTemplate": "https://player.videasy.to/tv/{id}/{s}/{e}?lang=hi",
     "type": "embed",
     "lang": "hi"
   },
   {
-    "id": "vidlink_english",
-    "name": "🇬🇧 English",
+    "id": "server_2_english",
+    "name": "🇬🇧 Server 2 (English)",
     "movieTemplate": "https://vidlink.pro/movie/{id}?autoplay=true&title=true",
     "tvTemplate": "https://vidlink.pro/tv/{id}/{s}/{e}?autoplay=true&title=true",
     "type": "embed",
     "lang": "en"
   },
   {
-    "id": "vidsrc_multi",
-    "name": "🌐 Multi-Audio",
+    "id": "server_3_vidsrc",
+    "name": "🌐 Server 3 (Multi-Audio)",
     "movieTemplate": "https://vidsrc.pm/embed/movie/{id}",
     "tvTemplate": "https://vidsrc.pm/embed/tv/{id}/{s}/{e}",
+    "type": "embed"
+  },
+  {
+    "id": "server_4_autoembed",
+    "name": "⚡ Server 4 (AutoEmbed)",
+    "movieTemplate": "https://player.autoembed.me/embed/movie/{id}",
+    "tvTemplate": "https://player.autoembed.me/embed/tv/{id}/{s}/{e}",
+    "type": "embed"
+  },
+  {
+    "id": "server_5_2embed",
+    "name": "🎬 Server 5 (2Embed)",
+    "movieTemplate": "https://www.2embed.skin/embed/{id}",
+    "tvTemplate": "https://www.2embed.skin/embedtv/{id}&s={s}&e={e}",
     "type": "embed"
   }
 ];

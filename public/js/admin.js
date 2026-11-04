@@ -356,14 +356,11 @@ function renderStreamingServersEditor() {
   if (!container) return;
 
   const servers = adminSettings.streamServers || [
-    { id: 'vidlink', name: 'Server 1', movieTemplate: 'https://vidlink.pro/movie/{id}?autoplay=true', tvTemplate: 'https://vidlink.pro/tv/{id}/{s}/{e}?autoplay=true' },
-    { id: 'vidsrc_me', name: 'Server 2', movieTemplate: 'https://vidsrc.me/embed/movie?tmdb={id}', tvTemplate: 'https://vidsrc.me/embed/tv?tmdb={id}&season={s}&episode={e}' },
-    { id: 'vidcore', name: 'Server 3', movieTemplate: 'https://vidcore.net/movie/{id}', tvTemplate: 'https://vidcore.net/tv/{id}/{s}/{e}' },
-    { id: 'vidy', name: 'Server 4', movieTemplate: 'https://vidy.st/movie/{id}', tvTemplate: 'https://vidy.st/tv/{id}/{s}/{e}' },
-    { id: 'vidsrc_pm', name: 'Server 5', movieTemplate: 'https://vidsrc.pm/embed/movie/{id}', tvTemplate: 'https://vidsrc.pm/embed/tv/{id}/{s}/{e}' },
-    { id: 'twoembed', name: 'Server 6', movieTemplate: 'https://www.2embed.cc/embed/{id}', tvTemplate: 'https://www.2embed.cc/embedtv/{id}&s={s}&e={e}' },
-    { id: 'screenscape_hindi', name: 'Server 1 (Hindi Dub)', movieTemplate: 'https://screenscape.me/embed?tmdb={id}&type=movie', tvTemplate: 'https://screenscape.me/embed?tmdb={id}&type=tv&s={s}&e={e}', lang: 'hi' },
-    { id: 'vidlink_hindi', name: 'Server 2 (Hindi Dub)', movieTemplate: 'https://vidlink.pro/movie/{id}?primaryLang=hi&autoplay=true', tvTemplate: 'https://vidlink.pro/tv/{id}/{s}/{e}?primaryLang=hi&autoplay=true', lang: 'hi' }
+    { id: 'server_1_hindi', name: '🇮🇳 Server 1 (Hindi Dubbed)', movieTemplate: 'https://player.videasy.to/movie/{id}?lang=hi', tvTemplate: 'https://player.videasy.to/tv/{id}/{s}/{e}?lang=hi', type: 'embed', lang: 'hi' },
+    { id: 'server_2_english', name: '🇬🇧 Server 2 (English)', movieTemplate: 'https://vidlink.pro/movie/{id}?autoplay=true&title=true', tvTemplate: 'https://vidlink.pro/tv/{id}/{s}/{e}?autoplay=true&title=true', type: 'embed', lang: 'en' },
+    { id: 'server_3_vidsrc', name: '🌐 Server 3 (Multi-Audio)', movieTemplate: 'https://vidsrc.pm/embed/movie/{id}', tvTemplate: 'https://vidsrc.pm/embed/tv/{id}/{s}/{e}', type: 'embed' },
+    { id: 'server_4_autoembed', name: '⚡ Server 4 (AutoEmbed)', movieTemplate: 'https://player.autoembed.me/embed/movie/{id}', tvTemplate: 'https://player.autoembed.me/embed/tv/{id}/{s}/{e}', type: 'embed' },
+    { id: 'server_5_2embed', name: '🎬 Server 5 (2Embed)', movieTemplate: 'https://www.2embed.skin/embed/{id}', tvTemplate: 'https://www.2embed.skin/embedtv/{id}&s={s}&e={e}', type: 'embed' }
   ];
 
   let html = '';
