@@ -20,72 +20,32 @@ const WATCHLIST_KEY = 'movieredx_watchlist';
 // Default Fallback Streaming Embed Servers (verified working 2025-2026)
 const DEFAULT_SERVERS = [
   {
-    "id": "vidlink_hindi",
-    "name": "🇮🇳 Hindi Dubbed",
-    "movieTemplate": "https://vidlink.pro/movie/{id}?primaryLang=hi&autoplay=true",
-    "tvTemplate": "https://vidlink.pro/tv/{id}/{s}/{e}?primaryLang=hi&autoplay=true",
+    "id": "hdmovie2_hindi",
+    "name": "🇮🇳 Hindi Dubbed (HDMovie2)",
+    "movieTemplate": "/api/stream/hindi?tmdb={id}&type=movie",
+    "tvTemplate": "/api/stream/hindi?tmdb={id}&type=tv&s={s}&e={e}",
     "type": "embed",
     "lang": "hi"
   },
   {
     "id": "vidlink_english",
     "name": "🇬🇧 English",
-    "movieTemplate": "https://vidlink.pro/movie/{id}?primaryLang=en&autoplay=true&title=true",
-    "tvTemplate": "https://vidlink.pro/tv/{id}/{s}/{e}?primaryLang=en&autoplay=true&title=true",
+    "movieTemplate": "https://vidlink.pro/movie/{id}?autoplay=true&title=true",
+    "tvTemplate": "https://vidlink.pro/tv/{id}/{s}/{e}?autoplay=true&title=true",
     "type": "embed",
     "lang": "en"
   },
   {
-    "id": "vidsrc_me_multi",
+    "id": "videasy_multi",
     "name": "🌐 Multi-Audio",
-    "movieTemplate": "https://vidsrc.me/embed/movie?tmdb={id}",
-    "tvTemplate": "https://vidsrc.me/embed/tv?tmdb={id}&season={s}&episode={e}",
+    "movieTemplate": "https://player.videasy.to/movie/{id}",
+    "tvTemplate": "https://player.videasy.to/tv/{id}/{s}/{e}",
     "type": "embed"
   }
 ];
 
 let currentLangParam = ''; // 'hi' or ''
 let rawLoadedServers = [];
-let isSafeZoneActive = typeof localStorage !== 'undefined' ? localStorage.getItem('movieredx_safe_zone') !== 'false' : true;
-function updateSafeZoneUI() {
-  const bar = document.getElementById('safe-zone-bar');
-  const btn = document.getElementById('safe-mode-toggle-btn');
-  const btnText = document.getElementById('safe-mode-btn-text');
-  const stateText = document.getElementById('safe-zone-state-text');
-
-  if (btn) {
-    btn.classList.toggle('active', isSafeZoneActive);
-    btn.classList.toggle('off', !isSafeZoneActive);
-  }
-  if (bar) {
-    bar.classList.toggle('relaxed', !isSafeZoneActive);
-  }
-  if (btnText) {
-    btnText.textContent = isSafeZoneActive ? 'Safe Shield: ON' : 'Safe Shield: OFF';
-  }
-  if (stateText) {
-    stateText.textContent = isSafeZoneActive ? 'PROTECTED' : 'RELAXED';
-  }
-}
-
-window.toggleSafeZone = function() {
-  isSafeZoneActive = !isSafeZoneActive;
-  try {
-    localStorage.setItem('movieredx_safe_zone', isSafeZoneActive ? 'true' : 'false');
-  } catch(e) {}
-  updateSafeZoneUI();
-
-  const iframeEl = document.getElementById('embed-iframe-player');
-  if (iframeEl) {
-    if (isSafeZoneActive) {
-      iframeEl.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-presentation');
-    } else {
-      iframeEl.removeAttribute('sandbox');
-    }
-  }
-  loadActiveStreamServer();
-};
-
 // Parse URL Parameters
 function parseUrlParams() {
   const params = new URLSearchParams(window.location.search);
@@ -130,8 +90,6 @@ async function initWatchRoom() {
   } else if (currentCustomId) {
     await loadCustomMedia(currentCustomId);
   }
-
-  updateSafeZoneUI();
   initPrerollAd();
 }
 
@@ -583,15 +541,6 @@ function loadActiveStreamServer() {
   const iframeEl = document.getElementById('embed-iframe-player');
   const videoEl = document.getElementById('html5-video-player');
   const fallbackNotice = document.getElementById('fallback-notice-box');
-
-  // SAFE ZONE PROTECTION (Sandbox blocks popups & malicious redirects)
-  if (iframeEl) {
-    if (isSafeZoneActive) {
-      iframeEl.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-presentation');
-    } else {
-      iframeEl.removeAttribute('sandbox');
-    }
-  }
 
   // Update notice box dynamically with audio track guidance
   if (fallbackNotice) {

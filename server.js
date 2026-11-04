@@ -608,6 +608,127 @@ app.get('/api/tmdb/tv/:id/season/:season_number', async (req, res) => {
   }
 });
 
+// ─── HDMovie2 Hindi Dubbed Resolver & Stream Route ─────────────────────────────
+const hdmovie2Cache = new Map(); // tmdbId -> { embedUrl, expiry }
+const HDMOVIE2_MIRRORS = [
+  'https://newhdmovie2.si',
+  'https://hdmovie2r.ceo',
+  'https://hdmovie2tv.cyou'
+];
+
+async function resolveHdmovie2Embed(title, year = '', tmdbId = '') {
+  if (tmdbId && hdmovie2Cache.has(tmdbId)) {
+    const cached = hdmovie2Cache.get(tmdbId);
+    if (cached && Date.now() < cached.expiry) return cached.embedUrl;
+  }
+
+  const cleanTitle = (title || '').replace(/[:\-–—]/g, ' ').replace(/\s+/g, ' ').trim();
+  if (!cleanTitle) return null;
+
+  for (const mirror of HDMOVIE2_MIRRORS) {
+    try {
+      const searchUrl = `${mirror}/?s=${encodeURIComponent(cleanTitle)}`;
+      const searchHtml = await new Promise((resolve, reject) => {
+        https.get(searchUrl, { headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' }, timeout: 7000 }, res => {
+          let data = '';
+          res.on('data', c => data += c);
+          res.on('end', () => resolve(data));
+        }).on('error', reject);
+      });
+
+      const matches = [...searchHtml.matchAll(/<a[^>]+href="([^"]+\/movie\/[^"]+)"[^>]*>([\s\S]*?)<\/a>/gi)];
+      if (!matches || matches.length === 0) continue;
+
+      let targetLink = null;
+      const titleLower = cleanTitle.toLowerCase();
+      for (const m of matches) {
+        const link = m[1];
+        const text = m[2].replace(/<[^>]+>/g, '').toLowerCase().trim();
+        if (text.includes(titleLower)) {
+          targetLink = link;
+          break;
+        }
+      }
+      if (!targetLink && matches.length > 0) targetLink = matches[0][1];
+      if (!targetLink) continue;
+
+      const pageHtml = await new Promise((resolve, reject) => {
+        https.get(targetLink, { headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' }, timeout: 7000 }, res => {
+          let data = '';
+          res.on('data', c => data += c);
+          res.on('end', () => resolve(data));
+        }).on('error', reject);
+      });
+
+      // Extract embed sources
+      const embeds = [...pageHtml.matchAll(/data-source-embed=['"]([^'"]+)['"]/gi)].map(m => m[1]);
+      for (let emb of embeds) {
+        emb = emb.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#038;/g, '&');
+        const srcMatch = emb.match(/src=["']([^"']+)["']/i);
+        if (srcMatch) {
+          let src = srcMatch[1];
+          if (src.startsWith('//')) src = 'https:' + src;
+          if (/molop\.art|prvs\.top|abyss|abyssplayer|ok\.ru|hdm2/i.test(src)) {
+            if (tmdbId) hdmovie2Cache.set(tmdbId, { embedUrl: src, expiry: Date.now() + 12 * 3600 * 1000 });
+            return src;
+          }
+        }
+      }
+
+      const directIframes = [...pageHtml.matchAll(/<iframe[^>]+src=["']([^"']+)["']/gi)].map(m => m[1]);
+      if (directIframes.length > 0) {
+        let src = directIframes[0];
+        if (src.startsWith('//')) src = 'https:' + src;
+        if (tmdbId) hdmovie2Cache.set(tmdbId, { embedUrl: src, expiry: Date.now() + 12 * 3600 * 1000 });
+        return src;
+      }
+    } catch (err) {
+      console.warn(`[HDMovie2 Resolver] Mirror ${mirror} error:`, err.message);
+    }
+  }
+
+  return null;
+}
+
+// Stream Route for Hindi Dubbed (HDMovie2 with Videasy fallback)
+app.get('/api/stream/hindi', async (req, res) => {
+  const { tmdb, type = 'movie', s = 1, e = 1 } = req.query;
+  const tmdbId = String(tmdb || '').trim();
+
+  if (!tmdbId) {
+    return res.redirect('https://player.videasy.to/movie/550');
+  }
+
+  try {
+    let title = '';
+    let year = '';
+    try {
+      const media = await fetchTmdb(type === 'tv' ? `/tv/${tmdbId}` : `/movie/${tmdbId}`);
+      title = media?.title || media?.name || '';
+      const releaseDate = media?.release_date || media?.first_air_date || '';
+      year = releaseDate ? releaseDate.split('-')[0] : '';
+    } catch (e) {
+      console.warn('[Stream Hindi] TMDB metadata lookup failed:', e.message);
+    }
+
+    if (title) {
+      const hdmovie2Embed = await resolveHdmovie2Embed(title, year, tmdbId);
+      if (hdmovie2Embed) {
+        return res.redirect(hdmovie2Embed);
+      }
+    }
+
+    // Fallback to Videasy if not found on HDMovie2
+    const fallbackUrl = type === 'tv' 
+      ? `https://player.videasy.to/tv/${tmdbId}/${s}/${e}`
+      : `https://player.videasy.to/movie/${tmdbId}`;
+    return res.redirect(fallbackUrl);
+  } catch (err) {
+    console.error('[Stream Hindi] Unhandled error:', err.message);
+    return res.redirect(`https://player.videasy.to/movie/${tmdbId}`);
+  }
+});
+
 // --- ADMIN & LOCAL MOVIES API ROUTES ---
 
 // 11. Verify Admin PIN

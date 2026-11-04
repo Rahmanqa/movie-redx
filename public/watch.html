@@ -86,23 +86,6 @@
       <!-- LEFT: VIDEO STAGE & DETAILS -->
       <section class="video-stage-container" id="video-stage-root">
 
-                <!-- SAFE ZONE & AD-SHIELD PROTECTED BAR -->
-        <div class="safe-zone-shield-bar" id="safe-zone-bar">
-          <div class="safe-zone-info">
-            <span class="safe-shield-icon">🛡️</span>
-            <div class="safe-zone-text-group">
-              <span class="safe-zone-badge">SAFE ZONE ACTIVE</span>
-              <span class="safe-zone-desc">Popups &amp; Malicious Ad Redirects Blocked</span>
-            </div>
-          </div>
-          <div class="safe-zone-actions">
-            <button type="button" class="btn-safe-mode active" id="safe-mode-toggle-btn" onclick="toggleSafeZone()" title="Toggle Safe Zone Sandbox (Protects your browser)">
-              <span class="shield-dot"></span>
-              <span id="safe-mode-btn-text">Safe Shield: ON</span>
-            </button>
-          </div>
-        </div>
-
         <!-- 16:9 VIDEO PLAYER BOX -->
         <div class="video-player-box" id="player-box">
 
@@ -123,7 +106,6 @@
             class="embed-iframe-element" 
             allowfullscreen 
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            sandbox="allow-scripts allow-same-origin allow-forms allow-presentation"
             referrerpolicy="origin"
             loading="lazy">
           </iframe>
@@ -135,7 +117,7 @@
           <div class="notice-content-group">
             <div class="notice-icon">💡</div>
             <div class="notice-text">
-              <strong>Note:</strong> If current server is not working, <span class="notice-highlight">try another server</span> from the buttons below. <strong>🇮🇳 Hindi Dubbed</strong> for Hindi audio, <strong>🇬🇧 English</strong> for original English, <strong>🌐 Multi-Audio</strong> for multiple languages.
+              <strong>Note:</strong> <strong>🇮🇳 Server 1 (Hindi Dubbed)</strong> plays full movies in Hindi via HDMovie2! If a specific title is missing or buffering, switch to <strong>🌐 Multi-Audio (Videasy)</strong> and choose Hindi in the player gear settings, or <strong>🇬🇧 English (VidLink)</strong>.
             </div>
           </div>
           <button class="btn-quick-switch" onclick="switchNextServer()">
