@@ -4,13 +4,13 @@
   "tmdbApiKey": "8265bd1679663a7ea12ac168da84d2e8",
   "streamServers": [
     {
-      "id": "hdmovie2_hindi",
-      "name": "🇮🇳 Hindi Dubbed (HDMovie2)",
-      "movieTemplate": "/api/stream/hindi?tmdb={id}&type=movie",
-      "tvTemplate": "/api/stream/hindi?tmdb={id}&type=tv&s={s}&e={e}",
+      "id": "videasy_hindi",
+      "name": "🇮🇳 Hindi Dubbed",
+      "movieTemplate": "https://player.videasy.to/movie/{id}?lang=hi",
+      "tvTemplate": "https://player.videasy.to/tv/{id}/{s}/{e}?lang=hi",
       "type": "embed",
       "lang": "hi",
-      "hindiNote": "HDMovie2 Hindi Dubbed Server (1080p/720p with auto-fallback)"
+      "hindiNote": "High-Speed Hindi Dubbed Server (Select Hindi audio in player gear if needed)"
     },
     {
       "id": "vidlink_english",
@@ -21,10 +21,10 @@
       "lang": "en"
     },
     {
-      "id": "videasy_multi",
+      "id": "vidsrc_multi",
       "name": "🌐 Multi-Audio",
-      "movieTemplate": "https://player.videasy.to/movie/{id}",
-      "tvTemplate": "https://player.videasy.to/tv/{id}/{s}/{e}",
+      "movieTemplate": "https://vidsrc.pm/embed/movie/{id}",
+      "tvTemplate": "https://vidsrc.pm/embed/tv/{id}/{s}/{e}",
       "type": "embed"
     }
   ],

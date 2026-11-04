@@ -20,10 +20,10 @@ const WATCHLIST_KEY = 'movieredx_watchlist';
 // Default Fallback Streaming Embed Servers (verified working 2025-2026)
 const DEFAULT_SERVERS = [
   {
-    "id": "hdmovie2_hindi",
-    "name": "🇮🇳 Hindi Dubbed (HDMovie2)",
-    "movieTemplate": "/api/stream/hindi?tmdb={id}&type=movie",
-    "tvTemplate": "/api/stream/hindi?tmdb={id}&type=tv&s={s}&e={e}",
+    "id": "videasy_hindi",
+    "name": "🇮🇳 Hindi Dubbed",
+    "movieTemplate": "https://player.videasy.to/movie/{id}?lang=hi",
+    "tvTemplate": "https://player.videasy.to/tv/{id}/{s}/{e}?lang=hi",
     "type": "embed",
     "lang": "hi"
   },
@@ -36,10 +36,10 @@ const DEFAULT_SERVERS = [
     "lang": "en"
   },
   {
-    "id": "videasy_multi",
+    "id": "vidsrc_multi",
     "name": "🌐 Multi-Audio",
-    "movieTemplate": "https://player.videasy.to/movie/{id}",
-    "tvTemplate": "https://player.videasy.to/tv/{id}/{s}/{e}",
+    "movieTemplate": "https://vidsrc.pm/embed/movie/{id}",
+    "tvTemplate": "https://vidsrc.pm/embed/tv/{id}/{s}/{e}",
     "type": "embed"
   }
 ];
