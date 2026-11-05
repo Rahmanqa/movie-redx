@@ -28,33 +28,36 @@ const DEFAULT_SERVERS = [
     "lang": "hi"
   },
   {
-    "id": "server_2_english",
-    "name": "🇬🇧 Server 2 (English)",
+    "id": "server_2_hindi",
+    "name": "🇮🇳 Server 2 (Hindi Dubbed)",
+    "movieTemplate": "https://vidsrc.pm/embed/movie/{id}",
+    "tvTemplate": "https://vidsrc.pm/embed/tv/{id}/{s}/{e}",
+    "type": "embed",
+    "lang": "hi"
+  },
+  {
+    "id": "server_3_hindi",
+    "name": "🇮🇳 Server 3 (Hindi Dubbed)",
+    "movieTemplate": "https://player.autoembed.me/embed/movie/{id}",
+    "tvTemplate": "https://player.autoembed.me/embed/tv/{id}/{s}/{e}",
+    "type": "embed",
+    "lang": "hi"
+  },
+  {
+    "id": "server_4_english",
+    "name": "🇬🇧 Server 4 (English)",
     "movieTemplate": "https://vidlink.pro/movie/{id}?autoplay=true&title=true",
     "tvTemplate": "https://vidlink.pro/tv/{id}/{s}/{e}?autoplay=true&title=true",
     "type": "embed",
     "lang": "en"
   },
   {
-    "id": "server_3_vidsrc",
-    "name": "🌐 Server 3 (Multi-Audio)",
-    "movieTemplate": "https://vidsrc.pm/embed/movie/{id}",
-    "tvTemplate": "https://vidsrc.pm/embed/tv/{id}/{s}/{e}",
-    "type": "embed"
-  },
-  {
-    "id": "server_4_autoembed",
-    "name": "⚡ Server 4 (AutoEmbed)",
-    "movieTemplate": "https://player.autoembed.me/embed/movie/{id}",
-    "tvTemplate": "https://player.autoembed.me/embed/tv/{id}/{s}/{e}",
-    "type": "embed"
-  },
-  {
-    "id": "server_5_2embed",
-    "name": "🎬 Server 5 (2Embed)",
+    "id": "server_5_english",
+    "name": "🇬🇧 Server 5 (English)",
     "movieTemplate": "https://www.2embed.skin/embed/{id}",
     "tvTemplate": "https://www.2embed.skin/embedtv/{id}&s={s}&e={e}",
-    "type": "embed"
+    "type": "embed",
+    "lang": "en"
   }
 ];
 
@@ -153,11 +156,9 @@ async function loadTmdbMedia(id, type) {
     // Re-check if media is Hindi (original_language === 'hi' or lang=hi in query)
     availableServers = rawLoadedServers.length ? rawLoadedServers : DEFAULT_SERVERS;
     if (currentLangParam === 'en') {
-      currentServerIndex = 1;
-    } else if (currentLangParam === 'multi') {
-      currentServerIndex = 2;
+      currentServerIndex = 3; // Default to Server 4 (English)
     } else {
-      currentServerIndex = 0;
+      currentServerIndex = 0; // Default to Server 1 (Hindi Dubbed)
     }
 
     // Setup servers
@@ -562,9 +563,9 @@ function loadActiveStreamServer() {
     const noticeText = fallbackNotice.querySelector('.notice-text');
     if (noticeText) {
       if (isHindi) {
-        noticeText.innerHTML = `<strong>🇮🇳 Hindi Audio Server:</strong> Streaming on <span class="notice-highlight">${server.name}</span>. Auto-selects Hindi audio when available. If you prefer English, switch to <strong>🇬🇧 English</strong> or <strong>🌐 Multi-Audio</strong> below.`;
+        noticeText.innerHTML = `<strong>🇮🇳 Hindi Audio Server:</strong> Streaming on <span class="notice-highlight">${server.name}</span>. Auto-selects Hindi audio when available. For English audio, switch to <strong>🇬🇧 Server 4</strong> or <strong>🇬🇧 Server 5</strong> below.`;
       } else {
-        noticeText.innerHTML = `<strong>Streaming Server:</strong> <span class="notice-highlight">${server.name}</span>. For Hindi Dubbed audio, switch to <strong style="color:var(--accent-gold);">🇮🇳 Hindi Dubbed</strong> below.`;
+        noticeText.innerHTML = `<strong>🇬🇧 English Audio Server:</strong> Streaming on <span class="notice-highlight">${server.name}</span>. For Hindi Dubbed audio, switch to <strong>🇮🇳 Server 1, 2, or 3</strong> below.`;
       }
     }
   }
