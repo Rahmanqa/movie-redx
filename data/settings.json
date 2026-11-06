@@ -6,29 +6,29 @@
     {
       "id": "server_1_hindi",
       "name": "🇮🇳 Server 1 (Hindi Dubbed)",
-      "movieTemplate": "https://player.videasy.to/movie/{id}?lang=hi",
-      "tvTemplate": "https://player.videasy.to/tv/{id}/{s}/{e}?lang=hi",
+      "movieTemplate": "/player/hindi?id={id}&type=movie",
+      "tvTemplate": "/player/hindi?id={id}&type=tv&s={s}&e={e}",
       "type": "embed",
       "lang": "hi",
-      "hindiNote": "High-Speed Hindi Dubbed Server (Videasy)"
+      "hindiNote": "Dedicated HD Hindi Dubbed Server (Direct Stream)"
     },
     {
       "id": "server_2_hindi",
       "name": "🇮🇳 Server 2 (Hindi Dubbed)",
-      "movieTemplate": "https://vidsrc.pm/embed/movie/{id}",
-      "tvTemplate": "https://vidsrc.pm/embed/tv/{id}/{s}/{e}",
+      "movieTemplate": "https://vidlink.pro/movie/{id}?primaryLang=hi&autoplay=true&title=true",
+      "tvTemplate": "https://vidlink.pro/tv/{id}/{s}/{e}?primaryLang=hi&autoplay=true&title=true",
       "type": "embed",
       "lang": "hi",
-      "hindiNote": "Multi-Audio Hindi Dubbed Server (VidSrc)"
+      "hindiNote": "VidLink Multi-Audio (Hindi Priority)"
     },
     {
       "id": "server_3_hindi",
       "name": "🇮🇳 Server 3 (Hindi Dubbed)",
-      "movieTemplate": "https://player.autoembed.me/embed/movie/{id}",
-      "tvTemplate": "https://player.autoembed.me/embed/tv/{id}/{s}/{e}",
+      "movieTemplate": "https://player.videasy.to/movie/{id}?lang=hi",
+      "tvTemplate": "https://player.videasy.to/tv/{id}/{s}/{e}?lang=hi",
       "type": "embed",
       "lang": "hi",
-      "hindiNote": "Multi-Audio Hindi Dubbed Server (AutoEmbed)"
+      "hindiNote": "Videasy Multi-Audio (Hindi Priority)"
     },
     {
       "id": "server_4_english",
@@ -41,8 +41,8 @@
     {
       "id": "server_5_english",
       "name": "🇬🇧 Server 5 (English)",
-      "movieTemplate": "https://www.2embed.skin/embed/{id}",
-      "tvTemplate": "https://www.2embed.skin/embedtv/{id}&s={s}&e={e}",
+      "movieTemplate": "https://vidsrc.pm/embed/movie/{id}",
+      "tvTemplate": "https://vidsrc.pm/embed/tv/{id}/{s}/{e}",
       "type": "embed",
       "lang": "en"
     }

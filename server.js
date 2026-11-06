@@ -4,6 +4,7 @@ const path = require('path');
 const fs = require('fs');
 const https = require('https');
 const zlib = require('zlib');
+const { resolveHindiStream } = require('./lib/castletv');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -610,14 +611,119 @@ app.get('/api/tmdb/tv/:id/season/:season_number', async (req, res) => {
 
 
 
-// Stream Route for Hindi Dubbed (Direct High-Speed Videasy Hindi Stream)
-app.get('/api/stream/hindi', (req, res) => {
-  const { tmdb, type = 'movie', s = 1, e = 1 } = req.query;
-  const tmdbId = String(tmdb || '').trim() || '550';
-  const redirectUrl = type === 'tv' 
-    ? `https://player.videasy.to/tv/${tmdbId}/${s}/${e}?lang=hi`
-    : `https://player.videasy.to/movie/${tmdbId}?lang=hi`;
-  return res.redirect(redirectUrl);
+// Stream Route for Hindi Dubbed (Direct High-Speed CastleTV Hindi Stream + VidLink/Videasy Fallback)
+app.get('/api/stream/hindi', async (req, res) => {
+  const { tmdb, id, type = 'movie', s = 1, e = 1 } = req.query;
+  const tmdbId = String(tmdb || id || '').trim() || '550';
+  const seasonNum = parseInt(s, 10) || 1;
+  const episodeNum = parseInt(e, 10) || 1;
+  
+  const fallbackEmbedUrl = type === 'tv'
+    ? `https://vidlink.pro/tv/${tmdbId}/${seasonNum}/${episodeNum}?primaryLang=hi&autoplay=true&title=true`
+    : `https://vidlink.pro/movie/${tmdbId}?primaryLang=hi&autoplay=true&title=true`;
+
+  try {
+    let title = '';
+    let year = '';
+
+    if (type === 'tv') {
+      const tvData = await fetchTmdb(`/tv/${tmdbId}`);
+      if (tvData && !tvData._notFound) {
+        title = tvData.name || tvData.original_name || '';
+        year = (tvData.first_air_date || '').slice(0, 4);
+      }
+    } else {
+      const movieData = await fetchTmdb(`/movie/${tmdbId}`);
+      if (movieData && !movieData._notFound) {
+        title = movieData.title || movieData.original_title || '';
+        year = (movieData.release_date || '').slice(0, 4);
+      }
+    }
+
+    if (!title) {
+      return res.json({ success: true, url: fallbackEmbedUrl, type: 'embed', title: 'Movie', isHindi: false });
+    }
+
+    const hindiResult = await resolveHindiStream({
+      title,
+      year,
+      type,
+      season: seasonNum,
+      episode: episodeNum
+    });
+
+    if (hindiResult && hindiResult.streamUrl) {
+      const proxyUrl = `/api/stream/hls-proxy?url=${encodeURIComponent(hindiResult.streamUrl)}`;
+      return res.json({
+        success: true,
+        type: 'hls',
+        url: proxyUrl,
+        rawUrl: hindiResult.streamUrl,
+        title: hindiResult.title || title,
+        language: hindiResult.language || 'Hindi',
+        isHindi: Boolean(hindiResult.isHindi)
+      });
+    }
+
+    return res.json({
+      success: true,
+      type: 'embed',
+      url: fallbackEmbedUrl,
+      title,
+      isHindi: false
+    });
+  } catch (err) {
+    console.error('[API /stream/hindi]', err.message);
+    return res.json({
+      success: true,
+      type: 'embed',
+      url: fallbackEmbedUrl,
+      isHindi: false
+    });
+  }
+});
+
+// Proxy for M3U8 Playlists to bypass CORS and header restrictions
+app.get('/api/stream/hls-proxy', async (req, res) => {
+  const { url } = req.query;
+  if (!url) return res.status(400).send('Missing url parameter');
+
+  try {
+    const parsed = new URL(url);
+    const allowedHosts = ['hscow.com', 'fcxmb.com', 'hlowb.com'];
+    const isAllowed = allowedHosts.some(h => parsed.hostname.endsWith(h));
+    if (!isAllowed) {
+      return res.status(403).send('Forbidden stream domain');
+    }
+
+    const upstreamRes = await fetch(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/137.0.0.0 Safari/537.36',
+        'Referer': 'https://api.hlowb.com'
+      },
+      signal: AbortSignal.timeout(10000)
+    });
+
+    if (!upstreamRes.ok) {
+      return res.status(upstreamRes.status).send('Upstream stream error');
+    }
+
+    const bodyText = await upstreamRes.text();
+
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    res.setHeader('Content-Type', 'application/vnd.apple.mpegurl');
+    res.setHeader('Cache-Control', 'public, max-age=3600');
+    return res.send(bodyText);
+  } catch (err) {
+    console.error('[HLS Proxy]', err.message);
+    return res.status(500).send('Stream proxy failure');
+  }
+});
+
+// Dedicated Hindi Player Embed Route
+app.get('/player/hindi', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'player-hindi.html'));
 });
 
 // --- ADMIN & LOCAL MOVIES API ROUTES ---
