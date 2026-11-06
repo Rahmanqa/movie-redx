@@ -1647,3 +1647,215 @@ header {
 .footer-bottom .site-disclaimer a { color: #00d2ff; text-decoration: underline; }
 .footer-bottom .site-disclaimer a:hover { color: #fff; }
 
+
+
+/* --- MOVIE & TV DETAIL SSR HERO STYLES (RESPONSIVE & MOBILE POLISHED) --- */
+.detail-hero-box {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 36px;
+  align-items: start;
+  margin: 30px auto 40px;
+  max-width: 1200px;
+  padding: 0 20px;
+}
+.detail-poster-wrap {
+  width: 240px;
+  max-width: 100%;
+  flex-shrink: 0;
+}
+.detail-poster {
+  border-radius: 16px;
+  width: 100%;
+  height: auto;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.7);
+  display: block;
+  object-fit: cover;
+}
+.detail-info-wrap {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.detail-title {
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: #fff;
+  margin-bottom: 8px;
+  line-height: 1.2;
+  word-break: break-word;
+}
+.detail-title .detail-year {
+  color: #94a3b8;
+  font-weight: 400;
+  font-size: 1.3rem;
+}
+.detail-tagline {
+  color: var(--cyan-primary);
+  font-style: italic;
+  margin-bottom: 12px;
+  font-size: 0.95rem;
+}
+.detail-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 14px;
+  align-items: center;
+}
+.detail-badges .badge-item {
+  background: rgba(255, 255, 255, 0.08);
+  color: #cbd5e1;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.detail-badges .badge-rating {
+  background: rgba(245, 197, 24, 0.15);
+  color: #f5c518;
+  border: 1px solid rgba(245, 197, 24, 0.3);
+  font-weight: 800;
+}
+.detail-badges .badge-lang {
+  background: rgba(229, 9, 20, 0.15);
+  color: #ff6b7a;
+  border: 1px solid rgba(229, 9, 20, 0.3);
+  font-weight: 700;
+}
+.detail-genres {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.detail-genres .genre-pill {
+  background: rgba(0, 210, 255, 0.1);
+  border: 1px solid rgba(0, 210, 255, 0.3);
+  color: #00d2ff;
+  padding: 4px 14px;
+  border-radius: 20px;
+  text-decoration: none;
+  font-size: 0.82rem;
+  font-weight: 600;
+  transition: all var(--transition-fast);
+}
+.detail-genres .genre-pill:hover {
+  background: rgba(0, 210, 255, 0.25);
+  color: #fff;
+  transform: translateY(-1px);
+}
+.detail-cta-wrap {
+  margin: 8px 0 18px;
+  display: flex;
+  align-items: center;
+}
+.btn-watch-now-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-decoration: none;
+  padding: 13px 32px;
+  border-radius: 50px;
+  background: linear-gradient(135deg, #e50914, #ff1e27);
+  color: #fff !important;
+  font-weight: 800;
+  font-size: 1.05rem;
+  box-shadow: 0 8px 24px rgba(229, 9, 20, 0.45);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+.btn-watch-now-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(229, 9, 20, 0.65);
+}
+.detail-director {
+  color: #cbd5e1;
+  margin-bottom: 8px;
+  font-size: 0.92rem;
+}
+.detail-director strong {
+  color: #fff;
+}
+.detail-synopsis {
+  color: #94a3b8;
+  line-height: 1.75;
+  margin-bottom: 24px;
+  font-size: 0.95rem;
+}
+
+/* Mobile Polish for Movie / TV Detail Screen */
+@media (max-width: 768px) {
+  .detail-hero-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    margin: 16px auto 28px;
+    padding: 0 16px;
+    text-align: center;
+  }
+  .detail-poster-wrap {
+    width: 155px;
+    max-width: 155px;
+    margin: 0 auto;
+  }
+  .detail-poster {
+    border-radius: 12px;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.75);
+  }
+  .detail-info-wrap {
+    width: 100%;
+    align-items: center;
+    text-align: center;
+  }
+  .detail-title {
+    font-size: 1.55rem;
+    line-height: 1.25;
+    text-align: center;
+    margin-bottom: 6px;
+  }
+  .detail-title .detail-year {
+    font-size: 1.05rem;
+    display: inline-block;
+  }
+  .detail-tagline {
+    font-size: 0.88rem;
+    margin-bottom: 10px;
+  }
+  .detail-badges {
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .detail-genres {
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+  .detail-cta-wrap {
+    width: 100%;
+    justify-content: center;
+    margin: 4px 0 18px;
+  }
+  .btn-watch-now-cta {
+    width: 100%;
+    max-width: 330px;
+    padding: 13px 20px;
+    font-size: 1rem;
+    border-radius: 50px;
+  }
+  .detail-director {
+    text-align: center;
+    font-size: 0.88rem;
+    margin-bottom: 10px;
+  }
+  .detail-synopsis {
+    text-align: left;
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: #cbd5e1;
+    margin-bottom: 20px;
+  }
+}

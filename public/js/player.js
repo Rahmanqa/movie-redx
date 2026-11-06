@@ -21,7 +21,7 @@ const WATCHLIST_KEY = 'movieredx_watchlist';
 const DEFAULT_SERVERS = [
   {
     "id": "server_1_hindi",
-    "name": "🇮🇳 Server 1 (Hindi Dubbed)",
+    "name": "Server 1",
     "movieTemplate": "/player/hindi?id={id}&type=movie",
     "tvTemplate": "/player/hindi?id={id}&type=tv&s={s}&e={e}",
     "type": "embed",
@@ -30,7 +30,7 @@ const DEFAULT_SERVERS = [
   },
   {
     "id": "server_2_hindi",
-    "name": "🇮🇳 Server 2 (Hindi Dubbed)",
+    "name": "Server 2",
     "movieTemplate": "https://vidlink.pro/movie/{id}?primaryLang=hi&autoplay=true&title=true",
     "tvTemplate": "https://vidlink.pro/tv/{id}/{s}/{e}?primaryLang=hi&autoplay=true&title=true",
     "type": "embed",
@@ -39,7 +39,7 @@ const DEFAULT_SERVERS = [
   },
   {
     "id": "server_3_hindi",
-    "name": "🇮🇳 Server 3 (Hindi Dubbed)",
+    "name": "Server 3",
     "movieTemplate": "https://player.videasy.to/movie/{id}?lang=hi",
     "tvTemplate": "https://player.videasy.to/tv/{id}/{s}/{e}?lang=hi",
     "type": "embed",
@@ -48,7 +48,7 @@ const DEFAULT_SERVERS = [
   },
   {
     "id": "server_4_english",
-    "name": "🇬🇧 Server 4 (English)",
+    "name": "Server 4",
     "movieTemplate": "https://vidlink.pro/movie/{id}?autoplay=true&title=true",
     "tvTemplate": "https://vidlink.pro/tv/{id}/{s}/{e}?autoplay=true&title=true",
     "type": "embed",
@@ -56,7 +56,7 @@ const DEFAULT_SERVERS = [
   },
   {
     "id": "server_5_english",
-    "name": "🇬🇧 Server 5 (English)",
+    "name": "Server 5",
     "movieTemplate": "https://vidsrc.pm/embed/movie/{id}",
     "tvTemplate": "https://vidsrc.pm/embed/tv/{id}/{s}/{e}",
     "type": "embed",
@@ -566,9 +566,9 @@ function loadActiveStreamServer() {
     const noticeText = fallbackNotice.querySelector('.notice-text');
     if (noticeText) {
       if (isHindi) {
-        noticeText.innerHTML = `<strong>🇮🇳 Hindi Audio Server:</strong> Streaming on <span class="notice-highlight">${server.name}</span>. Auto-selects Hindi audio when available. For English audio, switch to <strong>🇬🇧 Server 4</strong> or <strong>🇬🇧 Server 5</strong> below.`;
+        noticeText.innerHTML = `<strong>🇮🇳 Hindi Audio Server:</strong> Streaming on <span class="notice-highlight">${server.name}</span>. Auto-selects Hindi audio when available. For English audio, switch to <strong>Server 4</strong> or <strong>Server 5</strong> below.`;
       } else {
-        noticeText.innerHTML = `<strong>🇬🇧 English Audio Server:</strong> Streaming on <span class="notice-highlight">${server.name}</span>. For Hindi Dubbed audio, switch to <strong>🇮🇳 Server 1, 2, or 3</strong> below.`;
+        noticeText.innerHTML = `<strong>🇬🇧 English Audio Server:</strong> Streaming on <span class="notice-highlight">${server.name}</span>. For Hindi Dubbed audio, switch to <strong>Server 1, 2, or 3</strong> below.`;
       }
     }
   }
@@ -614,6 +614,28 @@ function loadActiveStreamServer() {
     }
 
     iframeEl.src = embedUrl;
+
+    // Auto-maximize page volume when stream loads
+    try {
+      const videoElAuto = document.getElementById('html5-video-player');
+      if (videoElAuto && videoElAuto.style.display !== 'none') {
+        videoElAuto.volume = 1.0;
+        videoElAuto.muted = false;
+        if (!audioContext) {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          if (AudioCtx) {
+            audioContext = new AudioCtx();
+            const srcNode = audioContext.createMediaElementSource(videoElAuto);
+            audioGainNode = audioContext.createGain();
+            srcNode.connect(audioGainNode);
+            audioGainNode.connect(audioContext.destination);
+          }
+        }
+        if (audioContext && audioContext.state === 'suspended') audioContext.resume();
+        if (audioGainNode) audioGainNode.gain.value = 3.5;
+        currentVolumeBoostLevel = 3;
+      }
+    } catch(e) {}
   }
 }
 

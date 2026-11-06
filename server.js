@@ -1237,26 +1237,30 @@ app.get('/movie/:idSlug', async (req, res) => {
       noindex,
       jsonld: `<script type="application/ld+json">${JSON.stringify(movieJsonLd)}</script>${breadcrumb}`
     });
-    html += sharedNav();
+        html += sharedNav();
     html += `
-<main style="max-width:1200px;margin:30px auto;padding:0 20px;" itemscope itemtype="https://schema.org/Movie">
-  <div style="display:grid;grid-template-columns:220px 1fr;gap:30px;margin-bottom:40px;">
-    ${posterUrl ? `<img src="${escHtml(posterUrl)}" alt="${escHtml(title)} movie poster" width="220" height="330" style="border-radius:16px;width:100%;height:auto;box-shadow:0 16px 48px rgba(0,0,0,.7);" itemprop="image">` : '<div style="width:220px;height:330px;background:#1a2744;border-radius:16px;"></div>'}
-    <div>
-      <h1 style="font-size:2rem;font-weight:900;color:#fff;margin-bottom:8px;" itemprop="name">${escHtml(title)}${year ? ` <span style="color:#94a3b8;font-weight:400;font-size:1.3rem;">(${escHtml(year)})</span>` : ''}</h1>
-      ${details.tagline ? `<p style="color:#00d2ff;font-style:italic;margin-bottom:12px;">"${escHtml(details.tagline)}"</p>` : ''}
-      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px;">
-        <span style="background:rgba(245,197,24,.15);color:#f5c518;border:1px solid rgba(245,197,24,.3);padding:4px 12px;border-radius:20px;font-weight:800;">★ ${escHtml(rating)}</span>
-        ${runtime ? `<span style="background:rgba(255,255,255,.08);color:#cbd5e1;padding:4px 12px;border-radius:20px;">${escHtml(runtime)}</span>` : ''}
-        ${year ? `<span style="background:rgba(255,255,255,.08);color:#cbd5e1;padding:4px 12px;border-radius:20px;">${escHtml(year)}</span>` : ''}
-        ${langHint ? `<span style="background:rgba(229,9,20,.15);color:#ff6b7a;border:1px solid rgba(229,9,20,.3);padding:4px 12px;border-radius:20px;font-weight:700;">${escHtml(langHint)}</span>` : ''}
+<main itemscope itemtype="https://schema.org/Movie">
+  <div class="detail-hero-box">
+    <div class="detail-poster-wrap">
+      ${posterUrl ? `<img src="${escHtml(posterUrl)}" alt="${escHtml(title)} movie poster" width="240" height="360" class="detail-poster" itemprop="image" loading="eager">` : '<div style="width:240px;height:360px;background:#1a2744;border-radius:16px;"></div>'}
+    </div>
+    <div class="detail-info-wrap">
+      <h1 class="detail-title" itemprop="name">${escHtml(title)}${year ? ` <span class="detail-year">(${escHtml(year)})</span>` : ''}</h1>
+      ${details.tagline ? `<p class="detail-tagline">"${escHtml(details.tagline)}"</p>` : ''}
+      <div class="detail-badges">
+        <span class="badge-item badge-rating">★ ${escHtml(rating)}</span>
+        ${runtime ? `<span class="badge-item">${escHtml(runtime)}</span>` : ''}
+        ${year ? `<span class="badge-item">${escHtml(year)}</span>` : ''}
+        ${langHint ? `<span class="badge-item badge-lang">${escHtml(langHint)}</span>` : ''}
       </div>
-      ${genres.length ? `<div style="margin-bottom:16px;">${genres.map(g => `<a href="/genre/${slugify(g.name)}" style="display:inline-block;background:rgba(0,210,255,.1);border:1px solid rgba(0,210,255,.3);color:#00d2ff;padding:4px 14px;border-radius:20px;margin:3px;text-decoration:none;font-size:.85rem;">${escHtml(g.name)}</a>`).join('')}</div>` : ''}
-      ${director ? `<p style="color:#cbd5e1;margin-bottom:8px;"><strong style="color:#fff;">Director:</strong> <span itemprop="director" itemscope itemtype="https://schema.org/Person"><span itemprop="name">${escHtml(director.name)}</span></span></p>` : ''}
-      ${overview ? `<p style="color:#94a3b8;line-height:1.8;margin-bottom:20px;" itemprop="description">${escHtml(overview)}</p>` : ''}
-      <a href="/watch.html?tmdb=${tmdbId}${langHint ? '&lang=hi' : ''}" class="btn-play-hero" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;padding:12px 28px;border-radius:50px;background:linear-gradient(135deg,#e50914,#ff1e27);color:#fff;font-weight:800;font-size:1rem;box-shadow:0 8px 24px rgba(229,9,20,.4);">
-        ▶ Watch Now
-      </a>
+      ${genres.length ? `<div class="detail-genres">${genres.map(g => `<a href="/genre/${slugify(g.name)}" class="genre-pill">${escHtml(g.name)}</a>`).join('')}</div>` : ''}
+      <div class="detail-cta-wrap">
+        <a href="/watch.html?tmdb=${tmdbId}${langHint ? '&lang=hi' : ''}" class="btn-play-hero btn-watch-now-cta">
+          ▶ Watch Now
+        </a>
+      </div>
+      ${director ? `<p class="detail-director"><strong>Director:</strong> <span itemprop="director" itemscope itemtype="https://schema.org/Person"><span itemprop="name">${escHtml(director.name)}</span></span></p>` : ''}
+      ${overview ? `<p class="detail-synopsis" itemprop="description">${escHtml(overview)}</p>` : ''}
     </div>
   </div>
 
@@ -1391,22 +1395,26 @@ app.get('/tv/:idSlug', async (req, res) => {
     });
     html += sharedNav();
     html += `
-<main style="max-width:1200px;margin:30px auto;padding:0 20px;">
-  <div style="display:grid;grid-template-columns:220px 1fr;gap:30px;margin-bottom:40px;">
-    ${posterUrl ? `<img src="${escHtml(posterUrl)}" alt="${escHtml(title)} TV series poster" width="220" height="330" style="border-radius:16px;width:100%;height:auto;box-shadow:0 16px 48px rgba(0,0,0,.7);" loading="lazy">` : '<div style="width:220px;height:330px;background:#1a2744;border-radius:16px;"></div>'}
-    <div>
-      <h1 style="font-size:2rem;font-weight:900;color:#fff;margin-bottom:8px;">${escHtml(title)}${year ? ` <span style="color:#94a3b8;font-weight:400;font-size:1.3rem;">(${escHtml(year)})</span>` : ''}</h1>
-      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px;">
-        <span style="background:rgba(245,197,24,.15);color:#f5c518;border:1px solid rgba(245,197,24,.3);padding:4px 12px;border-radius:20px;font-weight:800;">★ ${escHtml(rating)}</span>
-        ${seasons ? `<span style="background:rgba(255,255,255,.08);color:#cbd5e1;padding:4px 12px;border-radius:20px;">${escHtml(String(seasons))} Season${seasons > 1 ? 's' : ''}</span>` : ''}
-        ${langHint ? `<span style="background:rgba(229,9,20,.15);color:#ff6b7a;border:1px solid rgba(229,9,20,.3);padding:4px 12px;border-radius:20px;font-weight:700;">${escHtml(langHint)}</span>` : ''}
+<main itemscope itemtype="https://schema.org/TVSeries">
+  <div class="detail-hero-box">
+    <div class="detail-poster-wrap">
+      ${posterUrl ? `<img src="${escHtml(posterUrl)}" alt="${escHtml(title)} TV series poster" width="240" height="360" class="detail-poster" itemprop="image" loading="eager">` : '<div style="width:240px;height:360px;background:#1a2744;border-radius:16px;"></div>'}
+    </div>
+    <div class="detail-info-wrap">
+      <h1 class="detail-title" itemprop="name">${escHtml(title)}${year ? ` <span class="detail-year">(${escHtml(year)})</span>` : ''}</h1>
+      <div class="detail-badges">
+        <span class="badge-item badge-rating">★ ${escHtml(rating)}</span>
+        ${seasons ? `<span class="badge-item">${escHtml(String(seasons))} Season${seasons > 1 ? 's' : ''}</span>` : ''}
+        ${langHint ? `<span class="badge-item badge-lang">${escHtml(langHint)}</span>` : ''}
       </div>
-      ${genres.length ? `<div style="margin-bottom:16px;">${genres.map(g => `<a href="/genre/${slugify(g.name)}" style="display:inline-block;background:rgba(0,210,255,.1);border:1px solid rgba(0,210,255,.3);color:#00d2ff;padding:4px 14px;border-radius:20px;margin:3px;text-decoration:none;font-size:.85rem;">${escHtml(g.name)}</a>`).join('')}</div>` : ''}
-      ${creators.length ? `<p style="color:#cbd5e1;margin-bottom:8px;"><strong style="color:#fff;">Created by:</strong> ${creators.map(c => escHtml(c.name)).join(', ')}</p>` : ''}
-      ${overview ? `<p style="color:#94a3b8;line-height:1.8;margin-bottom:20px;">${escHtml(overview)}</p>` : ''}
-      <a href="/watch.html?tmdb=${tmdbId}&type=tv${langHint ? '&lang=hi' : ''}" class="btn-play-hero" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;padding:12px 28px;border-radius:50px;background:linear-gradient(135deg,#e50914,#ff1e27);color:#fff;font-weight:800;font-size:1rem;box-shadow:0 8px 24px rgba(229,9,20,.4);">
-        ▶ Watch Now
-      </a>
+      ${genres.length ? `<div class="detail-genres">${genres.map(g => `<a href="/genre/${slugify(g.name)}" class="genre-pill">${escHtml(g.name)}</a>`).join('')}</div>` : ''}
+      <div class="detail-cta-wrap">
+        <a href="/watch.html?tmdb=${tmdbId}&type=tv${langHint ? '&lang=hi' : ''}" class="btn-play-hero btn-watch-now-cta">
+          ▶ Watch Now
+        </a>
+      </div>
+      ${creators.length ? `<p class="detail-director"><strong>Created by:</strong> ${creators.map(c => escHtml(c.name)).join(', ')}</p>` : ''}
+      ${overview ? `<p class="detail-synopsis" itemprop="description">${escHtml(overview)}</p>` : ''}
     </div>
   </div>
 

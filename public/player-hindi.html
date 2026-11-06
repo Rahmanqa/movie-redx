@@ -150,6 +150,38 @@
     const episode = params.get('e') || params.get('episode') || '1';
 
     const video = document.getElementById('video-player');
+
+    // Automatic Audio Volume Booster (+250%)
+    let audioCtx = null;
+    let gainNode = null;
+
+    function applyAudioBoost() {
+      try {
+        video.volume = 1.0;
+        video.muted = false;
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass && !audioCtx) {
+          audioCtx = new AudioContextClass();
+          const source = audioCtx.createMediaElementSource(video);
+          gainNode = audioCtx.createGain();
+          gainNode.gain.value = 2.5; // +250% automatic volume boost
+          source.connect(gainNode);
+          gainNode.connect(audioCtx.destination);
+        }
+        if (audioCtx && audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+        if (gainNode) gainNode.gain.value = 2.5;
+      } catch (e) {
+        console.log('Audio boost notice:', e.message);
+      }
+    }
+
+    video.addEventListener('play', applyAudioBoost);
+    video.addEventListener('playing', applyAudioBoost);
+    document.addEventListener('click', applyAudioBoost);
+    document.addEventListener('touchstart', applyAudioBoost, { passive: true });
+
     const overlay = document.getElementById('loading-overlay');
     const statusText = document.getElementById('status-text');
     const errorBox = document.getElementById('error-box');

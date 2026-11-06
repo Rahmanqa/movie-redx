@@ -356,11 +356,11 @@ function renderStreamingServersEditor() {
   if (!container) return;
 
   const servers = adminSettings.streamServers || [
-    { id: 'server_1_hindi', name: '🇮🇳 Server 1 (Hindi Dubbed)', movieTemplate: '/player/hindi?id={id}&type=movie', tvTemplate: '/player/hindi?id={id}&type=tv&s={s}&e={e}', type: 'embed', lang: 'hi' },
-    { id: 'server_2_hindi', name: '🇮🇳 Server 2 (Hindi Dubbed)', movieTemplate: 'https://vidlink.pro/movie/{id}?primaryLang=hi&autoplay=true&title=true', tvTemplate: 'https://vidlink.pro/tv/{id}/{s}/{e}?primaryLang=hi&autoplay=true&title=true', type: 'embed', lang: 'hi' },
-    { id: 'server_3_hindi', name: '🇮🇳 Server 3 (Hindi Dubbed)', movieTemplate: 'https://player.videasy.to/movie/{id}?lang=hi', tvTemplate: 'https://player.videasy.to/tv/{id}/{s}/{e}?lang=hi', type: 'embed', lang: 'hi' },
-    { id: 'server_4_english', name: '🇬🇧 Server 4 (English)', movieTemplate: 'https://vidlink.pro/movie/{id}?autoplay=true&title=true', tvTemplate: 'https://vidlink.pro/tv/{id}/{s}/{e}?autoplay=true&title=true', type: 'embed', lang: 'en' },
-    { id: 'server_5_english', name: '🇬🇧 Server 5 (English)', movieTemplate: 'https://vidsrc.pm/embed/movie/{id}', tvTemplate: 'https://vidsrc.pm/embed/tv/{id}/{s}/{e}', type: 'embed', lang: 'en' }
+    { id: 'server_1_hindi', name: 'Server 1', movieTemplate: '/player/hindi?id={id}&type=movie', tvTemplate: '/player/hindi?id={id}&type=tv&s={s}&e={e}', type: 'embed', lang: 'hi' },
+    { id: 'server_2_hindi', name: 'Server 2', movieTemplate: 'https://vidlink.pro/movie/{id}?primaryLang=hi&autoplay=true&title=true', tvTemplate: 'https://vidlink.pro/tv/{id}/{s}/{e}?primaryLang=hi&autoplay=true&title=true', type: 'embed', lang: 'hi' },
+    { id: 'server_3_hindi', name: 'Server 3', movieTemplate: 'https://player.videasy.to/movie/{id}?lang=hi', tvTemplate: 'https://player.videasy.to/tv/{id}/{s}/{e}?lang=hi', type: 'embed', lang: 'hi' },
+    { id: 'server_4_english', name: 'Server 4', movieTemplate: 'https://vidlink.pro/movie/{id}?autoplay=true&title=true', tvTemplate: 'https://vidlink.pro/tv/{id}/{s}/{e}?autoplay=true&title=true', type: 'embed', lang: 'en' },
+    { id: 'server_5_english', name: 'Server 5', movieTemplate: 'https://vidsrc.pm/embed/movie/{id}', tvTemplate: 'https://vidsrc.pm/embed/tv/{id}/{s}/{e}', type: 'embed', lang: 'en' }
   ];
 
   let html = '';
